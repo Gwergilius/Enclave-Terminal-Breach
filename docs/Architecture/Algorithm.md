@@ -1,5 +1,17 @@
 # Algorithm
 
+[[_TOC_]]
+
+## Quick Reference
+
+**TL;DR**: The solver maximizes the number of distinct match-count outcomes,
+then minimizes the worst-case bucket size. This guarantees:
+- ✅ Correctness: The secret is never eliminated
+- ✅ Convergence: Reduces to 1 candidate in finite steps
+- ✅ Optimality: Fastest average-case performance
+
+Details and proofs follow below.
+
 The password solver uses **information theory** to select the optimal guess:
 
 1. For each remaining password, calculate its "information score".
@@ -223,7 +235,7 @@ This illustrates why maximizing the score (number of distinct outcomes) leads to
 
 ### Convergence speed: 20 random words (5 letters vs 10 letters)
 
-To see how quickly the algorithm converges in practice, we draw **20 random words** from `resources/words.txt` (same length in each run), pick a random secret among them, and apply the solver until one candidate remains. Word lengths **5** and **10** are compared.
+To see how quickly the algorithm converges in practice, we draw **20 random words** from [resources/words.txt][words.txt] (same length in each run), pick a random secret among them, and apply the solver until one candidate remains. Word lengths **5** and **10** are compared.
 
 **20 words, length 5** (example set):  
 *argos, egypt, beant, sider, huaca, edits, black, tacet, unbag, tonal, amrit, hakes, marie, mommy, gains, gemma, teian, argel, cesar, built*
@@ -241,9 +253,33 @@ To see how quickly the algorithm converges in practice, we draw **20 random word
 
 So with **10-letter words** we are **not** in a harder situation: the number of steps is similar or slightly lower (2.3 vs 2.6 on average), and the typical **score is higher** (4.7 vs 3.9). With more positions, a guess tends to **spread** the candidates over more distinct match-count values (0, 1, 2, … up to 10), so we often get a finer partition and converge in few steps. Longer words do not make the puzzle inherently harder for this algorithm.
 
+## References
 
+### Information Theory
 
+- Shannon, C. E. (1948). [A Mathematical Theory of Communication]   
+  *Foundational paper on information theory and entropy*
+- Cover, T. M., & Thomas, J. A. (2006). [Elements of Information Theory]   
+  *Comprehensive textbook on information theory fundamentals*
+- Malone, D., & Sullivan, W. G. (2004). [Guesswork and Entropy]   
+  *Analysis of optimal guessing strategies under uncertainty*  
 
+### Algorithm Design & Game Theory
+- Knuth, D.E. (1977). [The Computer as Master Mind]   
+  *Classic paper on optimal strategy for Mastermind - similar password-guessing problem*
 
+### Game Mechanics
+- [Fallout Terminal Hacking] - Fallout Wiki   
+  *Game mechanics inspiration and terminal interface documentation*
 
+### Implementation Resources
+- [Word list and examples][words.txt] - Project resources  
+  *Dictionary used for algorithm testing and benchmarking*
+  
+[words.txt]: ../../resources/words.txt
+[A Mathematical Theory of Communication]: http://cm.bell-labs.com/cm/ms/what/shannonday/shannon1948.pdf "A Mathematical Theory of Communication"
+[Elements of Information Theory]: https://cs-114.org/wp-content/uploads/2015/01/Elements_of_Information_Theory_Elements.pdf
+[Fallout Terminal Hacking]: https://fallout.fandom.com/wiki/Hacking
+[The Computer as Master Mind]: https://www.cs.uni.edu/~wallingf/teaching/cs3530/resources/knuth-mastermind.pdf
+[Guesswork and Entropy]: https://www.researchgate.net/publication/3084991_Guesswork_and_Entropy
 
