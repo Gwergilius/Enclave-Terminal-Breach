@@ -1,5 +1,7 @@
 # Terminal Hacker State Machine Documentation
 
+**English** | [Magyar]
+
 ## Overview
 
 The Terminal Hacker application uses a clean state machine pattern to manage the different modes of the main game screen. This document describes the states, transitions, and UI behavior for each state.
@@ -262,5 +264,7 @@ This could lead to invalid combinations (e.g., `IsGameWon` and `IsGameLost` both
 - `_isGameWon`: private flag (only used in GameOver state)
 
 Only valid combinations are possible by design.
+
+[Magyar]: ./StateMachine.hu.md
 
  

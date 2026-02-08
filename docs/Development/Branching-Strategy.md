@@ -1,5 +1,7 @@
 # Branching Strategy
 
+**English** | [Magyar]
+
 Git workflow and branch management strategy for the Enclave Terminal Breach project.
 
 ## Overview
@@ -471,3 +473,4 @@ git push origin main sparrow-v0.1.1
 [Semantic Versioning]: https://semver.org/
 [Commit-Conventions.md]: ./Commit-Conventions.md
 [Changelog Management]: ./Changelog-Management.md
+[Magyar]: ./Branching-Strategy.hu.md

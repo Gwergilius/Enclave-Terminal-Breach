@@ -1,5 +1,7 @@
 # Architecture Documentation
 
+**English** | [Magyar]
+
 Technical architecture, design decisions, and system specifications.
 
 ## Core Documents
@@ -31,3 +33,4 @@ These documents provide:
 [Platform Services Summary]: ./PlatformServicesSummary.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.md
 [ColorValue Design]: ./ColorValue-Design-Decision.md
+[Magyar]: ./README.hu.md

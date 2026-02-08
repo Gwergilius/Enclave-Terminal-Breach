@@ -1,5 +1,7 @@
 # Release Process
 
+**English** | [Magyar]
+
 Version management and release procedures for the Enclave Terminal Breach project.
 
 ## Overview
@@ -447,3 +449,4 @@ Critical security fixes backported to:
 [GitHub Releases]: https://docs.github.com/en/repositories/releasing-projects-on-github
 [standard-version]: https://github.com/conventional-changelog/standard-version
 [release-please]: https://github.com/googleapis/release-please
+[Magyar]: ./Release-Process.hu.md

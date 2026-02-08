@@ -1,5 +1,7 @@
 # Changelog Management
 
+**English** | [Magyar]
+
 Changelog maintenance strategy and guidelines for the Enclave Terminal Breach project.
 
 ## Overview
@@ -717,3 +719,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Conventional Commits]: https://www.conventionalcommits.org/
 [Branching Strategy]: ./Branching-Strategy.md
 [Release Process]: ./Release-Process.md
+[Magyar]: ./Changelog-Management.hu.md

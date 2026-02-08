@@ -1,5 +1,7 @@
 # ECHELON Project - Historical Background
 
+**English** | [Magyar]
+
 [[_TOC_]]
 
 ## Pre-War Context: RobCo Dominance
@@ -478,3 +480,4 @@ Some Enclave analysts believe RobCo intentionally weakened UOS security at gover
 |**Dissemination:**| Field operatives with ECHELON-equipped Pip-Boys only|
 
 [UOS]: ./UOS.md
+[Magyar]: ./Project-History.hu.md

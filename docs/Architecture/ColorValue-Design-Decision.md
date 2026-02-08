@@ -1,5 +1,7 @@
 # ColorValue Design Decision
 
+**English** | [Magyar]
+
 ## Overview
 
 This document explains why we created a custom `ColorValue` record type instead of using existing .NET color types like `System.Drawing.Color` or `Microsoft.Maui.Graphics.Color`.
@@ -301,6 +303,8 @@ This decision enables us to:
 **Last Updated:** 2026-01-05  
 **Author:** AI Assistant  
 **Status:** Approved
+
+[Magyar]: ./ColorValue-Design-Decision.hu.md
 
 
 

@@ -29,11 +29,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * **README.md**: Quick reference (new work, commit, version check, PR, release)
 - **.cursor/rules/development-workflow.md**: Mandatory rule for branching/commit conventions and CHANGELOG update before every commit (references docs/Development)
 - **CHANGELOG.md**: Documentation changelog (date-based sections, Keep a Changelog) for tracking all doc changes
-
 - **resources/**: **README.md** (words.txt format, usage, example sets); **words.txt** (word list for solver)
-
+- **Hungarian translations (`.hu.md`)**: 
+  - Full translations for all user-facing documentation; 
+  - English remains primary per documentation standards. 
+  - CHANGELOG files are English-only (no `.hu.md`). 
+  - Added: 
+    - **Lore/**: Project-History, UOS, Minigame, README; 
+	- **Architecture/**: Algorithm, StateMachine, PlatformServicesSummary, ConfigurationInfrastructureSummary, FutureArchitecture, ColorValue-Design-Decision, README; 
+	- **Implementation/**: Implementation-Plan, README; 
+	- **Development/** Branching-Strategy, Commit-Conventions, Release-Process, GitVersion-Integration, Changelog-Management, README; 
+	- **docs/** README; 
+	- root, **resources/**, **src/**, **.cursor/rules/** READMEs. 
+  - All `.hu.md` use reference-style links and mirror English structure; 
+  - language switcher on each doc.
 
 ### Changed
 - **README.md**: Document CHANGELOG.md and Development folder (structure, links to Branching/Commit/Release/GitVersion/Changelog-Management, reminder to update changelog before commit)
-
-
+- **.cursor/rules/documentation.md**: CHANGELOG files are English-only; no `.hu.md` versions; no language switcher in CHANGELOG files

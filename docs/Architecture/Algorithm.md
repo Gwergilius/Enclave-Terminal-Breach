@@ -1,5 +1,7 @@
 # Algorithm
 
+**English** | [Magyar]
+
 [[_TOC_]]
 
 ## Quick Reference
@@ -282,4 +284,5 @@ So with **10-letter words** we are **not** in a harder situation: the number of 
 [Fallout Terminal Hacking]: https://fallout.fandom.com/wiki/Hacking
 [The Computer as Master Mind]: https://www.cs.uni.edu/~wallingf/teaching/cs3530/resources/knuth-mastermind.pdf
 [Guesswork and Entropy]: https://www.researchgate.net/publication/3084991_Guesswork_and_Entropy
+[Magyar]: ./Algorithm.hu.md
 

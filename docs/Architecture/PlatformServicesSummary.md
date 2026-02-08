@@ -1,5 +1,7 @@
 # Platform Services Design Summary
 
+**English** | [Magyar]
+
 This document describes the planned platform services layer and target architecture for the `Enclave Terminal Breach` project (design phase, no implementation yet).
 
 ## Target architecture – platform implementations
@@ -168,3 +170,5 @@ services.AddTransient<IGameSession>(sp => new GameSession(
 **Date:** 2025-01-09  
 **Status:** Planning / Design  
 **Ready for:** Next: Implement Core services and first platform (Console POC)
+
+[Magyar]: ./PlatformServicesSummary.hu.md

@@ -1,5 +1,7 @@
 # Commit Conventions
 
+**English** | [Magyar]
+
 Commit message standards for the Enclave Terminal Breach project.
 
 ## Overview
@@ -371,3 +373,4 @@ These will be squashed when merging PR to main.
 [Semantic Versioning]: https://semver.org/
 [Angular Commit Guidelines]: https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit
 [Commitizen]: https://github.com/commitizen/cz-cli
+[Magyar]: ./Commit-Conventions.hu.md

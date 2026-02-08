@@ -1,5 +1,7 @@
 # Development Documentation
 
+**English** | [Magyar]
+
 Process, workflow, and contribution guidelines.
 
 ## Contents
@@ -144,3 +146,4 @@ See individual documents for comprehensive guidelines.
 [Semantic Versioning]: https://semver.org/
 [Keep a Changelog]: https://keepachangelog.com/
 [GitVersion]: https://gitversion.net/
+[Magyar]: ./README.hu.md

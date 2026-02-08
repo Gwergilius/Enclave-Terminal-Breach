@@ -1,5 +1,7 @@
 # Configuration Infrastructure - Complete Summary
 
+**English** | [Magyar]
+
 ## Overview
 
 This document summarizes all configuration-related improvements implemented across the ECHELON project. The changes create a unified, maintainable, and type-safe configuration infrastructure.
@@ -486,3 +488,5 @@ public void Startup_LoadsEmbeddedConfiguration()
 **Status:** ✅ Complete  
 **Phase:** Configuration Infrastructure  
 **Ready for:** Build Testing & Next Feature
+
+[Magyar]: ./ConfigurationInfrastructureSummary.hu.md

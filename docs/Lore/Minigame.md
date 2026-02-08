@@ -1,4 +1,7 @@
 # Hacking
+
+**English** | [Magyar]
+
 > This document is a digest of the article [Hacking] at fallout.fandom.com. For the original source, see: [Hacking]
 
 Hacking is exploiting a weakness in a computer system or computer network. This way to access terminals is present in [Fallout 3], [Fallout: New Vegas][New Vegas], [Fallout 4] and [Fallout 76].
@@ -80,3 +83,4 @@ See: [Hacking (Fallout 76)][Hacking in Fallout 76]
 
 [img]: #Image-references
 [Terminal]: ../Images/Terminal.png
+[Magyar]: ./Minigame.hu.md

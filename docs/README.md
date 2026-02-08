@@ -1,5 +1,7 @@
 # Documentation
 
+**English** | [Magyar]
+
 Complete documentation for the Enclave Terminal Breach project.
 
 ## Structure
@@ -56,3 +58,4 @@ Process, workflow, and contribution guidelines:
 [GitVersion Integration]: ./Development/GitVersion-Integration.md "Automated versioning"
 [Changelog Management]: ./Development/Changelog-Management.md "Changelog strategy and workflow"
 [SourceCode]: ../src/README.md
+[Magyar]: ./README.hu.md

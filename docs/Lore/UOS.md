@@ -1,4 +1,7 @@
-# Unified Operating System 
+# Unified Operating System
+
+**English** | [Magyar]
+
 > This document is a digest of the article [Unified Operating System] at fallout.fandom.com. For the original source, see: [Unified Operating System]
 
 The __Unified Operating System__ (UOS) is a text-based user interface  operating system developed by [RobCo Industries] which manages the hardware of a computer and acts as a software environment in which computer programs can be run efficiently. It runs on a computer mainframe.
@@ -90,3 +93,4 @@ The Unified Operating System appears in [Fallout 3][FO3], [Fallout: New Vegas][F
 [hacking]: Minigame.md
 [RobCo Industries]: https://fallout.fandom.com/wiki/RobCo_Industries
 [Unified Operating System]: https://fallout.fandom.com/wiki/Unified_Operating_System
+[Magyar]: ./UOS.hu.md

@@ -1,5 +1,7 @@
 # Blazor PWA UI Implementation Steps (Pip-Boy Terminal)
 
+**English** | [Magyar]
+
 ## Scope
 - Single-screen Pip-Boy-style UI with Input and Hacking modes.
 - Config/Help overlays, hotkey gating, status/toast pipeline, localization (EN/HU), localStorage prefs.
@@ -39,6 +41,8 @@
    - Toasts sequential (max visible = 1), auto-timeout configurable.
 10) Testing
    - Unit tests for state/services; integration/E2E with ReqNRoll; hotkey gating and notification flow coverage.
+
+[Magyar]: ./Implementation-Plan.hu.md
 
 
 

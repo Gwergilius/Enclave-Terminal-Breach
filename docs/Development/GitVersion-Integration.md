@@ -1,5 +1,7 @@
 # GitVersion Integration
 
+**English** | [Magyar]
+
 Automated semantic versioning using GitVersion for the Enclave Terminal Breach project.
 
 ## Overview
@@ -681,3 +683,4 @@ git commit -m "chore(build): migrate to GitVersion
 [GitVersion Configuration]: https://gitversion.net/docs/reference/configuration
 [Semantic Versioning]: https://semver.org/
 [Conventional Commits]: https://www.conventionalcommits.org/
+[Magyar]: ./GitVersion-Integration.hu.md

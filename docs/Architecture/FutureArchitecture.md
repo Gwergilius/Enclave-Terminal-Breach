@@ -1,5 +1,7 @@
 # Future Architecture: Password Registry and Caching
 
+**English** | [Magyar]
+
 This document describes a potential future architecture improvement for the Fallout Terminal Hacker application, focusing on memory efficiency and performance optimization through the Flyweight pattern and caching.
 
 ## Table of Contents
@@ -429,4 +431,6 @@ Assuming:
 - **Object Pool**: PasswordRegistry acts as a pool
 - **Cache-Aside**: GetMatchCount caches results on first access
 - **Identity Map**: One Password instance per unique word
+
+[Magyar]: ./FutureArchitecture.hu.md
 

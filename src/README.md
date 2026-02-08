@@ -1,5 +1,7 @@
 # Source Code
 
+**English** | [Magyar]
+
 Multi-platform implementations of the Enclave Terminal Breach system.
 
 ## Structure (Planned)
@@ -36,3 +38,4 @@ MAUI cross-platform mobile application for Pip-Boy integration.
 See [coding standards] for development guidelines.
 
 [coding standards]: ../.cursor/rules/
+[Magyar]: ./README.hu.md
