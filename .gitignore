@@ -331,3 +331,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Project: Logs folder never under version control (Logs or logs, any path)
+[Ll]ogs/
