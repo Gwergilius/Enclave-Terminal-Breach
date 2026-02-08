@@ -163,29 +163,9 @@ public class ColorValueToColorConverter : IValueConverter
 
 ### Layer Diagram
 
-```
-┌─────────────────────────────────────┐
-│      Presentation Layer             │
-│  ┌──────────┐      ┌─────────────┐  │
-│  │  MAUI    │      │   Blazor    │  │
-│  │  (C#)    │      │  (Razor)    │  │
-│  └────┬─────┘      └──────┬──────┘  │
-│       │ Converter         │ CSS     │
-│       │ (Color)           │ string  │
-└───────┼───────────────────┼─────────┘
-        │                   │
-┌───────┼───────────────────┼─────────┐
-│       ▼                   ▼         │
-│    ColorValue (Platform-Independent)│
-│  ┌─────────────────────────────┐    │
-│  │  TerminalButtonViewModel    │    │
-│  │  - ButtonBackgroundColor    │    │
-│  │  - TextColor                │    │
-│  │  - BorderColor              │    │
-│  └─────────────────────────────┘    │
-│         Shared Project              │
-└─────────────────────────────────────┘
-```
+![Layer Diagram](../Images/ColorValue-LayerDiagram.mmd.svg)
+
+Diagram source: [ColorValue-LayerDiagram.mmd](../Images/ColorValue-LayerDiagram.mmd). Other formats: [PlantUML](../Images/ColorValue-LayerDiagram.puml), [DOT](../Images/ColorValue-LayerDiagram.gv), [draw.io](../Images/ColorValue-LayerDiagram.drawio).
 
 ### Benefits Achieved
 

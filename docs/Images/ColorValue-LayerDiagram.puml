@@ -1,0 +1,46 @@
+@startuml ColorValue-LayerDiagram
+' Struktúra először, hogy komponens diagramként értelmezze (ne sequence)
+package "Presentation Layer" as Pres <<pres>> {
+  component [MAUI\n(C#)] as MAUI
+  component [Blazor\n(Razor)] as Blazor
+}
+
+package "Shared Project" as Shared <<shared>> {
+  component [ColorValue\n(Platform-Independent)] as ColorValue <<platform>>
+  component [TerminalButtonViewModel\n- ButtonBackgroundColor\n- TextColor\n- BorderColor] as VM <<vm>>
+}
+
+MAUI -down-> ColorValue : Converter\n(Color)
+Blazor -down-> ColorValue : CSS\nstring
+ColorValue .. VM : uses
+
+' Színek (drawio) - stereotype-okkal, a "package ""Name""" szintaxis nélkül
+skinparam package<<pres>> {
+  backgroundColor #dae8fc
+  borderColor #6c8ebf
+  borderStyle dashed
+}
+skinparam package<<shared>> {
+  backgroundColor #d5e8d4
+  borderColor #82b366
+  borderStyle dashed
+}
+skinparam component {
+  backgroundColor #fff2cc
+  borderColor #d6b656
+}
+skinparam component<<platform>> {
+  backgroundColor #e1d5e7
+  borderColor #9673a6
+  fontStyle bold
+}
+skinparam component<<vm>> {
+  backgroundColor #f8cecc
+  borderColor #b85450
+}
+
+skinparam backgroundColor #FFF
+skinparam defaultFontSize 11
+title ColorValue - Layer Diagram
+
+@enduml

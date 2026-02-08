@@ -1,0 +1,32 @@
+// ColorValue - Layer Diagram (DOT / Graphviz)
+// Színek a drawio változattal megegyezően
+
+digraph ColorValueLayerDiagram {
+    rankdir=TB;
+    node [shape=box, fontname="Segoe UI", fontsize=11];
+    edge [fontname="Segoe UI", fontsize=10];
+
+    subgraph cluster_pres {
+        label="Presentation Layer";
+        style="rounded,dashed,filled";
+        fillcolor="#dae8fc";
+        pencolor="#6c8ebf";
+        fontname="Segoe UI";
+        MAUI [label="MAUI\n(C#)", fillcolor="#fff2cc", color="#d6b656", style="filled"];
+        Blazor [label="Blazor\n(Razor)", fillcolor="#fff2cc", color="#d6b656", style="filled"];
+    }
+
+    subgraph cluster_shared {
+        label="Shared Project";
+        style="rounded,dashed,filled";
+        fillcolor="#d5e8d4";
+        pencolor="#82b366";
+        fontname="Segoe UI";
+        ColorValue [label="ColorValue\n(Platform-Independent)", fillcolor="#e1d5e7", color="#9673a6", style="filled", fontname="Segoe UI Bold"];
+        VM [label="TerminalButtonViewModel\n- ButtonBackgroundColor\n- TextColor\n- BorderColor", fillcolor="#f8cecc", color="#b85450", style="filled"];
+    }
+
+    MAUI -> ColorValue [label="Converter (Color)"];
+    Blazor -> ColorValue [label="CSS string"];
+    ColorValue -> VM [style=dashed, label="uses"];
+}

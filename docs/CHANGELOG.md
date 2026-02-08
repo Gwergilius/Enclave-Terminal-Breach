@@ -47,3 +47,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **README.md**: Document CHANGELOG.md and Development folder (structure, links to Branching/Commit/Release/GitVersion/Changelog-Management, reminder to update changelog before commit)
 - **.cursor/rules/documentation.md**: CHANGELOG files are English-only; no `.hu.md` versions; no language switcher in CHANGELOG files
+- **Architecture/ColorValue-Design-Decision**: Layer diagram now uses Mermaid-rendered SVG image (`.mmd.svg`); diagram source and links to PlantUML, DOT, and draw.io variants moved below the diagram; English doc uses English-only wording
+- **Architecture/ColorValue-Design-Decision.hu.md**: Replaced single "Tesztelés és jövő" sentence with full **Tesztelés**, **Jövőbeli megfontolások** (optional System.Drawing bridge, possible extensions), **Összefoglalás**, and **Hivatkozások** sections to match the English structure
