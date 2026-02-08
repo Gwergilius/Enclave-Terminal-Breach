@@ -244,6 +244,7 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 ServiceFabricBackup/
 *.bak
+*.drawio.bkp
 
 # SQL Server files
 *.mdf
