@@ -236,25 +236,37 @@ git commit -m "feat(sparrow): add stdin password input
 
 ### After PR Merge to Main
 
-**No changelog updates needed.**
+**Create Pull Request and merge:**
 
-The component changelog already contains the changes in the `[Unreleased]` section from the merged feature branch.
+```bash
+# Push feature branch
+git push origin feature/sparrow-stdin-input
 
-**Status:**
-- ✅ Component changelog updated (from feature branch)
-- ⏸️ Central CHANGELOG.md still untouched
-- ⏸️ Version numbers still unreleased
+# Create PR
+gh pr create \
+  --title "feat(sparrow): Add stdin password input" \
+  --body "Implements stdin input with validation and buffer overflow protection."
 
-### During Release Preparation
+# Review and merge
+gh pr merge --squash
+```
 
-**Update:** Component changelog AND central changelog
+**After merge:** Component changelog contains changes in `[Unreleased]` section, but dates are NOT yet assigned.
 
-**Location:** Main branch (in release preparation commit)
+### Changelog Finalization (Direct Commit on Main)
+
+**IMPORTANT:** This is the ONLY scenario where direct commits to main are permitted.
+
+**Requirements:**
+- ✅ Feature PR must be merged first
+- ✅ Only changelog date updates (no code changes)
+- ✅ Both central and component changelogs updated together
+- ✅ Use admin bypass privilege
 
 **Process:**
 
 ```bash
-# On main branch, ready to release
+# After feature PR is merged, checkout main
 git checkout main
 git pull
 
@@ -287,15 +299,18 @@ First working implementation with stdin input validation and buffer protection.
 See [SPARROW CHANGELOG](./src/Enclave.Echelon.SPARROW/CHANGELOG.md) for complete details.
 
 
-# 3. Commit both together
+# 3. Commit directly to main (admin bypass)
 git add CHANGELOG.md src/Enclave.Echelon.SPARROW/CHANGELOG.md
-git commit -m "chore(sparrow): prepare v0.1.0 release
+git commit -m "chore(sparrow): finalize v0.1.0 changelog
 
 - Update SPARROW CHANGELOG.md (Unreleased → 0.1.0)
 - Update central CHANGELOG.md with release summary
-- Bump version to 0.1.0"
+- Finalize changelog after PR #XX merge"
 
-# 4. Create tag
+# 4. Push directly to main (uses admin bypass)
+git push origin main
+
+# 5. Create tag
 git tag -a sparrow-v0.1.0 -m "SPARROW v0.1.0 - DOS Proof of Concept
 
 First working implementation of password elimination solver.
@@ -303,8 +318,8 @@ First working implementation of password elimination solver.
 - Input validation
 - Buffer overflow protection"
 
-# 5. Push
-git push origin main sparrow-v0.1.0
+# 6. Push tag
+git push origin sparrow-v0.1.0
 ```
 
 **Critical Rules:**
@@ -313,23 +328,26 @@ git push origin main sparrow-v0.1.0
 - ✅ Component: Create new empty `[Unreleased]` section
 - ✅ Central: Add release summary with link to component changelog
 - ✅ Use date format: `YYYY-MM-DD`
-- ✅ Commit BEFORE tagging
-- ✅ Tag format: `{platform}-vX.Y.Z`
+- ✅ Commit directly to main (admin bypass)
+- ✅ Create tag AFTER changelog finalization
+- ❌ Do NOT include code changes in this commit
+- ❌ Do NOT bypass PR for feature work
 
-### Documentation Updates
+### Documentation Changelog Finalization
 
 **Special handling:** Documentation uses date-based sections, not version tags
 
 **Process:**
 
 ```bash
-# Working on documentation
-git checkout -b docs/gitversion-integration
+# After documentation PR is merged
+git checkout main
+git pull
 
-# Edit documentation changelog
+# 1. Update docs changelog with date
 # File: docs/CHANGELOG.md
 
-## [Unreleased]
+## [2026-02-10] - Development Workflow Documentation  # ← Date, not version
 
 ### Added
 - **GitVersion-Integration.md**: Automated versioning guide
@@ -337,24 +355,15 @@ git checkout -b docs/gitversion-integration
   * Multi-platform versioning
   * CI/CD integration
 
-# Commit
-git add docs/CHANGELOG.md
-git commit -m "docs(dev): add GitVersion integration guide
-
-+semver: none"
-
-# After PR merge, when grouping documentation updates
-
-# Update docs changelog with date
-# File: docs/CHANGELOG.md
-
-## [2026-02-10] - Development Workflow Documentation  # ← Date, not version
-
-### Added
-- **GitVersion-Integration.md**: Automated versioning guide
 - **Changelog-Management.md**: Changelog strategy guide
+  * Hybrid changelog approach
+  * Workflow documentation
+  * Admin bypass guidelines
 
-# Update central changelog
+## [Unreleased]
+
+
+# 2. Update central changelog
 # File: CHANGELOG.md
 
 ## Documentation Updates - 2026-02-10
@@ -363,15 +372,20 @@ git commit -m "docs(dev): add GitVersion integration guide
 - Development workflow documentation
   * GitVersion integration guide
   * Changelog management strategy
+  * Branch protection and admin bypass guidelines
 
 See [Documentation CHANGELOG](./docs/CHANGELOG.md) for detailed changes.
 
-# Commit
-git add CHANGELOG.md docs/CHANGELOG.md
-git commit -m "docs: finalize development workflow documentation
 
-- Update documentation CHANGELOG with date-based section
-- Update central CHANGELOG with summary"
+# 3. Direct commit to main (admin bypass)
+git add CHANGELOG.md docs/CHANGELOG.md
+git commit -m "docs: finalize development workflow documentation changelog
+
+- Update docs/CHANGELOG.md with date-based section (2026-02-10)
+- Update central CHANGELOG.md with summary
+- Finalize after PR #XX merge"
+
+git push origin main
 ```
 
 **Documentation rules:**
@@ -379,6 +393,85 @@ git commit -m "docs: finalize development workflow documentation
 - ✅ Do NOT use version tags
 - ✅ Group related documentation updates
 - ✅ Update central CHANGELOG with summary + link
+- ✅ Direct commit to main (admin bypass)
+
+## Admin Bypass: When and How
+
+### When Admin Bypass is Permitted
+
+**ONLY for changelog finalization:**
+- ✅ Updating `[Unreleased]` → date/version
+- ✅ Creating new empty `[Unreleased]` section
+- ✅ Updating central CHANGELOG.md with summary
+- ✅ After successful PR merge
+- ✅ No code changes included
+
+**NEVER for:**
+- ❌ Feature development
+- ❌ Bug fixes
+- ❌ Refactoring
+- ❌ Code changes of any kind
+- ❌ Documentation content updates
+- ❌ Dependency updates
+
+### Admin Bypass Workflow
+
+```bash
+# 1. Ensure you're on latest main
+git checkout main
+git pull
+
+# 2. Verify no uncommitted changes
+git status
+
+# 3. Edit ONLY changelog files
+# - Component CHANGELOG: [Unreleased] → [Version/Date]
+# - Central CHANGELOG: Add summary
+
+# 4. Commit with clear message
+git add CHANGELOG.md {component}/CHANGELOG.md
+git commit -m "chore(scope): finalize changelog
+
+- Update component CHANGELOG (Unreleased → X.Y.Z)
+- Update central CHANGELOG with summary
+- Finalize after PR #XX merge"
+
+# 5. Push directly to main
+git push origin main
+
+# 6. Create tag (for platform releases)
+git tag -a {platform}-vX.Y.Z -m "Release message"
+git push origin {platform}-vX.Y.Z
+```
+
+### Safety Checks Before Admin Bypass
+
+**Before pushing directly to main, verify:**
+
+1. **Only changelog files modified:**
+```bash
+git status
+# Should ONLY show:
+# modified: CHANGELOG.md
+# modified: docs/CHANGELOG.md (or component CHANGELOG)
+```
+
+2. **No code changes:**
+```bash
+git diff --cached
+# Review changes - should be ONLY changelog updates
+```
+
+3. **Proper commit message:**
+```bash
+# Message should start with "chore:" and mention finalization
+```
+
+4. **Feature PR already merged:**
+```bash
+# Verify main has the feature code
+git log --oneline -10
+```
 
 ## Changelog Categories
 
@@ -487,12 +580,18 @@ When releasing multiple platforms simultaneously:
 
 ```bash
 # Release SPARROW
+git commit -m "chore(sparrow): finalize v0.1.0 changelog"
+git push origin main
 git tag -a sparrow-v0.1.0 -m "SPARROW v0.1.0"
+git push origin sparrow-v0.1.0
 
 # Release RAVEN (on same commit or different)
+git commit -m "chore(raven): finalize v0.3.0 changelog"
+git push origin main
 git tag -a raven-v0.3.0 -m "RAVEN v0.3.0"
+git push origin raven-v0.3.0
 
-# Central changelog
+# Central changelog shows both
 ## [sparrow-v0.1.0] - 2026-02-15
 ...
 
@@ -519,75 +618,63 @@ See [RAVEN CHANGELOG](./src/Enclave.Echelon.RAVEN/CHANGELOG.md).
 Hotfixes follow the same pattern but from a hotfix branch:
 
 ```bash
-# Create hotfix branch from tag
+# 1. Create hotfix branch from tag
 git checkout -b hotfix/sparrow-v0.1.1 sparrow-v0.1.0
 
-# Fix bug
-git commit -m "fix(sparrow): resolve buffer overflow
-
-+semver: patch"
-
-# Update component changelog
+# 2. Fix bug and update changelog
 # File: src/Enclave.Echelon.SPARROW/CHANGELOG.md
-
 ## [Unreleased]
 
 ### Fixed
 - Buffer overflow on passwords longer than 8 characters
 
-# Merge to main
+git commit -m "fix(sparrow): resolve buffer overflow
+
++semver: patch"
+
+# 3. Create PR and merge
+git push origin hotfix/sparrow-v0.1.1
+gh pr create --title "fix(sparrow): Resolve buffer overflow"
+gh pr merge --squash
+
+# 4. Finalize changelog (admin bypass on main)
 git checkout main
-git merge hotfix/sparrow-v0.1.1
+git pull
 
-# Prepare release (update both changelogs)
-# Component: Unreleased → 0.1.1
-# Central: Add 0.1.1 entry
+# Update changelogs: [Unreleased] → [0.1.1]
+git commit -m "chore(sparrow): finalize v0.1.1 hotfix changelog"
+git push origin main
 
-git commit -m "chore(sparrow): prepare v0.1.1 hotfix release"
+# 5. Tag hotfix
 git tag -a sparrow-v0.1.1 -m "Hotfix: buffer overflow"
-git push origin main sparrow-v0.1.1
+git push origin sparrow-v0.1.1
 ```
-
-## Automation Opportunities
-
-### Changelog Generation (Future)
-
-Consider tools for automated changelog generation:
-
-**standard-version:**
-```bash
-npm install -g standard-version
-standard-version --release-as patch
-```
-
-**conventional-changelog:**
-```bash
-npm install -g conventional-changelog-cli
-conventional-changelog -p angular -i CHANGELOG.md -s
-```
-
-**Note:** Manual maintenance is recommended initially. Automation can be added once patterns are established.
 
 ## Best Practices
 
 ### Do:
 - ✅ Update component changelog in feature branch
 - ✅ Use clear, descriptive entries
-- ✅ Update both changelogs during release (one commit)
+- ✅ Finalize changelogs via admin bypass AFTER PR merge
+- ✅ Update both changelogs together (one commit)
 - ✅ Link from central to component changelogs
 - ✅ Use appropriate categories (Added, Changed, Fixed, etc.)
 - ✅ Include dates in YYYY-MM-DD format
 - ✅ Keep central changelog concise (summary + link)
 - ✅ Add `[Unreleased]` comparison link
+- ✅ Create tags AFTER changelog finalization
 
 ### Don't:
 - ❌ Update central changelog in feature branches
+- ❌ Finalize changelogs before PR merge
+- ❌ Use admin bypass for code changes
 - ❌ Duplicate content between central and component changelogs
 - ❌ Skip changelog updates in feature branches
 - ❌ Use vague entries like "bug fixes" or "improvements"
 - ❌ Update changelogs after tagging (always before)
 - ❌ Mix multiple platform releases in one changelog entry
 - ❌ Forget to create new `[Unreleased]` section after release
+- ❌ Bypass PR workflow for anything except changelog finalization
 
 ## Template: New Component Changelog
 
@@ -622,9 +709,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Keep a Changelog] - Changelog format standard
 - [Semantic Versioning] - Version numbering scheme
 - [Conventional Commits] - Commit message standard
+- [Branching Strategy] - Git workflow and branch management
 - [Release Process] - Complete release workflow
 
 [Keep a Changelog]: https://keepachangelog.com/
 [Semantic Versioning]: https://semver.org/
 [Conventional Commits]: https://www.conventionalcommits.org/
+[Branching Strategy]: ./Branching-Strategy.md
 [Release Process]: ./Release-Process.md
