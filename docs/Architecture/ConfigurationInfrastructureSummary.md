@@ -16,45 +16,7 @@ This document summarizes all configuration-related improvements implemented acro
 
 ## Final Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    appsettings.json                     │
-│                  (Embedded Resource)                    │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│         EmbeddedResourceConfigurationProvider           │
-│    (Uses ResourceExtensions.GetResourceStream)          │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                  IConfiguration                         │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                 Startup.cs                              │
-│         - Binds PlatformConfig                          │
-│         - Registers all services                        │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│            PlatformInfoService                          │
-│  (Console / MAUI / Blazor implementations)              │
-│         - All constants from config                     │
-│         - Platform-specific timing                      │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│               Boot Sequence Phases                      │
-│         - Use timing from PlatformInfo                  │
-│         - Platform-agnostic code                        │
-└─────────────────────────────────────────────────────────┘
-```
+![Final Architecture][Final Architecture]
 
 ## Core Infrastructure
 
@@ -484,9 +446,10 @@ public void Startup_LoadsEmbeddedConfiguration()
 
 ---
 
-**Date:** 2025-01-10  
+**Date:** 2026-01-10  
 **Status:** ✅ Complete  
 **Phase:** Configuration Infrastructure  
 **Ready for:** Build Testing & Next Feature
 
 [Magyar]: ./ConfigurationInfrastructureSummary.hu.md
+[Final Architecture]: ../Images/ConfigurationInfrastructureSummary-FinalArchitecture.drawio.svg

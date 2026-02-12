@@ -68,31 +68,8 @@ Description: "Operational Deployment - Final pre-war version (October 2077)"
 
 ### 3. Architecture Summary
 
-```
-Platform Flow:
-┌─────────────────────────────────────────────────────────────┐
-│                    IPlatformInfoService                     │
-│                    (Core/Services/)                         │
-└─────────────────────────────────────────────────────────────┘
-                               │
-                 ┌─────────────┼──────────────┐
-                 │             │              │
-         ┌───────▼──────┐ ┌────▼───────┐ ┌────▼────┐
-         │   Console    │ │   Blazor   │ │  MAUI   │
-         │   RAVEN      │ │   GHOST    │ │ ECHELON │
-         │   v0.3.1     │ │   v1.2.4   │ │ v2.1.7  │
-         └──────────────┘ └────────────┘ └─────────┘
-                 │             │              │
-         ┌───────▼──────┐ ┌────▼───────┐ ┌────▼──────┐
-         │ GameSession  │ │GameSession │ │GameSession│
-         │ (wraps info) │ │  (wraps)   │ │  (wraps)  │
-         └──────────────┘ └────────────┘ └───────────┘
-                 │             │              │
-         ┌───────▼─────────────▼──────────────▼─────┐
-         │              ViewModels                  │
-         │  (access via IGameSession properties)    │
-         └──────────────────────────────────────────┘
-```
+Platform Flow:   
+![Platform Flow][Platform Flow]
 
 Target platform flow (to be implemented).
 
@@ -167,8 +144,9 @@ services.AddTransient<IGameSession>(sp => new GameSession(
 
 ---
 
-**Date:** 2025-01-09  
+**Date:** 2026-01-09  
 **Status:** Planning / Design  
 **Ready for:** Next: Implement Core services and first platform (Console POC)
 
 [Magyar]: ./PlatformServicesSummary.hu.md
+[Platform Flow]: ../Images/PlatformServicesSummary-PlatformFlow.drawio.svg

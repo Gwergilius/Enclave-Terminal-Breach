@@ -18,9 +18,9 @@ Egyedi `ColorValue` record a `System.Drawing.Color` vagy `Microsoft.Maui.Graphic
 
 ## Réteg diagram
 
-![Réteg diagram](../Images/ColorValue-LayerDiagram.mmd.svg)
+![Réteg diagram][img-layer]
 
-A diagram forrása: [ColorValue-LayerDiagram.mmd](../Images/ColorValue-LayerDiagram.mmd). További formátumok: [PlantUML](../Images/ColorValue-LayerDiagram.puml), [DOT](../Images/ColorValue-LayerDiagram.gv), [draw.io](../Images/ColorValue-LayerDiagram.drawio).
+A diagram forrása: [ColorValue-LayerDiagram.mmd][src-layer]. További formátumok: [PlantUML][src-layer-puml], [DOT][src-layer-gv], [draw.io][src-layer-drawio].
 
 ## Tesztelés
 
@@ -103,13 +103,18 @@ A döntés lehetővé teszi:
 
 - [.NET 6 System.Drawing.Common Breaking Change][.NET 6 Breaking Change]
 - [Microsoft.Maui.Graphics dokumentáció][Microsoft.Maui.Graphics Documentation]
-- [C# Records dokumentáció](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record)
+- [C# Records dokumentáció][C# Records Documentation]
 
 [//]: #References-and-image-links
 
 [.NET 6 Breaking Change]: https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/6.0/system-drawing-common-windows-only
 [Microsoft.Maui.Graphics Documentation]: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/graphics/
 [C# Records Documentation]: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record
+[img-layer]: ../Images/ColorValue-LayerDiagram.mmd.svg
+[src-layer]: ../Images/ColorValue-LayerDiagram.mmd
+[src-layer-puml]: ../Images/ColorValue-LayerDiagram.puml
+[src-layer-gv]: ../Images/ColorValue-LayerDiagram.gv
+[src-layer-drawio]: ../Images/ColorValue-LayerDiagram.drawio
 ---
 
 **Dokumentum verzió:** 1.0  

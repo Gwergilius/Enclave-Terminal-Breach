@@ -6,17 +6,17 @@ This document describes a potential future architecture improvement for the Fall
 
 ## Table of Contents
 
-- [Current Architecture](#current-architecture)
-- [Proposed Architecture](#proposed-architecture)
-- [Component Details](#component-details)
-  - [Password Class (Modified)](#password-class-modified)
-  - [PasswordRegistry (New)](#passwordregistry-new)
-  - [GameSession (Modified)](#gamesession-modified)
-- [Architecture Diagram](#architecture-diagram)
-- [Benefits](#benefits)
-- [Performance Analysis](#performance-analysis)
-- [Migration Path](#migration-path)
-- [When to Implement](#when-to-implement)
+- [Current Architecture][anchor-current]
+- [Proposed Architecture][anchor-proposed]
+- [Component Details][anchor-details]
+  - [Password Class (Modified)][anchor-password]
+  - [PasswordRegistry (New)][anchor-registry]
+  - [GameSession (Modified)][anchor-gamesession]
+- [Architecture Diagram][anchor-arch-diagram]
+- [Benefits][anchor-benefits]
+- [Performance Analysis][anchor-perf]
+- [Migration Path][anchor-migration]
+- [When to Implement][anchor-when]
 
 ---
 
@@ -24,15 +24,9 @@ This document describes a potential future architecture improvement for the Fall
 
 In the current implementation:
 
-```
-GameSession 1                    GameSession 2
-┌─────────────────────┐         ┌─────────────────────┐
-│ Password("TERMS")   │         │ Password("TERMS")   │  ← Duplicate objects!
-│ Password("TEXAS")   │         │ Password("TEXAS")   │
-│ Password("TIRES")   │         │ Password("TANKS")   │
-│ (IsEliminated=true) │         │ (IsEliminated=false)│
-└─────────────────────┘         └─────────────────────┘
-```
+![Current Architecture][img-current]
+
+Diagram source: [FutureArchitecture-CurrentArchitecture.drawio][src-current]. Other formats: [PlantUML][src-current-puml], [Mermaid][src-current-mmd], [DOT][src-current-gv].
 
 **Issues:**
 - Each `GameSession` creates its own `Password` objects
@@ -46,33 +40,9 @@ GameSession 1                    GameSession 2
 
 Apply the **Flyweight Pattern**: Store `Password` objects in a global registry and reference them from `GameSession`.
 
-```
-                    PasswordRegistry (Singleton)
-                    ┌─────────────────────────────────┐
-                    │ "TERMS" → Password("TERMS") ◄───┼───┐
-                    │ "TEXAS" → Password("TEXAS") ◄───┼───┼───┐
-                    │ "TIRES" → Password("TIRES") ◄───┼───┼───┼───┐
-                    │ "TANKS" → Password("TANKS") ◄───┼───┼───┼───┼───┐
-                    └─────────────────────────────────┘   │   │   │   │
-                                                          │   │   │   │
-        ┌─────────────────────────────────────────────────┘   │   │   │
-        │                   ┌─────────────────────────────────┘   │   │
-        │                   │                   ┌─────────────────┘   │
-        ▼                   ▼                   ▼                     │
-GameSession 1                                                         │
-┌─────────────────────────────────────┐                               │
-│ _passwords: [ref, ref, ref]         │ ← References, not copies      │
-│ _eliminated: HashSet<Password>      │                               │
-│   { Password("TERMS") }             │ ← Session-specific state      │
-└─────────────────────────────────────┘                               │
-                                                                      │
-GameSession 2                                                         │
-┌─────────────────────────────────────┐                               │
-│ _passwords: [ref, ref, ref, ref]    │◄──────────────────────────────┘
-│ _eliminated: HashSet<Password>      │
-│   { }  (empty)                      │    Same Password object,
-└─────────────────────────────────────┘    different elimination state!
-```
+![Proposed Architecture][img-proposed]
+
+Diagram source: [FutureArchitecture-ProposedArchitecture.drawio][src-proposed]. Other formats: [PlantUML][src-proposed-puml], [Mermaid][src-proposed-mmd], [DOT][src-proposed-gv].
 
 ---
 
@@ -322,32 +292,9 @@ public class GameSession
 
 ## Architecture Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              Application                                │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐ │
-│  │  UI / ViewModel  │────▶│  PasswordSolver  │────▶│   GameSession    │ │
-│  └──────────────────┘     └──────────────────┘     └────────┬─────────┘ │
-│                                                             │           │
-│                                                             │ references│
-│                                                             ▼           │
-│                           ┌──────────────────────────────────────────┐  │
-│                           │           PasswordRegistry               │  │
-│                           │  ┌────────────────────────────────────┐  │  │
-│                           │  │     Dictionary<string, Password>   │  │  │
-│                           │  │                                    │  │  │
-│                           │  │  Password ──┬── _matchCountCache   │  │  │
-│                           │  │             │   Dictionary<P, int> │  │  │
-│                           │  │             │                      │  │  │
-│                           │  │  Password ──┴── _matchCountCache   │  │  │
-│                           │  │                                    │  │  │
-│                           │  └────────────────────────────────────┘  │  │
-│                           └──────────────────────────────────────────┘  │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+![Architecture Diagram][img-arch]
+
+Diagram source: [FutureArchitecture.drawio][src-arch].
 
 ---
 
@@ -368,9 +315,11 @@ public class GameSession
 
 ### Match Count Cache Efficiency
 
+Match counts are cached bidirectionally per pair: the **first** call for a pair (in either order) costs **O(word length)** and stores the result in both passwords’ caches; every **subsequent** call for that pair is **O(1)** from cache.
+
 For a typical game with 12 passwords:
 - Total possible comparisons: 12 × 11 / 2 = 66 unique pairs
-- With cache: Each pair computed once, then O(1)
+- With cache: Each pair computed once, then O(1) for all later lookups
 - Across multiple games with same words: **100% cache hit rate**
 
 ### Memory Savings
@@ -426,11 +375,36 @@ Assuming:
 ---
 
 ## Related Patterns
-
-- **Flyweight Pattern**: Share Password objects across sessions
-- **Object Pool**: PasswordRegistry acts as a pool
-- **Cache-Aside**: GetMatchCount caches results on first access
-- **Identity Map**: One Password instance per unique word
+- **[Flyweight Pattern]**: Share Password objects across sessions 
+- **[Object Pool]**: PasswordRegistry acts as a pool 
+- **[Cache-Aside]**: GetMatchCount caches results on first access 
+- **[Identity Map]**: One Password instance per unique word 
 
 [Magyar]: ./FutureArchitecture.hu.md
-
+[anchor-current]: #current-architecture
+[anchor-proposed]: #proposed-architecture
+[anchor-details]: #component-details
+[anchor-password]: #password-class-modified
+[anchor-registry]: #passwordregistry-new
+[anchor-gamesession]: #gamesession-modified
+[anchor-arch-diagram]: #architecture-diagram
+[anchor-benefits]: #benefits
+[anchor-perf]: #performance-analysis
+[anchor-migration]: #migration-path
+[anchor-when]: #when-to-implement
+[img-current]: ../Images/FutureArchitecture-CurrentArchitecture.drawio.svg
+[src-current]: ../Images/FutureArchitecture-CurrentArchitecture.drawio
+[src-current-puml]: ../Images/FutureArchitecture-CurrentArchitecture.puml
+[src-current-mmd]: ../Images/FutureArchitecture-CurrentArchitecture.mmd
+[src-current-gv]: ../Images/FutureArchitecture-CurrentArchitecture.gv
+[img-proposed]: ../Images/FutureArchitecture-ProposedArchitecture.drawio.svg
+[src-proposed]: ../Images/FutureArchitecture-ProposedArchitecture.drawio
+[src-proposed-puml]: ../Images/FutureArchitecture-ProposedArchitecture.puml
+[src-proposed-mmd]: ../Images/FutureArchitecture-ProposedArchitecture.mmd
+[src-proposed-gv]: ../Images/FutureArchitecture-ProposedArchitecture.gv
+[img-arch]: ../Images/FutureArchitecture-Application.drawio.svg
+[src-arch]: ../Images/FutureArchitecture.drawio
+[Flyweight Pattern]: https://refactoring.guru/design-patterns/flyweight
+[Object Pool]: https://medium.com/@ahsan.majeed086/object-pool-pattern-464f4dcc1c75
+[Cache-Aside]: https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside
+[Identity Map]: https://martinfowler.com/eaaCatalog/identityMap.html

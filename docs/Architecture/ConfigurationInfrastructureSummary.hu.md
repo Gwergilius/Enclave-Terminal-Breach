@@ -2,33 +2,88 @@
 
 **[English]** | Magyar
 
+## Áttekintés
+
 Az ECHELON projekt konfigurációval kapcsolatos fejlesztései: egységes, karbantartható, típusbiztos konfigurációs infrastruktúra.
 
-## Változások
+## Változások idővonala
 
-1. Platform-specifikus boot időzítés → IPlatformInfoService  
-2. Konfiguráció appsettings.json-ból  
-3. Startup osztály architektúra  
-4. Beágyazott erőforrás konfiguráció  
-5. MAUI betűtípus konfiguráció  
+1. ✅ **Platform-specifikus boot időzítés** – időzítési konstansok áthelyezve az `IPlatformInfoService`-be
+2. ✅ **Konfiguráció appsettings.json-ból** – platform konfigurációk JSON fájlból
+3. ✅ **Startup osztály architektúra** – központosított DI a `Startup` osztályokban
+4. ✅ **Beágyazott erőforrás konfiguráció** – újrafelhasználható konfigurációs provider infrastruktúra
+5. ✅ **MAUI betűtípus konfiguráció** – betűk betöltése appsettings.json-ból
 
-## Architektúra
+## Végső architektúra
 
-appsettings.json (beágyazott) → EmbeddedResourceConfigurationProvider → IConfiguration → Startup.cs (PlatformConfig binding, szolgáltatás regisztráció) → PlatformInfoService (Console/MAUI/Blazor) → Boot szekvencia fázisok.
+![Végső architektúra][Final Architecture]
 
-## Core
+## Core infrastruktúra
 
-**Core/Configuration/:** PlatformConfig.cs, TimingConfig.cs, EmbeddedResourceConfigurationSource/Provider/Extensions.  
-**Core/Services:** IPlatformInfoService – ProjectCodename, Version, PlatformName, Description, SystemModules, Applications, LineDelay, SlowDelay, OkStatusDelay, ProgressUpdate, ProgressDuration, WarningPause, FinalPause.
+### 1. Konfigurációs osztályok
 
-## Platformok
+**Hely:** `Core/Configuration/`
 
-**Console (RAVEN):** beágyazott appsettings.json, AddEmbeddedJsonFile, lassabb időzítés, ProgressUpdate 0 (nincs progress bar).  
-**MAUI (ECHELON):** beágyazott appsettings, gyors időzítés, Fonts szekció, 50 ms progress.  
-**Blazor (GHOST):** wwwroot/appsettings.json, közepes időzítés, 60 ms progress.
+| Fájl | Cél |
+|------|-----|
+| `PlatformConfig.cs` | Platform beállítások konfigurációs modellje |
+| `TimingConfig.cs` | Időzítés (PlatformConfig alatt) |
+| `EmbeddedResourceConfigurationSource.cs` | Beágyazott erőforrások forrása |
+| `EmbeddedResourceConfigurationProvider.cs` | Provider beágyazott erőforrásból |
+| `EmbeddedResourceConfigurationExtensions.cs` | Fluent API: `AddEmbeddedJsonFile()` |
+
+### 2. Platform szolgáltatások
+
+**Hely:** `Core/Services/IPlatformInfoService.cs`
+
+```csharp
+public interface IPlatformInfoService
+{
+    string ProjectCodename { get; }
+    string Version { get; }
+    string PlatformName { get; }
+    string Description { get; }
+    string[] SystemModules { get; }
+    string[] Applications { get; }
+    TimeSpan LineDelay { get; }
+    TimeSpan SlowDelay { get; }
+    TimeSpan OkStatusDelay { get; }
+    TimeSpan ProgressUpdate { get; }
+    TimeSpan ProgressDuration { get; }
+    TimeSpan WarningPause { get; }
+    TimeSpan FinalPause { get; }
+}
+```
+
+## Platform implementációk
+
+### Console POC (RAVEN)
+
+Beágyazott `appsettings.json`, `AddEmbeddedJsonFile()`, lassabb időzítés (régebbi hardver), nincs progress bar (`ProgressUpdate` = 0 ms).
+
+### MAUI (ECHELON)
+
+Beágyazott `appsettings.json`, gyors időzítés, Fonts szekció (OpenSans, FixedsysExcelsior), 50 ms progress.
+
+### Blazor (GHOST)
+
+`wwwroot/appsettings.json`, közepes időzítés, 60 ms progress, hálózati megfontolásokkal.
+
+## Platform összehasonlítás
+
+| Jellemző | Console (RAVEN) | MAUI (ECHELON) | Blazor (GHOST) |
+|----------|-----------------|----------------|----------------|
+| **Konfig helye** | Beágyazott | Beágyazott | wwwroot |
+| **LineDelay** | 200 ms | 150 ms | 175 ms |
+| **Progress** | ❌ (0 ms) | ✅ (50 ms) | ✅ (60 ms) |
+| **Fonts config** | ❌ | ✅ | ❌ (CSS) |
 
 ## Előnyök
 
-Típusbiztos konfig, platform-specifikus időzítés, lore-konzisztens különbségek, központosított DI, nincs beégetett érték. Részletes táblázatok, JSON/C# példák és migráció: [angol verzió][English].
+- Típusbiztos konfiguráció, platform-specifikus időzítés, lore-konzisztens különbségek (RAVEN lassabb, ECHELON gyors, GHOST közepes)
+- Központosított DI (Startup minta), újrafelhasználható infrastruktúra, nincs beégetett érték
+
+Részletes táblázatok, JSON/C# példák és migráció: [angol verzió][English].
 
 [English]: ./ConfigurationInfrastructureSummary.md
+[Final Architecture]: ../Images/ConfigurationInfrastructureSummary-FinalArchitecture.drawio.svg
