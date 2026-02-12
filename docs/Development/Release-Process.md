@@ -20,7 +20,7 @@ All versions follow `MAJOR.MINOR.PATCH`:
 
 ### Phase Versioning
 
-Each phase has its own version track aligned with lore:
+Each phase has its own version track:
 ```
 sparrow-v0.1.0     DOS proof of concept (Feb-Mar 2076)
 sparrow-v0.2.0     Enhanced algorithm iteration
@@ -37,7 +37,12 @@ echelon-v2.1.0     Dictionary attack optimization (May 2077)
 echelon-v2.1.7     Final pre-war version (Oct 2077)
 ```
 
-**Note:** Version numbers reflect in-universe lore but follow actual implementation milestones in development.
+### Lore and version alignment
+
+**Decision:** Version numbers are not aligned to the Lore document. The project uses **real** project and component versions as the source of truth. The document [Project-History.md](../Lore/Project-History.md) is updated to use these actual versions when releases are made.
+
+- **Source of truth:** Git tags, package versions, CHANGELOG.md, and project files (e.g. `.csproj`).
+- **Project-History.md:** Reflects the real SPARROW, RAVEN, GHOST, ECHELON, and PHOSPHOR versions as they are released. We do not invent or adjust version numbers to match the lore narrative; we update the lore document to match the real versions.
 
 ## Version Numbering Rules
 
