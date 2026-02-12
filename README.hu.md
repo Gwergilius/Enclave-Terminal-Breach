@@ -1,0 +1,87 @@
+# Enclave Terminal Breach
+
+**[English]** | Magyar
+
+[![License-MIT-badge]][License-MIT]
+[![.NET-badge]][Dotnet]
+
+Többplatformos Fallout terminál feltörő asszisztens – a SPARROW prototípustól az ECHELON bevezetésig.
+
+> **Univerzumban:** Az Enclave által fejlesztett feltörő eszköz a RobCo Unified Operating System terminálokhoz. Teljes ECHELON háttér: [Project History][Project History].
+
+## 🎮 Mi ez?
+
+Egy **terminál feltörő asszisztens** alkalmazás, amely a Bethesda Fallout játékok (Fallout 3, New Vegas, 4, 76) terminál feltörő minijátékának megoldásában segít.
+
+**Fontos:** Ez NEM a minijáték újraalkotása, hanem egy külső segédprogram, amely elemzi a jelszómintákat és optimális tippeket javasol.
+
+## 🚀 Projekt állapot
+
+**Jelenlegi fázis:** 📝 Dokumentáció és tervezés
+
+| Komponens | Állapot |
+|-----------|--------|
+| Dokumentáció | 🚧 Folyamatban |
+| Architektúra | 📋 Tervezett |
+| SPARROW (DOS PoC) | 📋 Tervezett |
+| RAVEN (Konzol) | 📋 Tervezett |
+| GHOST (Web/Blazor) | 📋 Tervezett |
+| ECHELON (MAUI mobil) | 📋 Tervezett |
+
+## 📚 Projekt evolúció
+
+A repó a teljes fejlesztési evolúciót dokumentálja:
+
+1. **Excel prototípus** (pre-SPARROW) – Kutatási fázis VBA makrókkal
+2. **SPARROW** – DOS 3.11 proof of concept (stdin/stdout)
+3. **RAVEN** – Konzol alkalmazás képernyőpozicionálással
+4. **GHOST** – Web/SIGNET bevezetés (Blazor PWA)
+5. **ECHELON** – Mobil Pip-Boy verzió (MAUI)
+
+Minden fázis jelentős architektúra mérföldkő, a végső ECHELON v2.1.7 bevezetésig.
+
+## 🏗️ Technológiai stack
+
+- **.NET 10.0** – Elsődleges keretrendszer
+- **C# 12.0** – Programozási nyelv
+- **MAUI** – Többplatformos mobil UI
+- **Blazor** – Progressive Web App
+- **xUnit** – Unit tesztelés
+- **ReqNRoll** – Integrációs/E2E tesztelés
+- **Playwright** – UI tesztelés
+
+## 📖 Dokumentáció
+
+- [Project History][Project History] – Teljes ECHELON háttér
+- [Algorithm][Algorithm] – Jelszó eliminációs algoritmus
+- [Architecture][Architecture] – Rendszertervezési dokumentumok
+- [Coding Standards][Coding Standards] – Fejlesztési irányelvek
+
+## 🤝 Közreműködés
+
+Személyes portfólió projekt, de a visszajelzés és javaslatok welcome. A közreműködési irányelvek: `.cursor/rules/`.
+
+## 📜 Licenc
+
+MIT License – részletek: [LICENSE].
+
+## 🎯 Köszönet
+
+- Bethesda Game Studios a Fallout franchise-ért
+- A Fallout közösség az inspirációért
+- RobCo Industries (fiktív) az UOS-ért, amit feltörünk
+
+---
+
+**Disclaimer:** Rajongói projekt, nincs kapcsolat a Bethesda Softworks vagy Bethesda Game Studios-szal.
+
+[English]: ./README.md
+[Project History]: ./docs/Lore/Project-History.hu.md
+[Algorithm]: ./docs/Architecture/Algorithm.hu.md
+[Architecture]: ./docs/Architecture/README.hu.md
+[Coding Standards]: ./.cursor/rules/README.hu.md
+[LICENSE]: ./LICENSE
+[License-MIT]: https://opensource.org/licenses/MIT
+[Dotnet]: https://dotnet.microsoft.com/
+[License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+[.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4

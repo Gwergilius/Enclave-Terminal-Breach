@@ -1,5 +1,7 @@
 # Lore Documentation
 
+**English** | [Magyar]
+
 In-universe backstory and context for the ECHELON Project.
 
 ## Documents
@@ -34,3 +36,4 @@ This backstory provides:
 [Project History]: ./Project-History.md
 [UOS]: ./UOS.md
 [Minigame]: ./Minigame.md
+[Magyar]: ./README.hu.md

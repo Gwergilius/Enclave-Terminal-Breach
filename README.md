@@ -1,5 +1,7 @@
 # Enclave Terminal Breach
 
+**English** | [Magyar]
+
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]
 
@@ -81,6 +83,7 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [Algorithm]: ./docs/Algorithm.md "Password elimination algorithm"
 [Architecture]: ./docs/Architecture/ "System design documents"
 [Coding Standards]: ./.cursor/rules/ "Development guidelines"
+[Magyar]: ./README.hu.md
 
 [Image-links]: #Image-references
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg

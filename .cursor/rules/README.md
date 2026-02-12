@@ -1,5 +1,7 @@
 # Coding Standards and Development Guidelines
 
+**English** | [Magyar]
+
 This directory contains the coding standards, conventions, and best practices for the Enclave Terminal Breach project.
 
 ## Standards
@@ -29,3 +31,4 @@ These standards ensure:
 [Development Environment]: ./development-environment.md
 [Project Context]: ./project-context.md
 [Workspace]: ./workspace.md
+[Magyar]: ./README.hu.md

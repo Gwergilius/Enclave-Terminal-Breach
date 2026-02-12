@@ -1,0 +1,63 @@
+@startuml FutureArchitecture-ProposedArchitecture
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+
+title Proposed Architecture (FutureArchitecture.md)
+
+class PasswordRegistry <<Singleton>> {
+  - Dictionary<string, Password>
+  __
+  + GetOrCreate(word): Password
+  + Contains(word): bool
+  + Count: int
+}
+
+class Password {
+  + Word: string
+  - _matchCountCache: Dictionary<Password, int>
+  __
+  + GetMatchCount(other): int
+}
+
+class GameSession {
+  - _passwords: List<Password>
+  - _eliminated: HashSet<Password>
+  __
+  + IsEliminated(password): bool
+  + EliminateByMatchCount(guessed, matchCount): void
+  + Reset(): void
+}
+
+PasswordRegistry "1" *-- "*" Password : contains
+GameSession "2" ..> "1" PasswordRegistry : uses
+GameSession o-- "*" Password : _passwords (references)
+
+note right of GameSession
+  Two GameSession instances use
+  the single PasswordRegistry (singleton).
+  References, not copies.
+  Session-specific state in _eliminated.
+end note
+
+skinparam class<<Singleton>> {
+  backgroundColor #d5e8d4
+  borderColor #82b366
+}
+skinparam class {
+  backgroundColor #fff2cc
+  borderColor #d6b656
+}
+skinparam class GameSession {
+  backgroundColor #dae8fc
+  borderColor #6c8ebf
+}
+skinparam class Password {
+  backgroundColor #e1d5e7
+  borderColor #9673a6
+}
+skinparam note {
+  backgroundColor #f8cecc
+  borderColor #b85450
+}
+
+@enduml

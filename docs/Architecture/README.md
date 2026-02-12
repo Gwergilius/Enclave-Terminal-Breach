@@ -1,5 +1,7 @@
 # Architecture Documentation
 
+**English** | [Magyar]
+
 Technical architecture, design decisions, and system specifications.
 
 ## Core Documents
@@ -16,8 +18,6 @@ Technical architecture, design decisions, and system specifications.
 ## Design Decisions
 
 - [ColorValue Design] - Color palette implementation choices
-- [Boot Sequence Architecture] - Event-driven boot sequence design
-- [PHOSPHOR Abstraction] - Terminal abstraction layer (from lore)
 
 ## Purpose
 
@@ -33,4 +33,4 @@ These documents provide:
 [Platform Services Summary]: ./PlatformServicesSummary.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.md
 [ColorValue Design]: ./ColorValue-Design-Decision.md
-[Boot Sequence Architecture]: ./BootSequence-Event-Architecture.md
+[Magyar]: ./README.hu.md

@@ -1,0 +1,30 @@
+%% ColorValue - Layer Diagram (Mermaid)
+%% Színek a drawio változattal megegyezően
+
+flowchart TB
+    subgraph Pres["Presentation Layer"]
+        direction TB
+        MAUI["MAUI<br/>(C#)"]
+        Blazor["Blazor<br/>(Razor)"]
+    end
+
+    subgraph Shared["Shared Project"]
+        direction TB
+        ColorValue["ColorValue<br/>(Platform-Independent)"]
+        VM["TerminalButtonViewModel<br/>- ButtonBackgroundColor<br/>- TextColor<br/>- BorderColor"]
+    end
+
+    MAUI -->|"Converter (Color)"| ColorValue
+    Blazor -->|"CSS string"| ColorValue
+    ColorValue --- VM
+
+    %% Réteg dobozok színei (drawio)
+    style Pres fill:#dae8fc,stroke:#6c8ebf,stroke-width:2px
+    style Shared fill:#d5e8d4,stroke:#82b366,stroke-width:2px
+    %% MAUI, Blazor - sárga
+    style MAUI fill:#fff2cc,stroke:#d6b656,stroke-width:2px
+    style Blazor fill:#fff2cc,stroke:#d6b656,stroke-width:2px
+    %% ColorValue - lila
+    style ColorValue fill:#e1d5e7,stroke:#9673a6,stroke-width:2px
+    %% TerminalButtonViewModel - korall
+    style VM fill:#f8cecc,stroke:#b85450,stroke-width:2px

@@ -1,5 +1,7 @@
 # Implementation Documentation
 
+**English** | [Magyar]
+
 Implementation plans, roadmaps, and platform-specific guides.
 
 ## Implementation Plans
@@ -22,3 +24,4 @@ These documents guide:
 - Migration paths between phases
 
 [Implementation Plan]: ./Implementation-Plan.md
+[Magyar]: ./README.hu.md
