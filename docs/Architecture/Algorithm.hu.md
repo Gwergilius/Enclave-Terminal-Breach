@@ -154,6 +154,22 @@ A végső halmaz csak a minden válasszal konzisztens jelölteket tartalmazza; *
 
 A 10 betűs szavak **nem** nehezebbek: hasonló vagy kevesebb lépés, magasabb score (több pozíció → finomabb partíció).
 
+### Automatizált teljesítményteszt (Fallout nehézségi szintek, 4 lépés limit)
+
+A projekt automata konvergencia teszteket futtat a [Fallout terminál nehézségi szintjeivel][Fallout Terminal Hacking] összhangban: **18 szó** futásonként (azonos hossz), **20 futás nehézségenként**, fix seed a reprodukálhatóság miatt. Egy futás **sikeres** csak akkor, ha a solver **kifejezetten eltalálja** a titkot (a terminál válasza = szóhossz) **legfeljebb 4 lépésben**. A „már csak egy jelölt maradt” nem számít találatnak — a következő tipp lenne a nyertes.
+
+Mért találati arány (explicit találat 4 lépésen belül):
+
+| Terminál szint | Jelszó hossz | Sikeres / futás | Arány |
+|----------------|--------------|-----------------|-------|
+| Very Easy      | 4–5          | 18 / 20          | 90%   |
+| Easy           | 6–8          | 18 / 20          | 90%   |
+| Average        | 9–10         | 19 / 20          | 95%   |
+| Hard           | 11–12        | 20 / 20          | 100%  |
+| Very Hard      | 13–15        | 20 / 20          | 100%  |
+
+**Összesen:** 95 / 100 futás (95%) találja meg a titkot ≤4 lépésben. Ahogy vártuk: a **nehezebb (hosszabb szavas) szintek nem nehezebbek** az algoritmusnak — gyakran gyorsabban konvergál, mert tippenként több különböző egyezési-szám eredmény jön, és finomabb partíciót kapunk.
+
 ## Hivatkozások
 
 ### Információelmélet

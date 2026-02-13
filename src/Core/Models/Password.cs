@@ -58,10 +58,7 @@ public class Password
     /// </example>
     public int GetMatchCount(Password other)
     {
-        if (other is null)
-        {
-            throw new ArgumentNullException(nameof(other));
-        }
+        ArgumentNullException.ThrowIfNull(other);
 
         // Check cache first - O(1) lookup
         if (_matchCountCache.TryGetValue(other.Word, out var cached))
