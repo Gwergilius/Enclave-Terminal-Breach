@@ -20,6 +20,10 @@ The branching, commit, and release practices in **docs/Development** are mandato
 - Propose commit messages that match Commit-Conventions (type, scope, imperative subject, optional `+semver:` footer).
 - Remind the user to update CHANGELOG.md if they have not yet done so before committing.
 
+## Before merging the SPARROW (1.0.0) PR
+
+- **Update Lore version numbers:** Before merging the feat/SPARROW PR to main, update **docs/Lore/Project-History.md** and **docs/Lore/Project-History.hu.md** so that version numbers in the lore document reflect the real SPARROW 1.x release (see Release-Process: lore reflects real versions). Remind the user of this when they work on or mention the SPARROW PR.
+
 ---
 alwaysApply: true
 ---
