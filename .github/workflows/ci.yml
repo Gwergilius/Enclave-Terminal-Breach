@@ -107,7 +107,8 @@ jobs:
 
       - name: Upload coverage to Codecov (for badge)
         if: success()
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: src/TestResults/coverage.xml
           fail_ci_if_error: false
