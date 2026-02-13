@@ -54,8 +54,9 @@ try {
         exit 1
     }
     [xml]$doc = Get-Content -Path $coberturaFile.FullName -Raw
-    $coverage = $doc.coverage
-    if (-not $coverage) {
+    # Use DocumentElement so we get XmlElement (GetAttribute works); $doc.coverage can be string in PowerShell 5.1
+    $coverage = $doc.DocumentElement
+    if (-not $coverage -or $coverage.LocalName -ne 'coverage') {
         Write-Error "Cobertura XML has no 'coverage' root element"
         exit 1
     }
