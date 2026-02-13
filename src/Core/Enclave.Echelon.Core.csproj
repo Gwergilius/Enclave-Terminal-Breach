@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Common\Enclave.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\words.txt" />
+  </ItemGroup>
+
 </Project>
