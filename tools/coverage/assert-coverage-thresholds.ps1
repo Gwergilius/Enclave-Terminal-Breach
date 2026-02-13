@@ -5,8 +5,9 @@
 
 .DESCRIPTION
     Reads a coverage XML (OpenCover or Cobertura), runs ReportGenerator with
-    assembly filters (+Enclave*;-*.Tests;-*.Test.*) so thresholds apply to
-    production code only, then checks line-rate and branch-rate. Exits 0 if both pass, 1 otherwise.
+    assembly filters so thresholds apply to production code only (excludes *.Tests, *.Test.*,
+    and explicitly Enclave.Echelon.Core.Tests and Enclave.Echelon.Common.Tests). Then checks
+    line-rate and branch-rate. Exits 0 if both pass, 1 otherwise.
 
 .PARAMETER CoverageXmlPath
     Path to the coverage XML file (e.g. TestResults/coverage.xml from run-coverage.ps1).
@@ -39,7 +40,8 @@ if (-not (Test-Path $CoverageXmlPath)) {
 }
 
 # Always use ReportGenerator with assembly filters so thresholds apply to Enclave* production code only (exclude *.Tests, *.Test.*).
-$assemblyFilters = "+Enclave*;-*.Tests;-*.Test.*"
+# Exclude test assemblies by name and wildcard (*Core.Tests*, *Common.Tests*) for DynamicCodeCoverage.
+$assemblyFilters = "+Enclave*;-*.Tests;-*.Test.*;-*Core.Tests*;-*Common.Tests*;-Enclave.Echelon.Core.Tests;-Enclave.Echelon.Common.Tests;-Enclave.Echelon.Core.Tests.dll;-Enclave.Echelon.Common.Tests.dll"
 $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "coverage-threshold-check-$(Get-Random)"
 New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
 try {

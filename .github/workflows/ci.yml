@@ -90,11 +90,23 @@ jobs:
           dotnet build ${{ env.SOLUTION_PATH }} --no-restore -c Release
         continue-on-error: ${{ github.event_name == 'push' }}
 
-      - name: Collect coverage (unit tests only)
+      - name: Collect coverage (Coverlet, unit tests only; branch + line)
         run: |
-          mkdir -p TestResults
-          dotnet-coverage collect dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" \
-            --output TestResults/coverage.xml --output-format cobertura
+          mkdir -p TestResults/raw
+          dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" \
+            --results-directory TestResults/raw --collect "XPlat Code Coverage"
+          # Merge Cobertura files if multiple test projects
+          COB=$(find TestResults/raw -name 'coverage.cobertura.xml' 2>/dev/null)
+          if echo "$COB" | grep -q .; then
+            if [ $(echo "$COB" | wc -l) -eq 1 ]; then
+              cp "$COB" TestResults/coverage.xml
+            else
+              dotnet-coverage merge $COB -f cobertura -o TestResults/coverage.xml
+            fi
+          else
+            echo "No coverage.cobertura.xml found"
+            exit 1
+          fi
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Run coverage threshold check

@@ -12,14 +12,16 @@ Tools live under **`~/tools/coverage`** (repository root: `tools/coverage/`). Th
 
 - **PowerShell 7+** (see [Development Environment](../../.cursor/rules/development-environment.md))
 - **.NET SDK** (e.g. 10.x; see `src/global.json`)
-- **dotnet-coverage** (global tool):
-  ```bash
-  dotnet tool install -g dotnet-coverage
-  ```
-- **ReportGenerator** (global tool):
+- **ReportGenerator** (global tool, required):
   ```bash
   dotnet tool install -g ReportGenerator
   ```
+- **dotnet-coverage** (global tool, only needed when the solution has **multiple test projects**, to merge their Cobertura files):
+  ```bash
+  dotnet tool install -g dotnet-coverage
+  ```
+
+Coverage is collected with **Coverlet** (`XPlat Code Coverage`); test projects must reference `coverlet.collector`. This produces **line and branch coverage** in Cobertura format. The report (and CI threshold check) uses the same assembly filters so test assemblies (e.g. `Enclave.Echelon.Core.Tests`, `Enclave.Echelon.Common.Tests`) are excluded.
 
 ## Usage
 
@@ -39,7 +41,8 @@ cd src
 The script will:
 - Find the solution file (`.slnx` or `.sln`) in the current directory or under `src/`
 - Run **only tests marked with `[UnitTest]`** (xunit.categories) for coverage – integration, e2e, smoke, etc. are excluded by default
-- Generate an HTML report (excluding test projects and test framework)
+- Collect coverage via **Coverlet** (Cobertura format, **line + branch coverage**); merge multiple Cobertura files if there are several test projects
+- Generate an HTML report (excluding test projects and test framework; same filters as in CI)
 - Open the HTML report in the browser
 
 ### Filtered coverage

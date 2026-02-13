@@ -6,7 +6,8 @@
 .DESCRIPTION
     Runs tests with coverage collection and generates an HTML report.
     All test projects in the solution (.sln or .slnx) are included; no hardcoded project list.
-    The report excludes test projects and test framework assemblies.
+    The report excludes test projects and test framework assemblies (including
+    Enclave.Echelon.Core.Tests and Enclave.Echelon.Common.Tests).
 
 .PARAMETER Filter
     Test filter for dotnet test. Default: Category=UnitTest (only [UnitTest] tests run for coverage).
@@ -46,7 +47,8 @@
 
 .NOTES
     - The script deletes the output folder (e.g. TestResults) before each run
-    - dotnet-coverage and reportgenerator global tools are required
+    - Coverage is collected via Coverlet (XPlat Code Coverage) so branch coverage is included; reportgenerator required
+    - dotnet-coverage is used only to merge multiple Cobertura files when the solution has more than one test project
     - Supports both .sln and .slnx files
 #>
 
@@ -103,11 +105,6 @@ Write-ColorOutput "🔍 Checking required tools..." "Info"
 
 if (-not (Test-Command "dotnet")) {
     Write-ColorOutput "❌ dotnet CLI not found!" "Error"
-    exit 1
-}
-
-if (-not (Test-Command "dotnet-coverage")) {
-    Write-ColorOutput "❌ dotnet-coverage not found! Install: dotnet tool install -g dotnet-coverage" "Error"
     exit 1
 }
 
@@ -178,30 +175,31 @@ if ($moduleList.Count -gt 0) {
     Write-ColorOutput "   Module(s): $moduleSummary (only unit tests with TestOf(...) and coverage for these types)" "Info"
 }
 
-# Single coverage run for the whole solution (all test projects included)
-Write-ColorOutput "📊 Collecting coverage data (solution: all test projects)..." "Info"
+# Collect coverage with Coverlet (XPlat Code Coverage) so we get branch coverage; output is Cobertura.
+Write-ColorOutput "📊 Collecting coverage data (Coverlet, Cobertura + branch coverage)..." "Info"
+
+$testResultsSubdir = Join-Path $OutputPath "raw"
+New-Item -ItemType Directory -Path $testResultsSubdir -Force | Out-Null
 
 $coverageFile = Join-Path $OutputPath "coverage.xml"
-$coverageArgs = @(
-    "collect",
-    "dotnet",
+$testArgs = @(
     "test",
     $solutionFullPath,
-    "--output", $coverageFile,
-    "--output-format", "xml"
+    "--results-directory", $testResultsSubdir,
+    "--collect", "XPlat Code Coverage"
 )
 if ($effectiveFilter) {
-    $coverageArgs += "--filter", $effectiveFilter
+    $testArgs += "--filter", $effectiveFilter
     Write-ColorOutput "   Filter: $effectiveFilter (only these tests will run)" "Info"
 }
 
-Write-ColorOutput "🚀 Running: dotnet-coverage collect dotnet test $solutionFullPath ..." "Info"
+Write-ColorOutput "🚀 Running: dotnet test (Coverlet) ..." "Info"
 
 Push-Location (Split-Path $solutionFullPath -Parent)
 try {
-    & dotnet-coverage @coverageArgs
+    & dotnet @testArgs
     if ($LASTEXITCODE -ne 0) {
-        Write-ColorOutput "❌ Coverage collection failed!" "Error"
+        Write-ColorOutput "❌ Test/coverage collection failed!" "Error"
         exit $LASTEXITCODE
     }
     Write-ColorOutput "✅ Coverage data collected successfully" "Success"
@@ -210,17 +208,36 @@ finally {
     Pop-Location
 }
 
-if (-not (Test-Path $coverageFile)) {
-    Write-ColorOutput "❌ Coverage file was not created: $coverageFile" "Error"
+# Find all Cobertura files produced by Coverlet (one per test project)
+$coberturaFiles = Get-ChildItem -Path $testResultsSubdir -Recurse -Filter "coverage.cobertura.xml" -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }
+if (-not $coberturaFiles -or $coberturaFiles.Count -eq 0) {
+    Write-ColorOutput "❌ No coverage.cobertura.xml found under $testResultsSubdir" "Error"
     exit 1
+}
+
+if ($coberturaFiles.Count -eq 1) {
+    Copy-Item -Path $coberturaFiles[0] -Destination $coverageFile -Force
+    Write-ColorOutput "   Using single Cobertura file" "Info"
+} else {
+    if (-not (Test-Command "dotnet-coverage")) {
+        Write-ColorOutput "❌ Multiple test projects produced separate Cobertura files; dotnet-coverage required to merge. Install: dotnet tool install -g dotnet-coverage" "Error"
+        exit 1
+    }
+    $mergeArgs = @("merge") + @($coberturaFiles) + @("-f", "cobertura", "-o", $coverageFile)
+    & dotnet-coverage @mergeArgs
+    if ($LASTEXITCODE -ne 0) {
+        Write-ColorOutput "❌ Merging Cobertura files failed!" "Error"
+        exit 1
+    }
+    Write-ColorOutput "   Merged $($coberturaFiles.Count) Cobertura files" "Info"
 }
 
 # Generate HTML report
 Write-ColorOutput "📄 Generating HTML report..." "Info"
 
 # Only include our production assemblies in the report (excludes test projects, test infra, and third-party DLLs).
-# Exclude *.Tests and *.Test.* assemblies so only production code appears in the report.
-$assemblyFilters = "+Enclave*;-*.Tests;-*.Test.*"
+# Cobertura/Coverlet and DynamicCodeCoverage may use different assembly names; use wildcards and explicit exclusions.
+$assemblyFilters = "+Enclave*;-*.Tests;-*.Test.*;-*Core.Tests*;-*Common.Tests*;-Enclave.Echelon.Core.Tests;-Enclave.Echelon.Common.Tests;-Enclave.Echelon.Core.Tests.dll;-Enclave.Echelon.Common.Tests.dll"
 $reportArgs = @(
     "-reports:$coverageFile",
     "-targetdir:$OutputPath/html",
