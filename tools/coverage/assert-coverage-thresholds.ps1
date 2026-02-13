@@ -4,9 +4,9 @@
     Asserts that line and branch coverage meet minimum thresholds (e.g. for CI).
 
 .DESCRIPTION
-    Reads a coverage XML (OpenCover or Cobertura), optionally generates Cobertura
-    via ReportGenerator, then checks line-rate and branch-rate against thresholds.
-    Exits 0 if both pass, 1 otherwise.
+    Reads a coverage XML (OpenCover or Cobertura), runs ReportGenerator with
+    assembly filters (+Enclave*;-*.Tests;-*.Test.*) so thresholds apply to
+    production code only, then checks line-rate and branch-rate. Exits 0 if both pass, 1 otherwise.
 
 .PARAMETER CoverageXmlPath
     Path to the coverage XML file (e.g. TestResults/coverage.xml from run-coverage.ps1).
@@ -38,35 +38,30 @@ if (-not (Test-Path $CoverageXmlPath)) {
     exit 1
 }
 
-[xml]$doc = Get-Content -Path $CoverageXmlPath -Raw
-$coverage = $doc.coverage
-
-# If not already Cobertura (has line-rate on root), convert via ReportGenerator
-if (-not $coverage -or $coverage.PSObject.Properties['line-rate'] -eq $null) {
-    $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "coverage-threshold-check-$(Get-Random)"
-    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
-    try {
-        & $ReportGenerator "-reports:$CoverageXmlPath" "-targetdir:$tempDir" "-reporttypes:Cobertura" "-assemblyfilters:+Enclave*;-*.Tests;-*.Test.*" "-verbosity:Warning" 2>&1 | Out-Null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Error "ReportGenerator failed (exit $LASTEXITCODE)"
-            exit 1
-        }
-        $coberturaFile = Get-ChildItem -Path $tempDir -Filter "*.xml" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-        if (-not $coberturaFile) {
-            Write-Error "No Cobertura XML produced under $tempDir"
-            exit 1
-        }
-        [xml]$doc = Get-Content -Path $coberturaFile.FullName -Raw
-        $coverage = $doc.coverage
+# Always use ReportGenerator with assembly filters so thresholds apply to Enclave* production code only (exclude *.Tests, *.Test.*).
+$assemblyFilters = "+Enclave*;-*.Tests;-*.Test.*"
+$tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "coverage-threshold-check-$(Get-Random)"
+New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+try {
+    & $ReportGenerator "-reports:$CoverageXmlPath" "-targetdir:$tempDir" "-reporttypes:Cobertura" "-assemblyfilters:$assemblyFilters" "-verbosity:Warning" 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "ReportGenerator failed (exit $LASTEXITCODE)"
+        exit 1
     }
-    finally {
-        if (Test-Path $tempDir) { Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
+    $coberturaFile = Get-ChildItem -Path $tempDir -Filter "*.xml" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $coberturaFile) {
+        Write-Error "No Cobertura XML produced under $tempDir"
+        exit 1
+    }
+    [xml]$doc = Get-Content -Path $coberturaFile.FullName -Raw
+    $coverage = $doc.coverage
+    if (-not $coverage) {
+        Write-Error "Cobertura XML has no 'coverage' root element"
+        exit 1
     }
 }
-
-if (-not $coverage) {
-    Write-Error "Cobertura XML has no 'coverage' root element (or ReportGenerator could not convert input)"
-    exit 1
+finally {
+    if (Test-Path $tempDir) { Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue }
 }
 
 $lineRate = [double]$coverage.GetAttribute('line-rate')
