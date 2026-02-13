@@ -82,7 +82,7 @@ jobs:
       - name: Install tools
         run: |
           dotnet tool install -g dotnet-coverage
-          dotnet tool install -g ReportGenerator
+          dotnet tool install -g dotnet-reportgenerator-globaltool
 
       - name: Restore & build
         run: |
