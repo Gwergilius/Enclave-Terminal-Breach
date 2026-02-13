@@ -68,6 +68,26 @@ dotnet build Enclave.Echelon.slnx
 
 For **code coverage** reports, see [tools/coverage/README](tools/coverage/README.md).
 
+## 🔄 CI / Pipeline
+
+GitHub Actions (`.github/workflows/ci.yml`):
+
+- **Push** (any branch): build, unit tests, and coverage run; **failures do not block** (you can push half-finished work and still see results). On main, GitVersion outputs the version when tests pass.
+- **Pull request** (to main/master): build, unit tests, and coverage are **blocking**; the run **fails** if build/test fails or if line coverage is below 80% or branch coverage below 95%.
+
+### Version from commit / PR message
+
+Version bumps are driven by **commit messages** on feature branches and by **PR title/description** when merged. Configured in `GitVersion.yml`. **Direct commits to main are not allowed** (except e.g. Changelog updates).
+
+| Context | Default | Trigger | Example |
+|--------|--------|---------|--------|
+| **Commit** (on a feature branch) | Build number only (`0.1.0+5` → `+6`) | `patch(scope):` in subject | `patch(fix): correct validation` → patch bump |
+| **PR merge** (Squash and merge) | **Minor** (new feature) | Subject starts with `feat:` or `feat(scope):` | `feat: add Password model` → minor |
+| **PR merge** | **Major** (breaking) | Subject contains `breaking-change:` or `BREAKING CHANGE:` | `breaking-change: remove API` → major |
+| **PR merge** | **Patch** (fix only) | Subject starts with `patch:` or `patch(scope):` | `patch: fix typo` → patch |
+
+Use **Squash and merge** for PRs so the PR title becomes the merge commit message and GitVersion can apply the rules above.
+
 ## 🤝 Contributing
 
 This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in [.cursor/rules/][Coding Standards] for contribution guidelines.

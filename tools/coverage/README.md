@@ -111,6 +111,17 @@ Adding a new test project to the solution is enough for it to be included in cov
 | Coverage collection fails | Run `dotnet test` first and fix any failing tests |
 | HTML report does not open | Open `TestResults/html/index.html` manually in a browser |
 
+## Coverage thresholds (CI)
+
+The script **`assert-coverage-thresholds.ps1`** checks that line and branch coverage meet minimum percentages (default: line ≥ 80%, branch ≥ 95%). It is used in the PR pipeline; you can run it locally:
+
+```powershell
+.\tools\coverage\run-coverage.ps1 -OutputPath TestResults
+pwsh -File .\tools\coverage\assert-coverage-thresholds.ps1 -CoverageXmlPath TestResults/coverage.xml -LineMinimum 80 -BranchMinimum 95
+```
+
+(If the coverage XML is Cobertura format, the script parses it directly; otherwise it uses ReportGenerator to convert first.)
+
 ## References
 
 - [dotnet-coverage](https://github.com/tonerdo/coverlet) (coverlet)

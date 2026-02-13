@@ -1,0 +1,11 @@
+# GitVersion: version from commit/merge messages (see https://gitversion.net/docs/reference/version-increments)
+next-version: 0.1.0
+mode: ContinuousDelivery
+commit-message-incrementing: Enabled
+
+# Commit/PR subject → version bump (no match = build metadata only, e.g. 0.1.0+5)
+# Use Squash and merge for PRs so the PR title becomes the merge commit message.
+# Regex: use double quotes so \s is valid; (?i)=case-insensitive, (?m)=multiline
+major-version-bump-message: "(?im)^(breaking-change:|BREAKING\\s+CHANGE:)"
+minor-version-bump-message: "(?im)^(feat\\s*\\(|feat:)"
+patch-version-bump-message: "(?im)^(patch\\s*\\(|patch:)"
