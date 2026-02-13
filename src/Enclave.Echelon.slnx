@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Common\Enclave.Common.csproj" />
+  <Project Path="Core\Enclave.Echelon.Core.csproj" />
+</Solution>

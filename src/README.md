@@ -2,40 +2,46 @@
 
 **English** | [Magyar]
 
-Multi-platform implementations of the Enclave Terminal Breach system.
+Multi-platform implementations of the Enclave Terminal Breach system. This folder contains all production code, tests, test helpers, the solution file, and build/style configuration.
 
-## Structure (Planned)
+## Folder structure
 
-### Phase 1: SPARROW
-DOS 3.11 proof of concept with stdin/stdout interaction.
+| Folder | Contents |
+|--------|----------|
+| **Common/** | [Enclave.Common](Common/) – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
+| **Core/** | [Enclave.Echelon.Core](Core/) – core business logic: Password Solver, Password Repository, domain models. References Common. |
+| **excel-prototype/** | [Excel prototype](excel-prototype/) – first prototype (Excel/VBA); not built by the solution. |
+| **tests/Common/** | *Planned.* Enclave.Tests.Common – shared test helpers and mocks (not tested itself). |
+| **tests/Unit/** | *Planned.* Unit test projects (e.g. Enclave.Common.Tests, Enclave.Echelon.Core.Tests). |
+| **tests/Integration/** | *Planned.* Integration test projects. |
+| **tests/E2E/** | *Planned.* End-to-end test projects (e.g. GHOST E2E). |
 
-### Phase 2: RAVEN
-Console application with screen positioning and PHOSPHOR abstraction layer.
+## Configuration (this folder)
 
-### Phase 3: GHOST
-Blazor Progressive Web App for SIGNET deployment.
+These files in **src/** apply to every project under **src/**:
 
-### Phase 4: ECHELON
-MAUI cross-platform mobile application for Pip-Boy integration.
+| File | Purpose |
+|------|---------|
+| **Enclave.Echelon.slnx** | Solution file. Open this to work with the codebase; build with `dotnet build Enclave.Echelon.slnx` from this folder. |
+| **global.json** | SDK version selection (e.g. .NET 10). The `dotnet` CLI resolves it from the current directory, so run `dotnet build` / `dotnet test` from **src/** to use the specified SDK. |
+| **.editorconfig** | Code style and formatting for C# and project files under `src/`. |
+| **Directory.Build.props** | Shared MSBuild properties: `LangVersion`, `ImplicitUsings`, `Nullable`, company/copyright, common `NoWarn`. |
+| **Directory.Packages.props** | [Central Package Management][CPM]: NuGet package versions; projects reference packages without a version. |
+| **.runsettings** | Test run settings (e.g. code coverage). Use `dotnet test --settings .runsettings` when running from **src/**. |
 
-## Shared Components
-
-- **Core** - Business logic, algorithms, domain models
-- **Shared** - ViewModels, state management, shared UI logic
-- **TestHelpers** - Common testing utilities and mocks
-- **Tests** - Unit tests, integration tests, UI tests
-
-## Technology Stack
+## Technology stack
 
 - .NET 10.0
-- C# 12.0
-- MAUI (mobile)
-- Blazor (web)
-- xUnit + ReqNRoll + Playwright (testing)
+- C# 14
+- MAUI (mobile), Blazor (web) – per phase
+- xUnit + Shouldly + Moq (testing); ReqNRoll + Playwright (integration/E2E)
 
 ## Documentation
 
-See [coding standards] for development guidelines.
+- [Coding standards][coding standards] – development guidelines
+- [Architecture](../docs/Architecture/) – system design
 
-[coding standards]: ../.cursor/rules/
+[//]: #References
+[CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
+[coding standards]: ../.cursor/rules/README.md
 [Magyar]: ./README.hu.md

@@ -22,8 +22,8 @@ A **terminal hacking assistant** application that helps solve the terminal hacki
 | Component | Status |
 |-----------|--------|
 | Documentation | 🚧 In Progress |
-| Architecture | 📋 Planned |
-| SPARROW (DOS PoC) | 📋 Planned |
+| Architecture | 🚧 In Progress |
+| SPARROW (DOS PoC) | 🚧 In Progress |
 | RAVEN (Console) | 📋 Planned |
 | GHOST (Web/Blazor) | 📋 Planned |
 | ECHELON (MAUI Mobile) | 📋 Planned |
@@ -53,13 +53,22 @@ Each phase represents a significant architectural milestone, culminating in the 
 ## 📖 Documentation
 
 - [Project History] - Complete ECHELON backstory (Coming soon)
-- [Algorithm](docs/Algorithm.md) - Password elimination algorithm (Coming soon)
-- [Architecture](docs/Architecture/) - System design documents (Coming soon)
-- [Coding Standards](.cursor/rules/) - Development guidelines (Coming soon)
+- [Algorithm] - Password elimination algorithm (Coming soon)
+- [Architecture] - System design documents (Coming soon)
+- [Coding Standards] - Development guidelines (Coming soon)
+
+## 📁 Source code
+
+Folder structure, shared components (Common, Core, tests, test helpers), solution, and build/style configuration are described in the **[src/README][src README]**. Open the solution from `src/Enclave.Echelon.slnx`. Run the build from the **src/** folder: 
+
+```Powershell
+cd src
+dotnet build Enclave.Echelon.slnx
+```
 
 ## 🤝 Contributing
 
-This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in `.cursor/rules/` for contribution guidelines.
+This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in [.cursor/rules/][Coding Standards] for contribution guidelines.
 
 ## 📜 License
 
@@ -80,9 +89,10 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [License-MIT]: https://opensource.org/licenses/MIT
 [Dotnet]: https://dotnet.microsoft.com/
 [Project History]: ./docs/Lore/Project-History.md "Complete ECHELON backstory"
-[Algorithm]: ./docs/Algorithm.md "Password elimination algorithm"
-[Architecture]: ./docs/Architecture/ "System design documents"
-[Coding Standards]: ./.cursor/rules/ "Development guidelines"
+[Algorithm]: ./docs/Architecture/Algorithm.md "Password elimination algorithm"
+[Architecture]: ./docs/Architecture/README.md "System design documents"
+[Coding Standards]: ./.cursor/rules/README.md "Development guidelines"
+[src README]: ./src/README.md "Source code structure and configuration"
 [Magyar]: ./README.hu.md
 
 [Image-links]: #Image-references

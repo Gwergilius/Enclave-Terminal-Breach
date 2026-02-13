@@ -22,8 +22,8 @@ Egy **terminál feltörő asszisztens** alkalmazás, amely a Bethesda Fallout j�
 | Komponens | Állapot |
 |-----------|--------|
 | Dokumentáció | 🚧 Folyamatban |
-| Architektúra | 📋 Tervezett |
-| SPARROW (DOS PoC) | 📋 Tervezett |
+| Architektúra | 🚧 Folyamatban |
+| SPARROW (DOS PoC) | 🚧 Folyamatban |
 | RAVEN (Konzol) | 📋 Tervezett |
 | GHOST (Web/Blazor) | 📋 Tervezett |
 | ECHELON (MAUI mobil) | 📋 Tervezett |
@@ -52,14 +52,23 @@ Minden fázis jelentős architektúra mérföldkő, a végső ECHELON v2.1.7 bev
 
 ## 📖 Dokumentáció
 
-- [Project History][Project History] – Teljes ECHELON háttér
-- [Algorithm][Algorithm] – Jelszó eliminációs algoritmus
-- [Architecture][Architecture] – Rendszertervezési dokumentumok
-- [Coding Standards][Coding Standards] – Fejlesztési irányelvek
+- [Project History] – Teljes ECHELON háttér
+- [Algorithm] – Jelszó eliminációs algoritmus
+- [Architecture] – Rendszertervezési dokumentumok
+- [Coding Standards] – Fejlesztési irányelvek
+
+## 📁 Forráskód
+
+A mappa szerkezet, megosztott komponensek (Common, Core, tesztek, teszt segédletek), a solution és a build/stílus konfiguráció a **[src/README][src README]**-ben van leírva. A solution a `src/Enclave.Echelon.slnx` fájlból nyitható. A buildet a **src/** mappából kell futtatni: 
+
+```Powershell
+cd src
+dotnet build Enclave.Echelon.slnx
+```
 
 ## 🤝 Közreműködés
 
-Személyes portfólió projekt, de a visszajelzés és javaslatok welcome. A közreműködési irányelvek: `.cursor/rules/`.
+Személyes portfólió projekt, de a visszajelzés és javaslatok megköszönöm. A közreműködési irányelvek: [.cursor/rules/][Coding Standards].
 
 ## 📜 Licenc
 
@@ -80,6 +89,7 @@ MIT License – részletek: [LICENSE].
 [Algorithm]: ./docs/Architecture/Algorithm.hu.md
 [Architecture]: ./docs/Architecture/README.hu.md
 [Coding Standards]: ./.cursor/rules/README.hu.md
+[src README]: ./src/README.hu.md "Forráskód szerkezet és konfiguráció"
 [LICENSE]: ./LICENSE
 [License-MIT]: https://opensource.org/licenses/MIT
 [Dotnet]: https://dotnet.microsoft.com/

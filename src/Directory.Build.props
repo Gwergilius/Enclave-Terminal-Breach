@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <!-- Allow building EOL target frameworks (needed when using newer SDKs with net8 workloads) -->
+    <EnableEolTargetFrameworks>true</EnableEolTargetFrameworks>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <SuppressTfmSupportErrors>true</SuppressTfmSupportErrors>
+    <CheckEolWorkloads>false</CheckEolWorkloads>
+
+    <!-- Language and nullability (shared by all projects) -->
+    <LangVersion>14</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);xUnit1042;IDE0066;CA1816</NoWarn>
+
+    <!-- Product Information -->
+    <!-- Product and Version are set per-project (ECHELON 2.1.7, GHOST 1.2.4, RAVEN 0.4.0) -->
+    <Company>Enclave Sigint Division</Company>
+    <Copyright>Classified - Enclave Eyes Only</Copyright>
+    <Description>Terminal breach system for RobCo UOS exploitation</Description>
+
+  </PropertyGroup>
+</Project>
+
