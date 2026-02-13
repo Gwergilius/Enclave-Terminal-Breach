@@ -104,3 +104,10 @@ jobs:
             -LineMinimum 80 \
             -BranchMinimum 95
         continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Upload coverage to Codecov (for badge)
+        if: success()
+        uses: codecov/codecov-action@v4
+        with:
+          files: src/TestResults/coverage.xml
+          fail_ci_if_error: false

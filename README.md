@@ -2,6 +2,8 @@
 
 **English** | [Magyar]
 
+[![Version (SPARROW)][version-badge]][releases]
+[![Coverage][coverage-badge]][coverage-url]
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]
 
@@ -118,5 +120,9 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [Magyar]: ./README.hu.md
 
 [Image-links]: #Image-references
+[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
+[releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
+[coverage-badge]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach/graph/badge.svg
+[coverage-url]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4
