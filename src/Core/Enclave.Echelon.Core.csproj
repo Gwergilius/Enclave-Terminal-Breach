@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Enclave.Common.csproj" />
   </ItemGroup>
 
