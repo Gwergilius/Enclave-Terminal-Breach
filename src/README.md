@@ -40,8 +40,10 @@ These files in **src/** apply to every project under **src/**:
 
 - [Coding standards][coding standards] – development guidelines
 - [Architecture](../docs/Architecture/) – system design
+- [Coverage report][coverage] – how to generate code coverage (PowerShell script under `tools/coverage/`)
 
 [//]: #References
 [CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
 [coding standards]: ../.cursor/rules/README.md
+[coverage]: ../tools/coverage/README.md "Code coverage script and usage"
 [Magyar]: ./README.hu.md

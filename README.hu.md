@@ -66,6 +66,8 @@ cd src
 dotnet build Enclave.Echelon.slnx
 ```
 
+A **code coverage** riporthoz lásd a [tools/coverage/README](tools/coverage/README.hu.md) fájlt.
+
 ## 🤝 Közreműködés
 
 Személyes portfólió projekt, de a visszajelzés és javaslatok megköszönöm. A közreműködési irányelvek: [.cursor/rules/][Coding Standards].

@@ -66,6 +66,8 @@ cd src
 dotnet build Enclave.Echelon.slnx
 ```
 
+For **code coverage** reports, see [tools/coverage/README](tools/coverage/README.md).
+
 ## 🤝 Contributing
 
 This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in [.cursor/rules/][Coding Standards] for contribution guidelines.

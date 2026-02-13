@@ -40,8 +40,10 @@ A **src/** mappában lévő fájlok a **src/** alatti minden projektre vonatkozn
 
 - [Kódolási szabályok][coding standards] – fejlesztési irányelvek
 - [Architektúra](../docs/Architecture/) – rendszertervezés
+- [Coverage riport][coverage] – code coverage készítése (PowerShell script: `tools/coverage/`)
 
 [//]: #References
 [CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
 [coding standards]: ../.cursor/rules/README.hu.md
+[coverage]: ../tools/coverage/README.hu.md "Coverage script és használat"
 [English]: ./README.md
