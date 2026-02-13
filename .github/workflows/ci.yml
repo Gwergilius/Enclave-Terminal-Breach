@@ -9,7 +9,8 @@ on:
 
 env:
   DOTNET_VERSION: "10.0.x"
-  SOLUTION_PATH: "src/Enclave.Echelon.slnx"
+  # Path relative to working-directory (src); use Enclave.Echelon.slnx when running from src/
+  SOLUTION_PATH: "Enclave.Echelon.slnx"
 
 jobs:
   build-and-test:
