@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- **Core – Password solver algorithm**: Implementation of the information-theoretic solver (see docs/Architecture/Algorithm.md). `IPasswordSolver` with `GetBestGuess`, `GetBestGuesses`, `CalculateInformationScore`, `NarrowCandidates`. Three strategies: **PasswordSolver** (tie-breaker by worst-case bucket), **BestScoreOnlySolver** (Excel-style), **RandomGuessSolver** (blind). Embedded word list `Resources/words.txt` (4–15 letters). Unit tests (`PasswordSolverTests`) and performance/convergence tests (`PasswordSolverAlgorithmPerformanceTests`) for random secret and adversarial scenarios; solver comparison doc and `PerformanceTest` category in Common.Test.Core.
 - **Repository setup**: Initial README, folder structure (docs, src, .cursor/rules, .gitignore, LICENSE)
 - **.cursor/rules/**: Coding standards and workspace (code-standards, communication, development-environment, documentation, naming-conventions, project-context, testing, workspace)
 - **docs/Lore/**: ECHELON Project backstory (Project-History, UOS, Minigame, README)

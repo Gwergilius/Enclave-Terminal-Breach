@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Architecture/Algorithm.md** (and **Algorithm.hu.md**): Section *Automated performance test (Fallout difficulty levels, 4-step cap)* with success-rate table (random secret, seed 17) and note that longer-word levels are not harder for the algorithm. **SolverComparison.md**: Comparison of TieBreaker, BestScoreOnly, and Random strategies under random secret and adversarial scenarios (tables and conclusion).
 - **Repository**: Initial README and folder structure (docs, src, .cursor/rules, .gitignore, LICENSE)
 - **.cursor/rules/**: Coding standards and workspace (code-standards, communication, development-environment, documentation, naming-conventions, project-context, testing, workspace)
 - **Lore/**: ECHELON Project backstory and universe (Project-History, UOS, Minigame, README)
