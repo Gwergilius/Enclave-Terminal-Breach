@@ -68,7 +68,7 @@ cd src
 dotnet build Enclave.Echelon.slnx
 ```
 
-For **code coverage** reports, see [tools/coverage/README](tools/coverage/README.md).
+For **code coverage** and quality (SonarCloud), see [tools/coverage/README](tools/coverage/README.md). The coverage badge is provided by [SonarCloud](https://sonarcloud.io) (free for public repos); set the `SONAR_TOKEN` secret after adding the project on SonarCloud.
 
 ## 🔄 CI / Pipeline
 
@@ -147,7 +147,7 @@ This project demonstrates:
 [Image-links]: #Image-references
 [version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
-[coverage-badge]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach
+[coverage-badge]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=coverage
+[coverage-url]: https://sonarcloud.io/summary/new_code?id=Gwergilius_Enclave-Terminal-Breach
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4
