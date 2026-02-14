@@ -199,7 +199,7 @@ SIGNET remains operational in surviving Enclave facilities:
 #### CODENAME: SPARROW (March-April 2076)
 **Status:** Proof of Concept
 
-* **v1.1.0** **"Sparrow"** - First executable proof of concept
+* ![SPARROW v1.1.0](https://img.shields.io/badge/SPARROW-v1.1.0-38bdf8) - First executable proof of concept
   * **Platform:** RobCo NX-12 terminal, basic features (sequential stdin/stdout only; no cursor positioning or colour)
   * **Purpose:** Validate the password-elimination algorithm in a minimal, scriptable environment on NX-12 before targeting other RobCo hardware
   * **Solver:** HOUSE gambit—statistical (random) guess selection
@@ -210,7 +210,7 @@ SIGNET remains operational in surviving Enclave facilities:
 
 > "We're using Robert House's own statistical gamble against his terminals. HOUSE gambit proves the math works—now we need intelligence."
 
-* **v1.2.0** (April 2076) - Input handling refinement
+* ![SPARROW v1.2.0](https://img.shields.io/badge/SPARROW-v1.2.0-38bdf8) (April 2076) - Input handling refinement
   * Case-insensitive candidate and removal matching
   * Multi-column alphabetical display of candidates after each input
   * Stable baseline for RAVEN integration
@@ -222,7 +222,7 @@ SPARROW v1.2.0 became the reference implementation from which RAVEN v1.3.1 drew 
 #### CODENAME: RAVEN (April-August 2076)
 **Status:** Proof of Concept
 
-* **v1.3.1** "Raven" - First successful UOS breach in controlled environment
+* ![RAVEN v1.3.1](https://img.shields.io/badge/RAVEN-v1.3.1-1e40af) - First successful UOS breach in controlled environment
   * **Built on SPARROW:** Core breach algorithms ported from SPARROW v1.2.0 to NX-12 hardware
   * **Solver: Best-bucket strategy introduced**—maximise distinct match-count outcomes (information score), then minimise worst-case bucket size; replaced SPARROW's random selection with information-theory-driven guess choice
   * **Breach time:** 47 minutes (Average difficulty)
@@ -242,7 +242,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "We can't rewrite the entire breach engine every time RobCo releases a new terminal. We need an abstraction layer - something that preserves our core algorithms while adapting to whatever hardware RobCo throws at us. Otherwise, we're playing an endless game of catch-up."  
 > - Dr. Elizabeth Krane, Technical Memo (June 15, 2076)
 
-* **v1.4.0** "Raven Evolved" (September 2076) - **PHOSPHOR 1.0 introduced**
+* ![RAVEN v1.4.0](https://img.shields.io/badge/RAVEN-v1.4.0-1e40af) "Raven Evolved"  (September 2076) - **![PHOSPHOR 1.0](https://img.shields.io/badge/PHOSPHOR-1.0-7c3aed) introduced**
   * First hardware abstraction layer implementation
   * Breach time improved to 42 minutes (optimization during refactoring)
   * Success rate: 38%
@@ -258,11 +258,11 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 #### CODENAME: GHOST (September 2076-January 2077)
 **Status:** Field Prototype
 
-* **v2.0.0** **"Ghost Protocol"** - First Pip-Boy integrated version
+* ![GHOST v2.0.0](https://img.shields.io/badge/GHOST-v2.0.0-06b6d4) (September 2076) - First Pip-Boy integrated version
   * Breach time reduced to 8 minutes (Average terminals)
   * Success rate: 67%
   * Platform: Pip-Boy 2000 AND **Looking Glass** web browser (SIGNET deployment)
-  * **PHOSPHOR 1.5:** Platform expansion beyond terminals - Pip-Boy and web browser support
+  * **![PHOSPHOR 1.5](https://img.shields.io/badge/PHOSPHOR-1.5-7c3aed):** Platform expansion beyond terminals - Pip-Boy and web browser support
   * Major Innovation: Stealth mode (no system log traces)
   * **Dual Deployment:** First version deployed on both Pip-Boy and SIGNET network
   * **Looking Glass Browser:** SIGNET's secure web browser for terminal breach operations
@@ -272,7 +272,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "PHOSPHOR 1.5 is a game-changer. We've achieved true platform independence - the same breach code runs on a 180-pound terminal, a wrist-mounted Pip-Boy, and the Looking Glass browser on SIGNET. The operator doesn't need to know which platform they're on. PHOSPHOR handles everything."  
 > - Dr. Elizabeth Krane, Platform Architecture Review
 
-* **v2.2.0** (October 2076) - **PHOSPHOR 2.0 milestone**
+* ![GHOST v2.2.0](https://img.shields.io/badge/GHOST-v2.2.0-06b6d4) (October 2076) - **![PHOSPHOR 2.0](https://img.shields.io/badge/PHOSPHOR-2.0-7c3aed) milestone**
   * **16-color support** for NX-20 and NX-120 terminals
   * **Four color palettes:** Green Phosphor, Amber Phosphor, White Phosphor, Blue Phosphor
   * Each palette maintains 4 brightness levels (Background, Dark, Normal, Bright)
@@ -285,7 +285,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "Different operators prefer different aesthetics. Some want classic green CRT. Others prefer amber or white. PHOSPHOR 2.0 gives them choice while maintaining functional consistency. On an NX-12, every palette looks the same - four shades of green. On an NX-20, each palette has its own character. The interface adapts to the hardware without the operator changing their workflow."  
 > - Dr. Elizabeth Krane, User Experience Memo
 
-* **v2.2.4** **"Ghost Revised"** - Neural pattern recognition added
+* ![GHOST v2.2.4](https://img.shields.io/badge/GHOST-v2.2.4-06b6d4) **"Ghost Revised"** - Neural pattern recognition added
   * First use of behavioral psychology in word selection algorithms
   * **Solver: DIVERGENCE rule**—when multiple candidates tie on best-bucket score, choose the one *farthest from the previous guess* (maximise match-count distance from last guess); codename **DIVERGENCE** (polar selection) improved robustness when the terminal response left several equally good options
   * Success rate improved to 81%
@@ -310,11 +310,11 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 #### CODENAME: ECHELON (February-October 2077)
 **Status:** Operational Deployment
 
-* **v3.0.0** **"Echelon"** - Complete system redesign
+* ![ECHELON v3.0.0](https://img.shields.io/badge/ECHELON-v3.0.0-059669) **"Echelon"** - Complete system redesign
   * **Solver: Tie-breaker strategy**—deterministic choice among candidates with best information score and smallest worst-case bucket (stable ordering when still tied); replaced GHOST's DIVERGENCE heuristic with a reproducible tie-breaker for consistent field behaviour and auditability
   * Breach time: 2-4 minutes (Average), 6-9 minutes (Very Hard)
   * Success rate: 94%
-  * **PHOSPHOR 3.0:** Graphical capabilities added (Pip-Boy 3000 Mark III/IV and Looking Glass only)
+  * **![PHOSPHOR 3.0](https://img.shields.io/badge/PHOSPHOR-3.0-7c3aed):** Graphical capabilities added (Pip-Boy 3000 Mark III/IV and Looking Glass only)
   * **Pip-Boy 3000 Mark III/IV support:** First ECHELON versions compatible with Pip-Boy 3000 series
   * **Complete backward compatibility:** Runs on NX-12, NX-20, NX-120, Pip-Boy 2000, Pip-Boy 3000 series, and Looking Glass browser
   * **Platform feature matrix:** Graphics disabled on NX-series terminals (text mode fallback)
@@ -336,33 +336,34 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "We've successfully tested ECHELON v3.0.0 on every RobCo terminal variant from the NX-12 (2070) through the NX-120 (2076). The core breach algorithms written for RAVEN v1.3.1 in April 2076 still execute flawlessly. PHOSPHOR's abstraction layer has proven itself - no operator retraining required, no platform-specific patches needed."  
 > - Testing Division Report, Site-R
 
-* **v3.1.0** (May 2077) - Dictionary attack optimization
+* ![ECHELON v3.1.0](https://img.shields.io/badge/ECHELON-v3.1.0-059669) (May 2077) - Dictionary attack optimization
   * Reduced false positive rate by 23%
   * Added tactical breach scenarios database
   * Improved NEST mainframe synchronization
-  * **PHOSPHOR 3.0 refinement:** Optimized phosphor decay timing algorithms
+  * **![PHOSPHOR 3.0.1](https://img.shields.io/badge/PHOSPHOR-3.0.1-7c3aed)** (refinement): Optimized phosphor decay timing algorithms
 
-* **v3.1.5** (August 2077) - Enhanced neural pattern recognition
+* ![ECHELON v3.1.5](https://img.shields.io/badge/ECHELON-v3.1.5-059669) (August 2077) - Enhanced neural pattern recognition
   * Incorporated data from 50,000+ breached terminals
   * Machine learning refinements
   * First "zero-attempt" breaches (correct password on first try: 12% of cases)
-  * **PHOSPHOR enhancement:** Hardware-level handshake timing replication
+  * **![PHOSPHOR 3.0.2](https://img.shields.io/badge/PHOSPHOR-3.0.2-7c3aed)** (enhancement): Hardware-level handshake timing replication
 
 ##### Phosphor Timing Breakthrough (August 2077):
 
 > "We discovered that RobCo's 'secure' terminals perform authentication handshakes by measuring display response times down to the microsecond. They thought nobody could replicate the exact phosphor decay curves of their CRT displays. They were wrong. PHOSPHOR 3.0 defeats this by being physically identical to genuine RobCo displays at the hardware timing level."  
 > - Dr. Elizabeth Krane, Security Analysis Memo
 
-* **v3.1.6** (September 2077) - Counter-intrusion hardening
+* ![ECHELON v3.1.6](https://img.shields.io/badge/ECHELON-v3.1.6-059669) (September 2077) - Counter-intrusion hardening
   * Added honeypot countermeasures (defense against reverse-hacking)
   * Improved stealth protocol handlers
+  * **![PHOSPHOR 3.0.3](https://img.shields.io/badge/PHOSPHOR-3.0.3-7c3aed)** (enhancement): Stealth and counter-intrusion handshake hardening
   * Emergency data wipe functionality
 
-* **v3.1.7** (October 2077) - Final pre-war version
+* ![ECHELON v3.1.7](https://img.shields.io/badge/ECHELON-v3.1.7-059669) (October 2077) - Final pre-war version
   * Optimized dictionary attack vectors
   * Improved stealth mode (undetectable even by military-grade intrusion detection)
   * Enhanced EMP buffer protection
-  * **PHOSPHOR 3.0 finalized:** Perfect backward compatibility verified
+  * **![PHOSPHOR 3.0.4](https://img.shields.io/badge/PHOSPHOR-3.0.4-7c3aed)** (finalized): Perfect backward compatibility verified
   * **Status:** 247 units deployed to OMEGA clearance operatives
 
 ##### Final Security Assessment (October 19, 2077):
@@ -405,7 +406,7 @@ Dr. Marcus Aldridge, Krane's chief deputy during PHOSPHOR 3.0 development, assum
 > "Dr. Krane built ECHELON to be immortal - a system that would outlive its creators. My job is to prove her right. We preserve what works, we adapt what must change, and we never forget why she built this: so the Enclave survives, no matter what."  
 > - Dr. Marcus Aldridge, ECHELON Project Director
 
-### PHOSPHOR's Post-War Advantage
+### ![PHOSPHOR](https://img.shields.io/badge/PHOSPHOR-v3.x-7c3aed) – Post-War Advantage
 
 The decision to build PHOSPHOR as a universal abstraction layer proved prescient in the post-war wasteland:
 
@@ -426,8 +427,8 @@ The decision to build PHOSPHOR as a universal abstraction layer proved prescient
 ### Continued Development (Post-War)
 The system continued evolving in Raven Rock and later on the Poseidon Oil Rig under Dr. Aldridge's leadership:
 
-* **v3.2.x series** (2080s): Adapted for degraded pre-war terminals
-  * PHOSPHOR enhancements for damaged CRT displays
+* ![ECHELON v3.2.x](https://img.shields.io/badge/ECHELON-v3.2.x-059669) series (2080s): Adapted for degraded pre-war terminals
+  * **![PHOSPHOR 3.0.5](https://img.shields.io/badge/PHOSPHOR-3.0.5-7c3aed):** Enhancements for damaged CRT displays
   * Voltage fluctuation compensation
   * Degraded phosphor coating adaptation
 
@@ -436,7 +437,8 @@ The system continued evolving in Raven Rock and later on the Poseidon Oil Rig un
 > "Dr. Krane designed PHOSPHOR for pristine pre-war hardware. The wasteland gave us melted displays, failing power supplies, and radiation-damaged circuits. We're teaching PHOSPHOR to work with what survived, not what we wish had survived."  
 > - Dr. Marcus Aldridge, Technical Adaptation Report
 
-* **v3.2.5** (2085): **Power Armor Integration - Project IRONCLAD**
+* ![ECHELON v3.2.5](https://img.shields.io/badge/ECHELON-v3.2.5-059669) (2085): **Power Armor Integration - Project IRONCLAD**
+  * **![PHOSPHOR 3.6.0](https://img.shields.io/badge/PHOSPHOR-3.6.0-7c3aed):** Power Armor HUD display support
   * ECHELON integrated into T-60 Power Armor HUD systems
   * Allows operatives to breach terminals while maintaining combat readiness
   * Standard deployment to all Enclave Power Armor units by 2090
@@ -454,34 +456,103 @@ When the Brotherhood of Steel began capturing Enclave T-60 units with integrated
 
 ECHELON integration was removed from standard Power Armor configurations. By the X-series Advanced Power Armor era, ECHELON remained exclusive to Hellfire-class units only - reserved for elite operatives whose armor was unlikely to be captured.
 
-* **v3.3.x series** (2150s): Brotherhood of Steel detection countermeasures
-  * PHOSPHOR signature masking (prevents BoS detection of Enclave tools)
+* ![ECHELON v3.3.x](https://img.shields.io/badge/ECHELON-v3.3.x-059669) series (2150s): Brotherhood of Steel detection countermeasures
+  * **![PHOSPHOR 4.0.0](https://img.shields.io/badge/PHOSPHOR-4.0.0-7c3aed):** Signature masking (prevents BoS detection of Enclave tools) - **BREAKING CHANGE**
   * Power Armor integration limited to Hellfire-class units
+  * Incompatible with some older Pip-Boy models (2000 series, early 3000 Mark I/II)
+  * Requires updated firmware on NX-series terminals
 
-* **v3.4.x series** (2240s): Institute technology analysis integration
-  * PHOSPHOR extended to handle Institute hybrid terminal systems
+##### PHOSPHOR 4.0 Breaking Changes (2150):
+
+> "PHOSPHOR 4.0's signature masking is a double-edged sword. We've made ECHELON invisible to Brotherhood detection systems, but at a cost - compatibility with legacy hardware. Operators running Pip-Boy 2000 units or maintaining NX-12 infrastructure cannot upgrade. We're creating a fork in the codebase, and I accept that responsibility."  
+> - Dr. Marcus Aldridge, PHOSPHOR 4.0 Technical Review
+
+* ![ECHELON v3.4.x](https://img.shields.io/badge/ECHELON-v3.4.x-059669) series (2240s): Institute technology analysis integration
+  * **![PHOSPHOR 4.1.0](https://img.shields.io/badge/PHOSPHOR-4.1.0-7c3aed):** Extended to handle Institute hybrid terminal systems
+  * Full compatibility with Institute SRB terminals
+  * Advanced synth detection protocols
+  * Maintained on PHOSPHOR 4.x branch only (initially)
+
+* ![ECHELON v3.2.9](https://img.shields.io/badge/ECHELON-v3.2.9-059669) (2245): **Institute Compatibility Backport (LTS)**
+  * **![PHOSPHOR 3.5.0](https://img.shields.io/badge/PHOSPHOR-3.5.0-7c3aed):** Institute hybrid terminal support (backported from 4.1.0) - **Long-Term Support Branch**
+  * Maintained for operators who cannot deploy PHOSPHOR 4.x
+  * Preserves compatibility with pre-war and early post-war systems
+  * Does NOT include BoS signature masking (intentional compatibility trade-off)
+  * Compatible with: Pip-Boy 2000, Pip-Boy 3000 (all variants), NX-12/20/120 terminals
+
+##### Dr. Aldridge on LTS Strategy (2245):
+
+> "Not every operative can afford to deploy PHOSPHOR 4.0. The signature masking comes at a cost - incompatibility with older Pip-Boy models and certain terminal types. The 3.5.0 LTS branch serves those who need Institute access without sacrificing their existing infrastructure. It's a tactical choice, not a technical limitation. Sometimes the old ways work best."  
+> - Dr. Marcus Aldridge, ECHELON Maintenance Division
+
+##### Dual-Track Development Timeline (2150-2287):
+
+```
+PHOSPHOR 3.x (Legacy-Compatible Branch)
+├─ 3.0.4 (2077): Final pre-war
+├─ 3.0.5 (2080s): Degraded terminal support
+├─ 3.6.0 (2085): Power Armor HUD
+└─ 3.5.0 LTS (2245): Institute backport ← Active maintenance
+
+PHOSPHOR 4.x (Modern, BoS-Hardened Branch)
+├─ 4.0.0 (2150s): Breaking change (signature masking)
+└─ 4.1.0 (2240s): Institute support ← Current development
+```
+
+**Field Deployment Guidelines (2287):**
+
+| Scenario | Recommended Version | Reasoning |
+|----------|---------------------|-----------|
+| Pre-war terminal access | ECHELON 3.1.7 (PHOSPHOR 3.0.4) | Maximum compatibility, proven stable |
+| Pip-Boy 2000 operators | ECHELON 3.2.9 (PHOSPHOR 3.5.0 LTS) | Institute access without hardware upgrade |
+| BoS contested territory | ECHELON 3.4.x (PHOSPHOR 4.1.0) | Signature masking essential |
+| Institute infiltration | ECHELON 3.4.x (PHOSPHOR 4.1.0) or 3.2.9 (PHOSPHOR 3.5.0 LTS) | Both support Institute terminals |
+| Hellfire Armor units | ECHELON 3.4.x (PHOSPHOR 4.1.0) | Integrated HUD support |
 
 ### Modern Status (2287)
-ECHELON v3.1.7 remains the "gold standard" build:
+
+**Three Primary Deployment Branches:**
+
+Each branch serves distinct operational requirements:
+
+#### ![ECHELON v3.1.7](https://img.shields.io/badge/ECHELON-v3.1.7-059669) (![PHOSPHOR 3.0](https://img.shields.io/badge/PHOSPHOR-3.0-7c3aed)) - "Gold Standard"
+
+The purest implementation of dr Krane's vision:
 
 * Most stable version
 * Fully compatible with all pre-war terminal types
 * No authentication servers required (all algorithms local)
 * Perfect preservation of Dr. Krane's original architecture
-* **PHOSPHOR 3.0 unchanged:** Still the definitive abstraction layer
+* **Use when:** Stability and purity are paramount
 
 ##### Why v3.1.7 Endures:
 
-> "Later versions added features we don't need and complexity we can't maintain. v3.1.7 is elegant, proven, and deadly. When you're breaching a terminal in hostile territory with super mutants breathing down your neck, you want the version that's worked flawlessly for 210 years."
+> "Later versions added features we don't need and complexity we can't maintain. v3.1.7 is elegant, proven, and deadly. When you're breaching a terminal in hostile territory with super mutants breathing down your neck, you want the version that's worked flawlessly for 210 years."  
 > - Colonel Autumn, Enclave Intelligence Division
+
+#### ![ECHELON v3.2.9](https://img.shields.io/badge/ECHELON-v3.2.9-059669) (![PHOSPHOR 3.5.0 LTS](https://img.shields.io/badge/PHOSPHOR-3.5.0_LTS-7c3aed)) - "Versatility Champion"
+
+The most versatile deployment option:
+
+* Widest hardware compatibility (Pip-Boy 2000 through 3000 Mark IV)
+* Institute hybrid terminal support (backported from 4.1.0)
+* No BoS signature masking (detectable by Brotherhood systems)
+* **Use when:** Maximum compatibility is required
+
+#### ![ECHELON v3.4.x](https://img.shields.io/badge/ECHELON-v3.4.x-059669) (![PHOSPHOR 4.1.0](https://img.shields.io/badge/PHOSPHOR-4.1.0-7c3aed)) - "Modern Warfare"
+
+
+State-of-the-art capability for contemporary operations:
+
+* BoS signature masking (undetectable by Brotherhood)
+* Institute hybrid terminal support
+* Requires modern hardware
+* **Use when:** Stealth and cutting-edge features are essential
 
 ##### PHOSPHOR's 210-Year Legacy (2287):
 
-> "Dr. Krane's PHOSPHOR abstraction layer has outlived her by two centuries. Every terminal we encounter - from pristine Vault-Tec systems to jury-rigged Brotherhood salvage - PHOSPHOR handles it. We're still using code she wrote in 2076. That's not just good engineering. That's immortality. Dr. Aldridge spent his career preserving her vision. We honor them both by keeping ECHELON v3.1.7 alive."  
-> - Enclave Archivist, Historical Technology Preservation Division
-
-
-## Technical Philosophy
+> "Dr. Krane's PHOSPHOR abstraction layer has outlived her by two centuries. Every terminal we encounter - from pristine Vault-Tec systems to jury-rigged Brotherhood salvage - PHOSPHOR handles it. We're still using code she wrote in 2076. That's not just good engineering. That's immortality. Dr. Aldridge spent his career preserving her vision while adapting it to new threats. We honor them both by maintaining three parallel branches: 3.0 for purity, 3.5 for compatibility, and 4.1 for modern warfare. Each serves its purpose."  
+> - Enclave Archivist, Historical Technology Preservation Division## Technical Philosophy
 ### "The UOS Was Designed to Be Breached"
 Dr. Krane's controversial theory:
 #### Core Vulnerabilities by Design:

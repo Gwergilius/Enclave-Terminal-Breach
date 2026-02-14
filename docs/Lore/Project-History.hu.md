@@ -23,21 +23,21 @@ SIGNET: az Enclave titkos belső hálózata (2074), OMEGA személyzetnek. **Look
 ## Verziótörténet
 
 #### SPARROW (2076 márc.–ápr.):
-- v1.1.0 első futtatható POC (DOS konzol, stdin/stdout); **HOUSE gambit** (statisztikai / véletlen tippválasztás), ~55% siker, ~15% legrosszabb eset.
-- v1.2.0 bevitel finomítás (case-insensitive, többoszlopos lista). RAVEN és a későbbi fázisok a SPARROW-alapú magot örökölték.   
+- v1.1.0 ![SPARROW v1.1.0](https://img.shields.io/badge/SPARROW-v1.1.0-38bdf8) első futtatható POC (DOS konzol, stdin/stdout); **HOUSE gambit** (statisztikai / véletlen tippválasztás), ~55% siker, ~15% legrosszabb eset.
+- v1.2.0 ![SPARROW v1.2.0](https://img.shields.io/badge/SPARROW-v1.2.0-38bdf8) bevitel finomítás (case-insensitive, többoszlopos lista). RAVEN és a későbbi fázisok a SPARROW-alapú magot örökölték.   
 #### RAVEN (2076 ápr.–aug.):
-- v1.3.1 best-bucket megoldás (információs pontszám + legkisebb legrosszabb bucket), első sikeres UOS feltörés NX-12-re, 34% siker, 47 perc; 
-- v1.4.0 PHOSPHOR 1.0 (hardver absztrakció).   
+- v1.3.1 ![RAVEN v1.3.1](https://img.shields.io/badge/RAVEN-v1.3.1-1e40af) best-bucket megoldás (információs pontszám + legkisebb legrosszabb bucket), első sikeres UOS feltörés NX-12-re, 34% siker, 47 perc; 
+- v1.4.0 ![RAVEN v1.4.0](https://img.shields.io/badge/RAVEN-v1.4.0-1e40af) ![PHOSPHOR 1.0](https://img.shields.io/badge/PHOSPHOR-1.0-7c3aed) (hardver absztrakció).   
 #### GHOST (2076 szept.–2077 jan.):
-- v2.0.0 Pip-Boy + Looking Glass (SIGNET), 67%, 8 perc; 
-- v2.2.0 PHOSPHOR 2.0 (16 szín); v2.2.4 „Ghost Revised” DIVERGENCE szabály (döntetlenben az előző tipptől legtávolabbi jelölt), neurális minta felismerés, 81%.   
+- v2.0.0 ![GHOST v2.0.0](https://img.shields.io/badge/GHOST-v2.0.0-06b6d4) Pip-Boy + Looking Glass (SIGNET), 67%, 8 perc; 
+- v2.2.0 ![GHOST v2.2.0](https://img.shields.io/badge/GHOST-v2.2.0-06b6d4) ![PHOSPHOR 2.0](https://img.shields.io/badge/PHOSPHOR-2.0-7c3aed) (16 szín); v2.2.4 ![GHOST v2.2.4](https://img.shields.io/badge/GHOST-v2.2.4-06b6d4) „Ghost Revised” DIVERGENCE szabály (döntetlenben az előző tipptől legtávolabbi jelölt), neurális minta felismerés, 81%.   
 #### ECHELON (2077 febr.–okt.):
-- v3.0.0 tie-breaker stratégia (determinisztikus döntetlenfeloldás), teljes átdolgozás, 94%, 2–4 perc, PHOSPHOR 3.0; 
-- v3.1.7 végső háború előtti, 247 egység OMEGA operatíveknek.   
+- v3.0.0 ![ECHELON v3.0.0](https://img.shields.io/badge/ECHELON-v3.0.0-059669) tie-breaker stratégia (determinisztikus döntetlenfeloldás), teljes átdolgozás, 94%, 2–4 perc, ![PHOSPHOR 3.0](https://img.shields.io/badge/PHOSPHOR-3.0-7c3aed); 
+- v3.1.7 ![ECHELON v3.1.7](https://img.shields.io/badge/ECHELON-v3.1.7-059669) végső háború előtti, 247 egység OMEGA operatíveknek.   
 
 ## Háború utáni örökség
 
-2077. október 23.: A nagy háború. 247 egységből 204 túlélt. Charleston tragédia: Dr. Krane elvesztése; Dr. Marcus Aldridge veszi át. PHOSPHOR háború utáni előny: Brotherhood, Institute, degradált terminálok – mind kezelve. v3.2.x (2080-as évek) degradált terminálok; v3.2.5 IRONCLAD (Power Armor HUD); v3.3.x Brotherhood ellenintézkedések; v3.4.x Institute integráció. 2287: ECHELON v3.1.7 „arany standard”.
+2077. október 23.: A nagy háború. 247 egységből 204 túlélt. Charleston tragédia: Dr. Krane elvesztése; Dr. Marcus Aldridge veszi át. ![PHOSPHOR](https://img.shields.io/badge/PHOSPHOR-system-7c3aed) háború utáni előny: Brotherhood, Institute, degradált terminálok – mind kezelve. ![ECHELON v3.2.x](https://img.shields.io/badge/ECHELON-v3.2.x-059669) (2080-as évek) degradált terminálok; ![ECHELON v3.2.5](https://img.shields.io/badge/ECHELON-v3.2.5-059669) IRONCLAD (Power Armor HUD); ![ECHELON v3.3.x](https://img.shields.io/badge/ECHELON-v3.3.x-059669) Brotherhood ellenintézkedések; ![ECHELON v3.4.x](https://img.shields.io/badge/ECHELON-v3.4.x-059669) Institute integráció. 2287: ![ECHELON v3.1.7](https://img.shields.io/badge/ECHELON-v3.1.7-059669) „arany standard”.
 
 ## Technikai filozófia
 
