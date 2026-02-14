@@ -2,6 +2,8 @@
 
 **[English]** | Magyar
 
+[![Verzió (SPARROW)][version-badge]][releases]
+[![Coverage][coverage-badge]][coverage-url]
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]
 
@@ -22,8 +24,8 @@ Egy **terminál feltörő asszisztens** alkalmazás, amely a Bethesda Fallout j�
 | Komponens | Állapot |
 |-----------|--------|
 | Dokumentáció | 🚧 Folyamatban |
-| Architektúra | 📋 Tervezett |
-| SPARROW (DOS PoC) | 📋 Tervezett |
+| Architektúra | 🚧 Folyamatban |
+| SPARROW (DOS PoC) | 🚧 Folyamatban |
 | RAVEN (Konzol) | 📋 Tervezett |
 | GHOST (Web/Blazor) | 📋 Tervezett |
 | ECHELON (MAUI mobil) | 📋 Tervezett |
@@ -52,14 +54,45 @@ Minden fázis jelentős architektúra mérföldkő, a végső ECHELON v2.1.7 bev
 
 ## 📖 Dokumentáció
 
-- [Project History][Project History] – Teljes ECHELON háttér
-- [Algorithm][Algorithm] – Jelszó eliminációs algoritmus
-- [Architecture][Architecture] – Rendszertervezési dokumentumok
-- [Coding Standards][Coding Standards] – Fejlesztési irányelvek
+- [Project History] – Teljes ECHELON háttér
+- [Algorithm] – Jelszó eliminációs algoritmus
+- [Architecture] – Rendszertervezési dokumentumok
+- [Coding Standards] – Fejlesztési irányelvek
+
+## 📁 Forráskód
+
+A mappa szerkezet, megosztott komponensek (Common, Core, tesztek, teszt segédletek), a solution és a build/stílus konfiguráció a **[src/README][src README]**-ben van leírva. A solution a `src/Enclave.Echelon.slnx` fájlból nyitható. A buildet a **src/** mappából kell futtatni: 
+
+```Powershell
+cd src
+dotnet build Enclave.Echelon.slnx
+```
+
+A **code coverage** riporthoz lásd a [tools/coverage/README](tools/coverage/README.hu.md) fájlt.
+
+## 🔄 CI / pipeline
+
+GitHub Actions (`.github/workflows/ci.yml`):
+
+- **Push** (bármely branch): build, unit tesztek és coverage futnak; a **hibák nem blokkolók** (félkész állapotban is be tudod küldeni, de látod az eredményt). Main-re sikeres teszt esetén a GitVersion kiírja a verziót.
+- **Pull request** (main/master felé): a build, unit tesztek és a coverage **blokkolók**; a futtatás **sikertelen**, ha build/teszt elhasal, vagy a line coverage 80% alatt, illetve a branch coverage 95% alatt van.
+
+### Verzió a commit / PR üzenetből
+
+A verzióemelést a **commit üzenetek** (feature branchen) és a **PR címe/leírása** (merge-nél) vezérlik. Konfig: `GitVersion.yml`. A **main-re történő közvetlen commit tiltott** (kivéve pl. Changelog küldés).
+
+| Kontextus | Alapértelmezett | Indító | Példa |
+|-----------|------------------|--------|--------|
+| **Commit** (feature branchen) | Csak build szám (`0.1.0+5` → `+6`) | `patch(scope):` a subjectben | `patch(fix): validáció javítás` → patch |
+| **PR merge** (Squash and merge) | **Minor** (új feature) | Subject `feat:` vagy `feat(scope):` | `feat: Password modell` → minor |
+| **PR merge** | **Major** (breaking) | Subject tartalmazza `breaking-change:` vagy `BREAKING CHANGE:` | `breaking-change: API eltávolítás` → major |
+| **PR merge** | **Patch** (csak fix) | Subject `patch:` vagy `patch(scope):` | `patch: elírás javítása` → patch |
+
+PR-nál használj **Squash and merge**-et, hogy a PR címe kerüljön a merge commit üzenetébe, és a GitVersion alkalmazza a fenti szabályokat.
 
 ## 🤝 Közreműködés
 
-Személyes portfólió projekt, de a visszajelzés és javaslatok welcome. A közreműködési irányelvek: `.cursor/rules/`.
+Személyes portfólió projekt, de a visszajelzés és javaslatok megköszönöm. A közreműködési irányelvek: [.cursor/rules/][Coding Standards].
 
 ## 📜 Licenc
 
@@ -80,8 +113,13 @@ MIT License – részletek: [LICENSE].
 [Algorithm]: ./docs/Architecture/Algorithm.hu.md
 [Architecture]: ./docs/Architecture/README.hu.md
 [Coding Standards]: ./.cursor/rules/README.hu.md
+[src README]: ./src/README.hu.md "Forráskód szerkezet és konfiguráció"
 [LICENSE]: ./LICENSE
 [License-MIT]: https://opensource.org/licenses/MIT
 [Dotnet]: https://dotnet.microsoft.com/
+[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
+[releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
+[coverage-badge]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach/graph/badge.svg
+[coverage-url]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4

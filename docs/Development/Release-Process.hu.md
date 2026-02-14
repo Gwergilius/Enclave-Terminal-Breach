@@ -8,6 +8,6 @@ Szemantikus verzió (MAJOR.MINOR.PATCH) platformonként. Fázis verziók: sparro
 
 **Pre-release ellenőrzőlista:** tesztek, doc, verzió a projektfájlokban, build, manuális teszt. **Lépések:** verzió frissítés (csproj), CHANGELOG [Keep a Changelog], release commit, annotated tag (pl. sparrow-v0.1.0), push tag, GitHub Release (cím, leírás, opcionális binárisok). **Típusok:** stable, pre-release (alpha/beta/rc), hotfix (tagból branch, fix, PR, changelog, tag).
 
-Changelog kézi (ajánlott) vagy standard-version/release-please. Build artifactok: platform-specifikus publish, elnevezés Enclave-{PHASE}-v{VERSION}-{PLATFORM}. Deprecation: [Obsolete], doc, CHANGELOG Deprecated, eltávolítás következő MAJOR-ban.
+Changelog kézi (ajánlott) vagy standard-version/release-please. Build artifactok: platform-specifikus publish (SPARROW: dotnet publish Enclave.Sparrow), zip/tar.gz, elnevezés Enclave-{PHASE}-v{VERSION}-{PLATFORM}. **Letölthető fájl a release-hez:** build → csomagolás → GitHub Release oldalon csatolás (drag & drop) vagy `gh release upload <tag> <fájl>`. Deprecation: [Obsolete], doc, CHANGELOG Deprecated, eltávolítás következő MAJOR-ban.
 
 [English]: ./Release-Process.md

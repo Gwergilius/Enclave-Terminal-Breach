@@ -17,6 +17,10 @@ This document describes a potential future architecture improvement for the Fall
 - [Performance Analysis][anchor-perf]
 - [Migration Path][anchor-migration]
 - [When to Implement][anchor-when]
+- [Future UI/UX Architecture][anchor-uiux]
+  - [Information Architecture][anchor-info-arch]
+  - [Additional Feature Concepts][anchor-features]
+  - [Phased Implementation Roadmap][anchor-roadmap]
 
 ---
 
@@ -63,7 +67,7 @@ public class Password
     /// </summary>
     public string Word { get; }
 
-    // ❌ REMOVED: IsEliminated property (moved to GameSession)
+    // âŒ REMOVED: IsEliminated property (moved to GameSession)
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Password"/> class.
@@ -302,12 +306,12 @@ Diagram source: [FutureArchitecture.drawio][src-arch].
 
 | Aspect | Current | Proposed |
 |--------|---------|----------|
-| **Memory per word** | N × (Password object) per session | 1 × (Password object) total |
+| **Memory per word** | N Ã— (Password object) per session | 1 Ã— (Password object) total |
 | **GetMatchCount (first call)** | O(word_length) | O(word_length) |
 | **GetMatchCount (repeated)** | O(word_length) | **O(1)** cache hit |
 | **New GameSession creation** | O(n) Password allocations | O(n) dictionary lookups |
 | **IsEliminated storage** | On Password (leaks across sessions) | On GameSession (isolated) |
-| **Word list with 100k words** | 100k × sessions objects | 100k objects total |
+| **Word list with 100k words** | 100k Ã— sessions objects | 100k objects total |
 
 ---
 
@@ -315,10 +319,10 @@ Diagram source: [FutureArchitecture.drawio][src-arch].
 
 ### Match Count Cache Efficiency
 
-Match counts are cached bidirectionally per pair: the **first** call for a pair (in either order) costs **O(word length)** and stores the result in both passwords’ caches; every **subsequent** call for that pair is **O(1)** from cache.
+Match counts are cached bidirectionally per pair: the **first** call for a pair (in either order) costs **O(word length)** and stores the result in both passwordsâ€™ caches; every **subsequent** call for that pair is **O(1)** from cache.
 
 For a typical game with 12 passwords:
-- Total possible comparisons: 12 × 11 / 2 = 66 unique pairs
+- Total possible comparisons: 12 Ã— 11 / 2 = 66 unique pairs
 - With cache: Each pair computed once, then O(1) for all later lookups
 - Across multiple games with same words: **100% cache hit rate**
 
@@ -380,6 +384,488 @@ Assuming:
 - **[Cache-Aside]**: GetMatchCount caches results on first access 
 - **[Identity Map]**: One Password instance per unique word 
 
+---
+
+## Future UI/UX Architecture
+
+This section outlines potential future enhancements for the user interface, documentation, and community features.
+
+### Information Architecture
+
+**Goal:** Provide multiple access points to lore, documentation, and help content to serve different user needs and contexts.
+
+#### A) Dedicated Website (Marketing + Lore Hub)
+
+**Purpose:** Public-facing portal for discovery, documentation, and community building.
+
+**Advantages:**
+- **SEO & Discovery:** Users can find the project through search engines
+- **Portfolio Showcase:** Demonstrates full-stack development capabilities
+- **Deep Dive Content:** Long-form technical articles and detailed lore
+- **Community Building:** Comment sections, Discord/Reddit integration
+- **Shareable:** Individual pages can be linked and shared
+
+**Proposed Structure:**
+
+```
+enclave-echelon.com (or fallout-terminal-hacker.com)
+│
+├── Home
+│   ├── Hero Section: "ECHELON Terminal Breach System"
+│   ├── Quick Pitch: What is this application?
+│   ├── Screenshots & Demo Video
+│   └── Download Links (Google Play, Web App, GitHub)
+│
+├── Lore (Enclave Eyes Only)
+│   ├── Project History (complete narrative)
+│   ├── PHOSPHOR Technical Overview
+│   ├── Character Profiles
+│   │   ├── Dr. Elizabeth Krane
+│   │   ├── Dr. Marcus Aldridge
+│   │   └── Col. Augustus Autumn Sr.
+│   ├── Interactive Timeline
+│   │   └── Visual timeline from 2076 to 2287
+│   └── Classified Documents
+│       ├── Boot Sequence Documentation
+│       ├── Component Architecture
+│       └── Version History
+│
+├── Documentation
+│   ├── Getting Started Guide
+│   ├── How to Use ECHELON
+│   ├── Algorithm Explained (simplified Algorithm.md)
+│   ├── Fallout Terminal Hacking Guide
+│   ├── Solver Strategy Guide
+│   └── FAQ
+│
+├── Development Blog
+│   ├── "Why I Built This"
+│   ├── "PHOSPHOR Architecture Deep-Dive"
+│   ├── "Syncing Fiction with Code Evolution"
+│   ├── "From SPARROW to ECHELON: A Development Journey"
+│   └── Release Notes & Changelogs
+│
+└── Download / Links
+    ├── Google Play Store
+    ├── Web Application
+    ├── GitHub Repository (if open source)
+    └── Community Links (Discord, Reddit)
+```
+
+**Technical Stack Suggestions:**
+- **Static Site Generator:** Hugo, Astro, or Jekyll
+- **Styling:** Custom Pip-Boy/Terminal aesthetic with green phosphor theme
+- **Hosting:** GitHub Pages, Netlify, or Vercel (free tier)
+- **Interactive Elements:** JavaScript for timeline, document viewer
+
+#### B) In-App "Civilopedia" (Integrated Help System)
+
+**Purpose:** Immersive, offline-accessible documentation within the application itself.
+
+**Advantages:**
+- **Immersion:** Maintains Pip-Boy aesthetic without breaking the experience
+- **Offline Access:** All content available without internet connection
+- **Context-Aware:** Tooltips and inline help linked to current screen
+- **Progressive Disclosure:** Show only relevant information at the right time
+- **No External Dependencies:** Self-contained experience
+
+**Proposed Structure (Pip-Boy Terminal Aesthetic):**
+
+```
+╔══════════════════════════════════════════╗
+║ ECHELON DATABASE - OMEGA-7 ACCESS        ║
+║ [CLASSIFIED - AUTHORIZED PERSONNEL ONLY] ║
+╚══════════════════════════════════════════╝
+
+┌─ SYSTEMS ────────────────────────────────┐
+│ > Project History                        │
+│ > PHOSPHOR Terminal Emulator             │
+│ > Component Architecture                 │
+│   ├─ SIGINT Console                      │
+│   ├─ NEXUS Connection                    │
+│   └─ BLACKBIRD Stealth                   │
+│ > Version History Timeline               │
+│ > Boot Sequence Documentation            │
+└──────────────────────────────────────────┘
+
+┌─ OPERATIONS ─────────────────────────────┐
+│ > Quick Start Guide                      │
+│ > Terminal Hacking Tutorial              │
+│ > Solver Strategy Breakdown              │
+│   ├─ HOUSE Gambit (Random)               │
+│   ├─ Best-Bucket Strategy                │
+│   └─ Tie-Breaker Optimization            │
+│ > Troubleshooting & FAQ                  │
+│ > Keyboard Shortcuts Reference           │
+└──────────────────────────────────────────┘
+
+┌─ PERSONNEL ──────────────────────────────┐
+│ > Dr. Elizabeth Krane (1952-2078)        │
+│ > Dr. Marcus Aldridge (2055-?)           │
+│ > Col. Augustus Autumn Sr.               │
+│ > Robert House (Adversary Profile)       │
+│ > Agent "Gwergilius" (1961-?)            │
+│   └─ [CLEARANCE INSUFFICIENT]            │
+└──────────────────────────────────────────┘
+
+┌─ INTELLIGENCE ───────────────────────────┐
+│ > RobCo UOS Vulnerabilities              │
+│ > Fallout Terminal Mechanics             │
+│ > NX-Series Terminal Specifications      │
+│ > Brotherhood Countermeasures            │
+│ > Institute Terminal Analysis            │
+└──────────────────────────────────────────┘
+
+┌─ SETTINGS ───────────────────────────────┐
+│ > Color Palette Selection                │
+│   ├─ Green Phosphor (Classic)            │
+│   ├─ Amber Phosphor                      │
+│   ├─ White Phosphor                      │
+│   └─ Blue Phosphor                       │
+│ > Audio Settings                         │
+│ > Boot Sequence (Enable/Disable)         │
+│ > Advanced Options                       │
+└──────────────────────────────────────────┘
+```
+
+**Implementation Notes:**
+- Markdown files embedded as assembly resources
+- Custom Markdown renderer with Pip-Boy styling
+- Searchable database with keyword indexing
+- Bookmark/favorite document feature
+- "Recently Viewed" history
+
+**Example Code Structure:**
+
+```csharp
+public class LoreDatabase
+{
+    private readonly Dictionary<string, LoreDocument> _documents;
+    
+    public LoreDocument GetDocument(string documentId)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var resourceName = $"Echelon.Lore.{documentId}.md";
+        
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+        using var reader = new StreamReader(stream);
+        
+        return new LoreDocument
+        {
+            Id = documentId,
+            Content = reader.ReadToEnd(),
+            Theme = ThemeManager.Current
+        };
+    }
+}
+
+// Usage in View
+<LoreViewer DocumentId="project-history" 
+            Theme="GreenPhosphor" 
+            EnableSearch="true" />
+```
+
+#### C) Hybrid Approach (Recommended)
+
+**Strategy:** Implement both systems with complementary roles.
+
+**In-App (MAUI/Blazor):**
+- Quick reference guides and tutorials
+- Essential lore summaries (1-2 page versions)
+- Contextual tooltips and inline help
+- Offline-first design
+- Immersive Pip-Boy terminal aesthetic
+
+**Website:**
+- Complete lore archive with all documents
+- Long-form technical articles
+- Development blog and devlogs
+- Community resources and links
+- Marketing and app promotion
+
+**Content Sync Strategy:**
+- Maintain single source of truth (Markdown files in repository)
+- Website displays full documents
+- App embeds curated/abbreviated versions
+- Automated build process ensures consistency
+
+### Additional Feature Concepts
+
+#### 1. Interactive Timeline Visualization
+
+**Concept:** Visual representation of ECHELON development history from 2076 to 2287.
+
+```
+Timeline Features:
+├─ Interactive Nodes (clickable events)
+├─ Project Phases
+│  ├─ SPARROW (March-April 2076)
+│  ├─ RAVEN (April-August 2076)
+│  ├─ GHOST (September 2076-January 2077)
+│  └─ ECHELON (February-October 2077)
+├─ Key Personnel Annotations
+│  ├─ Dr. Krane (active 2076-2078)
+│  └─ Dr. Aldridge (active 2078-?)
+├─ Historical Events
+│  ├─ Great War (October 23, 2077)
+│  ├─ Charleston Tragedy (Winter 2077-2078)
+│  └─ Project IRONCLAD (2085)
+└─ Version Milestones
+   ├─ PHOSPHOR 1.0, 2.0, 3.0
+   └─ Component Integrations
+```
+
+**Implementation:** D3.js, Timeline.js, or custom SVG visualization
+
+#### 2. Classified Document Aesthetic
+
+**Concept:** Present lore documents as authentic-looking classified files.
+
+```
+Visual Elements:
+├─ Document Headers
+│  ├─ Classification Level (TOP SECRET - OMEGA-7)
+│  ├─ Document Control Numbers (ECHELON-HIST-001)
+│  └─ Distribution Restrictions
+├─ Redacted Sections ([REDACTED] blocks)
+├─ Official Stamps & Signatures
+│  ├─ "AUTHORIZED BY COL. AUTUMN"
+│  ├─ Date stamps
+│  └─ Security markings
+├─ Aging Effects
+│  ├─ Subtle paper texture
+│  ├─ Coffee stains (optional)
+│  └─ Worn edges
+└─ Typewriter Font (Courier or similar)
+```
+
+**CSS Example:**
+
+```css
+.classified-document {
+    font-family: 'Courier New', monospace;
+    background: #f4f1e8;
+    border: 2px solid #333;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    padding: 2em;
+}
+
+.classification-header {
+    border-top: 3px solid #c00;
+    border-bottom: 3px solid #c00;
+    text-align: center;
+    font-weight: bold;
+    padding: 0.5em;
+    background: #fff;
+}
+
+.redacted {
+    background: #000;
+    color: #000;
+    user-select: none;
+}
+```
+
+#### 3. Easter Eggs & Hidden Content
+
+**Concept:** Reward curious users with hidden lore and developer commentary.
+
+**Ideas:**
+- **Konami Code:** Unlock developer commentary mode
+- **NEST MAINFRAME ACCESS:** Secret command in help system reveals hidden documents
+- **"Looking Glass Mode":** Simulated SIGNET browser interface
+- **Terminal Commands:** Type special commands in app (e.g., `/history`, `/personnel`)
+- **Version Number Secrets:** Clicking version number 7 times reveals changelog
+
+**Example: Developer Profile Easter Egg**
+
+When user types `/gwergilius` or `/developer` in the help terminal:
+```
+╔══════════════════════════════════════════╗
+║ ECHELON DEVELOPMENT TEAM                 ║
+╚══════════════════════════════════════════╝
+
+Historical Team (2076-2078):
+- Dr. Elizabeth Krane (Project Lead)
+- Dr. Marcus Aldridge (Deputy Director)
+- [23 additional personnel - see ECHELON-HIST-001]
+
+Modern Implementation (2025-2026):
+The ECHELON system you are using was reconstructed 
+from recovered pre-war documentation by:
+
+GWERGILIUS (Gergely Tóth)
+Software Developer & Historical Reconstruction Specialist
+Born: 1961 (Pre-War era, somehow still operational)
+Specialization: Cross-platform .NET, Fallout lore integration
+
+> "I found Dr. Krane's notes in a Vault-Tec storage 
+> facility. Turns out PHOSPHOR wasn't just fiction - 
+> it was good software architecture. So I built it."
+
+RECRUITMENT NOTICE:
+The Enclave seeks individuals skilled in:
+- Cross-platform development (.NET, MAUI, Blazor)
+- Terminal emulation and UI/UX design
+- Fallout universe documentation
+- Hungarian-English translation
+
+Contact: recruitment@enclave.gov
+(Signal currently unavailable due to nuclear war)
+
+Press [ESC] to return to main menu
+```
+
+#### 4. Exportable Field Manual
+
+**Concept:** Allow users to download comprehensive documentation as a single document.
+
+**Formats:**
+- **PDF:** Professional "ECHELON Operator's Manual"
+- **ePub/Kindle:** E-reader friendly version
+- **Print-Optimized:** Clean formatting for physical printing
+
+**Contents:**
+- Complete Project History
+- Component documentation
+- Algorithm explanations
+- Terminal hacking guide
+- Troubleshooting procedures
+
+**Header Example:**
+
+```
+╔═════════════════════════════════════════╗
+║ ECHELON OPERATOR'S MANUAL               ║
+║ Version 2.1.7 - Field Operations Guide  ║
+║                                         ║
+║ CLASSIFICATION: TOP SECRET - OMEGA-7    ║
+║ AUTHORIZED PERSONNEL ONLY               ║
+╚═════════════════════════════════════════╝
+
+This document contains sensitive information 
+regarding ECHELON Terminal Breach operations...
+```
+
+#### 5. Audio Logs (Future Enhancement)
+
+**Concept:** Immersive audio content in Fallout holotape style.
+
+**Content Ideas:**
+- "Dr. Krane's Research Log, Entry 47..."
+- "NEST Command Briefing: ECHELON Deployment"
+- "Field Report: Charleston Tragedy Investigation"
+
+**Implementation:**
+- Text-to-speech generation (Azure Cognitive Services, ElevenLabs)
+- Voice acting (community contribution or professional)
+- Tape recorder UI aesthetic
+- Audio waveform visualization
+
+### Phased Implementation Roadmap
+
+#### Phase 1: MVP (SPARROW/RAVEN era)
+**Focus:** Core functionality only
+
+- [ ] Basic in-app help (How to Use)
+- [ ] README on GitHub with project overview
+- [ ] Simple documentation in repository
+
+**Timeline:** Current development phase
+
+#### Phase 2: Polish (GHOST era)
+**Focus:** Enhanced user experience
+
+- [ ] In-app Civilopedia with full lore database
+- [ ] Embedded Markdown viewer with Pip-Boy styling
+- [ ] Basic web landing page (download + overview)
+- [ ] Color palette settings integration
+
+**Timeline:** Beta release preparation
+
+#### Phase 3: Community (ECHELON era)
+**Focus:** Public presence and engagement
+
+- [ ] Full website with lore hub
+- [ ] Development blog
+- [ ] Interactive timeline visualization
+- [ ] Exportable field manual (PDF)
+- [ ] Community links (Discord/Reddit)
+
+**Timeline:** Public launch and promotion
+
+#### Phase 4: Advanced Features (Post-Launch)
+**Focus:** Premium experience
+
+- [ ] Audio logs
+- [ ] Easter eggs and hidden content
+- [ ] Multilingual support (Hungarian, English, etc.)
+- [ ] User-contributed content system
+- [ ] Achievement/badge system
+
+**Timeline:** Long-term enhancement
+
+### Success Metrics
+
+**Website Analytics:**
+- Page views and unique visitors
+- Time on site (especially lore pages)
+- Download conversion rate
+- Bounce rate from landing page
+
+**In-App Engagement:**
+- Help system usage frequency
+- Most-viewed lore documents
+- Search query analysis
+- Color palette preferences
+
+**Community Growth:**
+- GitHub stars/forks
+- Discord/Reddit membership
+- User-generated content submissions
+- Social media mentions
+
+### Technical Considerations
+
+**Accessibility:**
+- WCAG 2.1 AA compliance
+- Screen reader compatibility
+- Keyboard navigation support
+- High contrast mode option
+
+**Performance:**
+- Lazy loading for large documents
+- Image optimization
+- Embedded font subset loading
+- Service worker for offline access (web)
+
+**Maintenance:**
+- Single source of truth for content (Git repository)
+- Automated deployment pipeline
+- Version control for documentation
+- Regular content audits
+
+---
+
+## When to Implement UI/UX Enhancements
+
+**In-App Help (Phase 1-2):**
+- [ ] Multiple screens/features need explanation
+- [ ] User testing reveals confusion points
+- [ ] Lore content reaches critical mass
+
+**Website (Phase 2-3):**
+- [ ] App reaches beta stability
+- [ ] Core features are complete
+- [ ] Ready for public awareness campaign
+
+**Advanced Features (Phase 4):**
+- [ ] Established user base exists
+- [ ] Community actively engages with content
+- [ ] Resources available for polish work
+
+**Current Recommendation:** Focus on core application functionality first. Document ideas in FutureArchitecture.md for implementation when appropriate.
+
 [Magyar]: ./FutureArchitecture.hu.md
 [anchor-current]: #current-architecture
 [anchor-proposed]: #proposed-architecture
@@ -392,6 +878,10 @@ Assuming:
 [anchor-perf]: #performance-analysis
 [anchor-migration]: #migration-path
 [anchor-when]: #when-to-implement
+[anchor-uiux]: #future-uiux-architecture
+[anchor-info-arch]: #information-architecture
+[anchor-features]: #additional-feature-concepts
+[anchor-roadmap]: #phased-implementation-roadmap
 [img-current]: ../Images/FutureArchitecture-CurrentArchitecture.drawio.svg
 [src-current]: ../Images/FutureArchitecture-CurrentArchitecture.drawio
 [src-current-puml]: ../Images/FutureArchitecture-CurrentArchitecture.puml

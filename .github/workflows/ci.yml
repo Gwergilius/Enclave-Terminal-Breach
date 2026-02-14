@@ -1,0 +1,126 @@
+# CI: build, test, coverage. On push (any branch) = non-blocking; on PR to main = blocking.
+name: CI
+
+on:
+  push:
+    # all branches: feature commits get build/test/coverage but do not block
+  pull_request:
+    branches: [main, master]
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  # Path relative to working-directory (src); use Enclave.Echelon.slnx when running from src/
+  SOLUTION_PATH: "Enclave.Echelon.slnx"
+
+jobs:
+  build-and-test:
+    name: Build & unit tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for GitVersion
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build
+        id: build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore -c Release
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Run unit tests
+        id: test
+        run: dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" --logger "console;verbosity=normal"
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Set up GitVersion
+        id: gitversion-setup
+        if: always() && (steps.build.outcome == 'success' || github.event_name == 'pull_request')
+        uses: gittools/actions/gitversion/setup@v4.2.0
+        with:
+          versionSpec: "6.4.x"
+
+      - name: Execute GitVersion
+        id: gitversion
+        if: steps.gitversion-setup.outcome == 'success'
+        uses: gittools/actions/gitversion/execute@v4.2.0
+
+      - name: Output version (on push, when tests passed)
+        if: github.event_name == 'push' && steps.test.outcome == 'success' && steps.gitversion.outputs.SemVer != ''
+        run: |
+          echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
+
+  coverage-and-thresholds:
+    name: Coverage & thresholds
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install tools
+        run: |
+          dotnet tool install -g dotnet-coverage
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Restore & build
+        run: |
+          dotnet restore ${{ env.SOLUTION_PATH }}
+          dotnet build ${{ env.SOLUTION_PATH }} --no-restore -c Release
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Collect coverage (Coverlet, unit tests only; branch + line)
+        run: |
+          mkdir -p TestResults/raw
+          dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" \
+            --results-directory TestResults/raw --collect "XPlat Code Coverage"
+          # Merge Cobertura files if multiple test projects
+          COB=$(find TestResults/raw -name 'coverage.cobertura.xml' 2>/dev/null)
+          if echo "$COB" | grep -q .; then
+            if [ $(echo "$COB" | wc -l) -eq 1 ]; then
+              cp "$COB" TestResults/coverage.xml
+            else
+              dotnet-coverage merge $COB -f cobertura -o TestResults/coverage.xml
+            fi
+          else
+            echo "No coverage.cobertura.xml found"
+            exit 1
+          fi
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Run coverage threshold check
+        run: |
+          pwsh -File ../tools/coverage/assert-coverage-thresholds.ps1 \
+            -CoverageXmlPath "TestResults/coverage.xml" \
+            -LineMinimum 80 \
+            -BranchMinimum 95
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Upload coverage to Codecov (for badge)
+        if: success()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: src/TestResults/coverage.xml
+          fail_ci_if_error: false

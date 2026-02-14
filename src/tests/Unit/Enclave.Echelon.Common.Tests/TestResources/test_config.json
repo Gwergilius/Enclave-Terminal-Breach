@@ -1,0 +1,9 @@
+{
+  "TestSection": {
+    "Key1": "Value1",
+    "Key2": "Value2"
+  },
+  "AnotherSection": {
+    "Setting": "TestValue"
+  }
+}

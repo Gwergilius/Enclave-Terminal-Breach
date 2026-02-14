@@ -255,6 +255,22 @@ To see how quickly the algorithm converges in practice, we draw **20 random word
 
 So with **10-letter words** we are **not** in a harder situation: the number of steps is similar or slightly lower (2.3 vs 2.6 on average), and the typical **score is higher** (4.7 vs 3.9). With more positions, a guess tends to **spread** the candidates over more distinct match-count values (0, 1, 2, … up to 10), so we often get a finer partition and converge in few steps. Longer words do not make the puzzle inherently harder for this algorithm.
 
+### Automated performance test (Fallout difficulty levels, 4-step cap)
+
+The project runs automated convergence tests aligned with [Fallout terminal difficulty][Fallout Terminal Hacking]: **18 words** per run (same length), **20 runs per difficulty**, fixed seed for reproducibility. A run **succeeds** only when the solver **explicitly guesses** the secret (terminal response = word length) within **at most 4 steps**. No credit for “one candidate left” — the next guess would be the hit.
+
+Measured success rate (explicit hit within 4 steps):
+
+| Terminal level | Password length | Successes / runs | Rate  |
+|----------------|-----------------|-------------------|-------|
+| Very Easy      | 4–5             | 18 / 20           | 90%   |
+| Easy           | 6–8             | 18 / 20           | 90%   |
+| Average        | 9–10            | 19 / 20           | 95%   |
+| Hard           | 11–12           | 20 / 20           | 100%  |
+| Very Hard      | 13–15           | 20 / 20           | 100%  |
+
+**Overall:** 95 / 100 runs (95%) find the secret in ≤4 steps. As predicted: **harder (longer-word) levels are not harder** for the algorithm — they often converge faster because each guess yields more distinct match-count outcomes and a finer partition of the candidates.
+
 ## References
 
 ### Information Theory
@@ -278,11 +294,20 @@ So with **10-letter words** we are **not** in a harder situation: the number of 
 - [Word list and examples][words.txt] - Project resources  
   *Dictionary used for algorithm testing and benchmarking*
   
+### Try the minigame
+
+- [Hackinal][hackinal] – browser-based Fallout-style terminal hacking
+- [Jetholt Hacking][jetholt-hacking] – playable minigame
+- [OgnevOA fallout-terminal-hack-minigame][ognevoa-minigame] – GitHub project / playable version
+
 [words.txt]: ../../resources/words.txt
 [A Mathematical Theory of Communication]: http://cm.bell-labs.com/cm/ms/what/shannonday/shannon1948.pdf "A Mathematical Theory of Communication"
 [Elements of Information Theory]: https://cs-114.org/wp-content/uploads/2015/01/Elements_of_Information_Theory_Elements.pdf
 [Fallout Terminal Hacking]: https://fallout.fandom.com/wiki/Hacking
 [The Computer as Master Mind]: https://www.cs.uni.edu/~wallingf/teaching/cs3530/resources/knuth-mastermind.pdf
 [Guesswork and Entropy]: https://www.researchgate.net/publication/3084991_Guesswork_and_Entropy
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
+[ognevoa-minigame]: https://github.com/OgnevOA/fallout-terminal-hack-minigame
 [Magyar]: ./Algorithm.hu.md
 

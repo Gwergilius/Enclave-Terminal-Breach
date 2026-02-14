@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Enclave.Sparrow</RootNamespace>
+    <AssemblyName>Enclave.Sparrow</AssemblyName>
+    <Product>SPARROW</Product>
+    <Version>1.1.0</Version>
+    <Description>SPARROW – DOS-style console POC for Enclave Terminal Breach (stdin/stdout).</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Enclave.Echelon.Core.csproj" />
+  </ItemGroup>
+
+</Project>

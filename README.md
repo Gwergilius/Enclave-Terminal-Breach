@@ -2,6 +2,8 @@
 
 **English** | [Magyar]
 
+[![Version (SPARROW)][version-badge]][releases]
+[![Coverage][coverage-badge]][coverage-url]
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]
 
@@ -22,8 +24,8 @@ A **terminal hacking assistant** application that helps solve the terminal hacki
 | Component | Status |
 |-----------|--------|
 | Documentation | 🚧 In Progress |
-| Architecture | 📋 Planned |
-| SPARROW (DOS PoC) | 📋 Planned |
+| Architecture | 🚧 In Progress |
+| SPARROW (DOS PoC) | 🚧 In Progress |
 | RAVEN (Console) | 📋 Planned |
 | GHOST (Web/Blazor) | 📋 Planned |
 | ECHELON (MAUI Mobile) | 📋 Planned |
@@ -53,13 +55,44 @@ Each phase represents a significant architectural milestone, culminating in the 
 ## 📖 Documentation
 
 - [Project History] - Complete ECHELON backstory (Coming soon)
-- [Algorithm](docs/Algorithm.md) - Password elimination algorithm (Coming soon)
-- [Architecture](docs/Architecture/) - System design documents (Coming soon)
-- [Coding Standards](.cursor/rules/) - Development guidelines (Coming soon)
+- [Algorithm] - Password elimination algorithm (Coming soon)
+- [Architecture] - System design documents (Coming soon)
+- [Coding Standards] - Development guidelines (Coming soon)
+
+## 📁 Source code
+
+Folder structure, shared components (Common, Core, tests, test helpers), solution, and build/style configuration are described in the **[src/README][src README]**. Open the solution from `src/Enclave.Echelon.slnx`. Run the build from the **src/** folder: 
+
+```Powershell
+cd src
+dotnet build Enclave.Echelon.slnx
+```
+
+For **code coverage** reports, see [tools/coverage/README](tools/coverage/README.md).
+
+## 🔄 CI / Pipeline
+
+GitHub Actions (`.github/workflows/ci.yml`):
+
+- **Push** (any branch): build, unit tests, and coverage run; **failures do not block** (you can push half-finished work and still see results). On main, GitVersion outputs the version when tests pass.
+- **Pull request** (to main/master): build, unit tests, and coverage are **blocking**; the run **fails** if build/test fails or if line coverage is below 80% or branch coverage below 95%.
+
+### Version from commit / PR message
+
+Version bumps are driven by **commit messages** on feature branches and by **PR title/description** when merged. Configured in `GitVersion.yml`. **Direct commits to main are not allowed** (except e.g. Changelog updates).
+
+| Context | Default | Trigger | Example |
+|--------|--------|---------|--------|
+| **Commit** (on a feature branch) | Build number only (`0.1.0+5` → `+6`) | `patch(scope):` in subject | `patch(fix): correct validation` → patch bump |
+| **PR merge** (Squash and merge) | **Minor** (new feature) | Subject starts with `feat:` or `feat(scope):` | `feat: add Password model` → minor |
+| **PR merge** | **Major** (breaking) | Subject contains `breaking-change:` or `BREAKING CHANGE:` | `breaking-change: remove API` → major |
+| **PR merge** | **Patch** (fix only) | Subject starts with `patch:` or `patch(scope):` | `patch: fix typo` → patch |
+
+Use **Squash and merge** for PRs so the PR title becomes the merge commit message and GitVersion can apply the rules above.
 
 ## 🤝 Contributing
 
-This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in `.cursor/rules/` for contribution guidelines.
+This is a personal portfolio project, but feedback and suggestions are welcome! See coding standards in [.cursor/rules/][Coding Standards] for contribution guidelines.
 
 ## 📜 License
 
@@ -67,9 +100,27 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 
 ## 🎯 Acknowledgments
 
-- Bethesda Game Studios for the Fallout franchise
-- The Fallout community for inspiration
-- RobCo Industries (fictional) for the UOS we're breaching
+- [Bethesda Game Studios][Bethesda] for the Fallout franchise
+- The [Fallout community][Fallout Wiki] for inspiration
+- [RobCo Industries][RobCo] (fictional) for the UOS we're breaching
+- [Hackinal][hackinal] and [Jetholt Hacking][jetholt-hacking] for browser-based minigames to try the algorithm
+
+## About the Developer
+
+**Gwergilius (Gergely Tóth)**  
+Cross-platform .NET developer with a passion for Fallout lore and software architecture.
+
+This project demonstrates:
+- Cross-platform development (Console, Blazor, MAUI)
+- MVVM architecture
+- Lore-driven design (fiction follows function)
+- PHOSPHOR abstraction layer (inspired by fictional technology)
+
+*"I found Dr. Krane's notes in a Vault-Tec storage facility. Turns out PHOSPHOR wasn't just fiction - it was good software architecture. So I built it."*
+
+## Contact
+- GitHub: [@gwergilius][Gwergilius-Github]
+- LinkedIn: [Gwergilius][Gwergilius-LinkedIn]
 
 ---
 
@@ -80,11 +131,23 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [License-MIT]: https://opensource.org/licenses/MIT
 [Dotnet]: https://dotnet.microsoft.com/
 [Project History]: ./docs/Lore/Project-History.md "Complete ECHELON backstory"
-[Algorithm]: ./docs/Algorithm.md "Password elimination algorithm"
-[Architecture]: ./docs/Architecture/ "System design documents"
-[Coding Standards]: ./.cursor/rules/ "Development guidelines"
+[Algorithm]: ./docs/Architecture/Algorithm.md "Password elimination algorithm"
+[Architecture]: ./docs/Architecture/README.md "System design documents"
+[Coding Standards]: ./.cursor/rules/README.md "Development guidelines"
+[src README]: ./src/README.md "Source code structure and configuration"
 [Magyar]: ./README.hu.md
+[Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
+[Gwergilius-Github]: https://github.com/Gwergilius/
+[Bethesda]: https://bethesdagamestudios.com
+[Fallout Wiki]: https://fallout.fandom.com
+[RobCo]: https://fallout.fandom.com/wiki/RobCo_Industries
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
 
 [Image-links]: #Image-references
+[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
+[releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
+[coverage-badge]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach/graph/badge.svg
+[coverage-url]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4
