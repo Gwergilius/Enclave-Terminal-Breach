@@ -21,6 +21,91 @@ SPARROW is the **simplest UI** to run the Core module's [Password Solver][Algori
 
 **All application output** (prompts, messages, labels) **must be in English.** Language selection or localization is out of scope for SPARROW and may be considered in a later release.
 
+## Configuration
+
+SPARROW supports configuration through multiple sources with the following priority (highest to lowest):
+
+1. **Command-line arguments** (override all other sources)
+2. **appsettings.json** or **appsettings.yaml** (application defaults)
+3. **Built-in defaults** (fallback values)
+
+### Command-Line Arguments
+
+```bash
+sparrow [options]
+
+Options:
+  -i, --intelligence <level>    Solver intelligence level (default: 1)
+                                  0 = Random (HOUSE gambit)
+                                  1 = Smart (Best-bucket)
+                                  2 = Genius (Tie-breaker)
+                                Aliases: house, bucket, tie
+                                
+  -w, --words <file>            Word list file path (optional)
+                                Load candidates from file instead of manual input
+                                
+  -h, --help                    Show help message and exit
+  -v, --version                 Show version information and exit
+
+Examples:
+  sparrow                       # Use default settings (intelligence: 1)
+  sparrow -i 0                  # Use random solver (HOUSE gambit)
+  sparrow -i house              # Same as above (alias)
+  sparrow -i 2                  # Use optimized solver (Tie-breaker)
+  sparrow -w words.txt          # Load candidates from file
+  sparrow -i 2 -w words.txt     # Combine options
+```
+
+**Intelligence Level Aliases:**
+
+| Numeric | Algorithm Name | User-Friendly | Description |
+|---------|---------------|---------------|-------------|
+| `0` | `house` | `dumb`, `random`, `baseline` | HOUSE gambit - random selection |
+| `1` | `bucket` | `smart`, `tactical` | Best-bucket - information theory |
+| `2` | `tie` | `genius`, `optimal` | Tie-breaker - optimized strategy |
+
+### Configuration File (appsettings.json)
+
+```json
+{
+  "Sparrow": {
+    "Intelligence": 1,
+    "WordListPath": null,
+    "Startup": {
+      "ShowBanner": true,
+      "ShowLoadTime": true
+    }
+  }
+}
+```
+
+### Configuration File (appsettings.yaml)
+
+```yaml
+Sparrow:
+  Intelligence: 1              # 0 (HOUSE), 1 (Best-bucket), 2 (Tie-breaker)
+  WordListPath: null           # Optional: path to word list file
+  Startup:
+    ShowBanner: true
+    ShowLoadTime: true
+```
+
+**Configuration Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Intelligence` | int/string | `1` | Solver intelligence level (0-2 or alias) |
+| `WordListPath` | string | `null` | Optional word list file path |
+| `Startup.ShowBanner` | bool | `true` | Display startup banner |
+| `Startup.ShowLoadTime` | bool | `true` | Display load time in banner |
+
+**Notes:**
+- Command-line arguments **always override** configuration file settings
+- Intelligence level accepts both numeric values (0-2) and string aliases ("house", "bucket", "tie")
+- Invalid values fall back to default (1 = Best-bucket)
+
+---
+
 ## Application Flow
 
 ### 1. Startup badge
@@ -132,9 +217,11 @@ Correct. Terminal cracked.
 | I/O | Stdin/stdout only; no colours or cursor positioning |
 | Identity | Product name SPARROW; version from Assembly Version |
 | Language | All UI output in English; no language selection in this release |
+| Configuration | Command-line args (primary), appsettings.json/yaml (fallback), built-in defaults |
+| Intelligence Levels | 0 (HOUSE gambit), 1 (Best-bucket - default), 2 (Tie-breaker) |
 | Input mode | Prompts for candidates; space-separated words; empty line to finish; length/duplicate/removal rules |
 | Output | Candidate count + multi-column alphabetical list after each input |
-| Hacking mode | GetBestGuess → prompt match count → NarrowCandidates → repeat or congratulate and exit |
+| Hacking mode | GetBestGuess -> prompt match count -> NarrowCandidates -> repeat or congratulate and exit |
 | Exit | Congratulations on win; Ctrl+C (or equivalent) anytime |
 
 [Algorithm]: ./Algorithm.md

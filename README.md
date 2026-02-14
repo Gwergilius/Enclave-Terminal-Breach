@@ -100,9 +100,10 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 
 ## 🎯 Acknowledgments
 
-- Bethesda Game Studios for the Fallout franchise
-- The Fallout community for inspiration
-- RobCo Industries (fictional) for the UOS we're breaching
+- [Bethesda Game Studios][Bethesda] for the Fallout franchise
+- The [Fallout community][Fallout Wiki] for inspiration
+- [RobCo Industries][RobCo] (fictional) for the UOS we're breaching
+- [Hackinal][hackinal] and [Jetholt Hacking][jetholt-hacking] for browser-based minigames to try the algorithm
 
 ## About the Developer
 
@@ -137,6 +138,11 @@ This project demonstrates:
 [Magyar]: ./README.hu.md
 [Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
 [Gwergilius-Github]: https://github.com/Gwergilius/
+[Bethesda]: https://bethesdagamestudios.com
+[Fallout Wiki]: https://fallout.fandom.com
+[RobCo]: https://fallout.fandom.com/wiki/RobCo_Industries
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
 
 [Image-links]: #Image-references
 [version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW

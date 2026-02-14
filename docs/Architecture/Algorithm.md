@@ -294,11 +294,20 @@ Measured success rate (explicit hit within 4 steps):
 - [Word list and examples][words.txt] - Project resources  
   *Dictionary used for algorithm testing and benchmarking*
   
+### Try the minigame
+
+- [Hackinal][hackinal] – browser-based Fallout-style terminal hacking
+- [Jetholt Hacking][jetholt-hacking] – playable minigame
+- [OgnevOA fallout-terminal-hack-minigame][ognevoa-minigame] – GitHub project / playable version
+
 [words.txt]: ../../resources/words.txt
 [A Mathematical Theory of Communication]: http://cm.bell-labs.com/cm/ms/what/shannonday/shannon1948.pdf "A Mathematical Theory of Communication"
 [Elements of Information Theory]: https://cs-114.org/wp-content/uploads/2015/01/Elements_of_Information_Theory_Elements.pdf
 [Fallout Terminal Hacking]: https://fallout.fandom.com/wiki/Hacking
 [The Computer as Master Mind]: https://www.cs.uni.edu/~wallingf/teaching/cs3530/resources/knuth-mastermind.pdf
 [Guesswork and Entropy]: https://www.researchgate.net/publication/3084991_Guesswork_and_Entropy
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
+[ognevoa-minigame]: https://github.com/OgnevOA/fallout-terminal-hack-minigame
 [Magyar]: ./Algorithm.hu.md
 

@@ -55,6 +55,14 @@ See: [Hacking (Fallout 76)][Hacking in Fallout 76]
 * When selecting a bracketed text string when there is only one selectable word left it will have no effect and simply say, "Entry Denied."
 * Unlike in [Fallout 3] or [Fallout: New Vegas][New Vegas], clicking a dud character (such as an unmatched bracket) in [Fallout 4] doesn't remove a chance from your allowance.
 
+## Try the minigame online
+
+You can try the same-style minigame in a browser or run a clone to test our solver against real gameplay:
+
+- [Hackinal][hackinal] – browser-based Fallout-style terminal hacking
+- [Jetholt Hacking][jetholt-hacking] – playable minigame
+- [OgnevOA fallout-terminal-hack-minigame][ognevoa-minigame] – GitHub project / playable version
+
 ## Behind the scenes
 
 * According to [Joshua Sawyer], the hacking minigame as it appears in [Fallout 3] and [Fallout: New Vegas][New Vegas] (and thus also in later works) was based on the board game [Mastermind].
@@ -80,6 +88,9 @@ See: [Hacking (Fallout 76)][Hacking in Fallout 76]
 [Joshua Sawyer]: https://fallout.fandom.com/wiki/Joshua_Sawyer
 [Mastermind]: https://en.wikipedia.org/wiki/Mastermind_(board_game)
 [GURPS]: https://en.wikipedia.org/wiki/GURPS
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
+[ognevoa-minigame]: https://github.com/OgnevOA/fallout-terminal-hack-minigame
 
 [img]: #Image-references
 [Terminal]: ../Images/Terminal.png
