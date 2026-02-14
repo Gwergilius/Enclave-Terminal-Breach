@@ -13,8 +13,8 @@ env:
   SOLUTION_PATH: "Enclave.Echelon.slnx"
 
 jobs:
-  build-and-test:
-    name: Build & unit tests
+  build-test-coverage:
+    name: Build, test & coverage
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,6 +31,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install coverage tools
+        run: |
+          dotnet tool install -g dotnet-coverage
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+
       - name: Restore
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
@@ -39,9 +44,31 @@ jobs:
         run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore -c Release
         continue-on-error: ${{ github.event_name == 'push' }}
 
-      - name: Run unit tests
+      - name: Run unit tests with coverage
         id: test
-        run: dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" --logger "console;verbosity=normal"
+        run: |
+          mkdir -p TestResults/raw
+          dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release \
+            --filter "Category=UnitTest" \
+            --logger "console;verbosity=normal" \
+            --results-directory TestResults/raw \
+            --collect "XPlat Code Coverage"
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: Merge coverage results
+        if: steps.test.outcome == 'success'
+        run: |
+          COB=$(find TestResults/raw -name 'coverage.cobertura.xml' 2>/dev/null)
+          if echo "$COB" | grep -q .; then
+            if [ $(echo "$COB" | wc -l) -eq 1 ]; then
+              cp "$COB" TestResults/coverage.xml
+            else
+              dotnet-coverage merge $COB -f cobertura -o TestResults/coverage.xml
+            fi
+          else
+            echo "No coverage.cobertura.xml found"
+            exit 1
+          fi
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Set up GitVersion
@@ -62,54 +89,8 @@ jobs:
           echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
           echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
 
-  coverage-and-thresholds:
-    name: Coverage & thresholds
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    defaults:
-      run:
-        working-directory: src
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Install tools
-        run: |
-          dotnet tool install -g dotnet-coverage
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-
-      - name: Restore & build
-        run: |
-          dotnet restore ${{ env.SOLUTION_PATH }}
-          dotnet build ${{ env.SOLUTION_PATH }} --no-restore -c Release
-        continue-on-error: ${{ github.event_name == 'push' }}
-
-      - name: Collect coverage (Coverlet, unit tests only; branch + line)
-        run: |
-          mkdir -p TestResults/raw
-          dotnet test ${{ env.SOLUTION_PATH }} --no-build -c Release --filter "Category=UnitTest" \
-            --results-directory TestResults/raw --collect "XPlat Code Coverage"
-          # Merge Cobertura files if multiple test projects
-          COB=$(find TestResults/raw -name 'coverage.cobertura.xml' 2>/dev/null)
-          if echo "$COB" | grep -q .; then
-            if [ $(echo "$COB" | wc -l) -eq 1 ]; then
-              cp "$COB" TestResults/coverage.xml
-            else
-              dotnet-coverage merge $COB -f cobertura -o TestResults/coverage.xml
-            fi
-          else
-            echo "No coverage.cobertura.xml found"
-            exit 1
-          fi
-        continue-on-error: ${{ github.event_name == 'push' }}
-
       - name: Run coverage threshold check
+        if: steps.test.outcome == 'success'
         run: |
           pwsh -File ../tools/coverage/assert-coverage-thresholds.ps1 \
             -CoverageXmlPath "TestResults/coverage.xml" \
@@ -118,7 +99,7 @@ jobs:
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Upload coverage to Codecov (for badge)
-        if: success()
+        if: steps.test.outcome == 'success'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

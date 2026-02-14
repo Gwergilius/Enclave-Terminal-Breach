@@ -14,6 +14,10 @@ coverage:
       default:
         target: auto
         threshold: 1%
+        # Specify what coverage types to track
+        coverage_threshold:
+          line: 80
+          branch: 90
     patch:
       default:
         target: auto
