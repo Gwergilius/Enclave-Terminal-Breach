@@ -4,14 +4,14 @@ using Enclave.Echelon.Core.Services;
 namespace Enclave.Echelon.Core.Tests.Services;
 
 /// <summary>
-/// Unit tests for <see cref="RandomGuessSolver"/> (blind random choice). Same contract as base; accepts any candidate for multi-candidate sets.
+/// Unit tests for <see cref="HouseGambitPasswordSolver"/> (HOUSE gambit, blind random choice). Same contract as base; accepts any candidate for multi-candidate sets.
 /// </summary>
-[UnitTest, TestOf(nameof(RandomGuessSolver))]
-public class RandomGuessSolverTests : PasswordSolverTestsBase
+[UnitTest, TestOf(nameof(HouseGambitPasswordSolver))]
+public class HouseGambitPasswordSolverTests : PasswordSolverTestsBase
 {
     private const int Seed = 42;
 
-    protected override IPasswordSolver Solver { get; } = new RandomGuessSolver(Seed);
+    protected override IPasswordSolver Solver { get; } = new HouseGambitPasswordSolver(Seed);
 
     protected override IReadOnlySet<string> GetAcceptableBestGuessWordsForTermsTexasTiresTanks() =>
         new HashSet<string> { "TERMS", "TEXAS", "TIRES", "TANKS" };

@@ -65,4 +65,4 @@ Success is defined as **explicitly guessing the secret** (terminal response = wo
 - **Adversarial:** TieBreaker > BestScoreOnly > Random; the tie-breaker (minimise worst-case bucket size) gives a clear advantage when the response is chosen to maximise remaining candidates.
 - The **TieBreaker** strategy (current implementation) is the best of the three in both scenarios and justifies the extra logic over the Excel-style BestScoreOnly strategy.
 
-Test implementation: `PasswordSolverAlgorithmPerformanceTests.SolverComparison_*` (same seeds: 17 for random secret, 31 for adversarial). Solver types: `PasswordSolver` (TieBreaker), `BestScoreOnlySolver`, `RandomGuessSolver` in `Enclave.Echelon.Core.Services`.
+Test implementation: `PasswordSolverAlgorithmPerformanceTests.SolverComparison_*` (same seeds: 17 for random secret, 31 for adversarial). Solver types: `TieBreakerPasswordSolver`, `BestBucketPasswordSolver`, `HouseGambitPasswordSolver` in `Enclave.Echelon.Core.Services` (Lore: ECHELON, RAVEN, SPARROW HOUSE gambit).

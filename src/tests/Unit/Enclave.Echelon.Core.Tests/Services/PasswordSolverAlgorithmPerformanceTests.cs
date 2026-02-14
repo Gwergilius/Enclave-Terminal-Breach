@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Extensions;
+using Enclave.Common.Extensions;
 using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 using Xunit.Abstractions;
@@ -10,11 +10,11 @@ namespace Enclave.Echelon.Core.Tests.Services;
 /// Uses the embedded word list (Resources/words.txt). Success = explicit guess hit (response == word length).
 /// Test passes if ≥90% of runs find the secret in at most 4 steps (20 runs per difficulty).
 /// </summary>
-[PerformanceTest, TestOf(nameof(PasswordSolver))]
+[PerformanceTest, TestOf(nameof(TieBreakerPasswordSolver))]
 public class PasswordSolverAlgorithmPerformanceTests
 {
     private static readonly Lazy<IReadOnlyList<string>> Words = new(LoadWordsFromCore);
-    private readonly IPasswordSolver _solver = new PasswordSolver();
+    private readonly IPasswordSolver _solver = new TieBreakerPasswordSolver();
     private readonly ITestOutputHelper _output;
 
     public PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output) => _output = output;
@@ -29,12 +29,12 @@ public class PasswordSolverAlgorithmPerformanceTests
         ["Very Hard", 13, 15],
     ];
 
-    /// <summary>Solver variants for comparison: TieBreaker (current), BestScoreOnly (Excel), Random (blind).</summary>
+    /// <summary>Solver variants for comparison: TieBreaker (current), BestBucket (RAVEN), HouseGambit (SPARROW).</summary>
     public static IEnumerable<object[]> SolverVariants =>
     [
         ["TieBreaker"],
-        ["BestScoreOnly"],
-        ["Random"],
+        ["BestBucket"],
+        ["HouseGambit"],
     ];
 
     /// <summary>All (difficulty, solver) combinations for comparison tests; same seeds used per scenario.</summary>
@@ -47,9 +47,9 @@ public class PasswordSolverAlgorithmPerformanceTests
     {
         return solverName switch
         {
-            "TieBreaker" => new PasswordSolver(),
-            "BestScoreOnly" => new BestScoreOnlySolver(seed),
-            "Random" => new RandomGuessSolver(seed),
+            "TieBreaker" => new TieBreakerPasswordSolver(),
+            "BestBucket" => new BestBucketPasswordSolver(seed),
+            "HouseGambit" => new HouseGambitPasswordSolver(seed),
             _ => throw new ArgumentOutOfRangeException(nameof(solverName), solverName, null)
         };
     }
@@ -311,7 +311,7 @@ public class PasswordSolverAlgorithmPerformanceTests
     /// </summary>
     private static IReadOnlyList<string> LoadWordsFromCore()
     {
-        var result = typeof(PasswordSolver).Assembly.GetResourceString("words.txt");
+        var result = typeof(TieBreakerPasswordSolver).Assembly.GetResourceString("words.txt");
         result.IsSuccess.ShouldBeTrue("Word list resource missing or failed: " + string.Join("; ", result.Errors.Select(e => e.Message)));
 
         var words = result.Value!
