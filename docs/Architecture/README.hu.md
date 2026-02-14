@@ -10,6 +10,10 @@ Technikai architektúra, tervezési döntések és rendszer specifikációk.
 - [State Machine][State Machine] – Alkalmazás állapotkezelés
 - [Future Architecture][Future Architecture] – Tervezett optimalizációk és minták
 
+## Platform követelmények
+
+- [SPARROW követelmények][SPARROW Requirements] – A SPARROW (DOS konzol) release üzleti és technikai követelményei
+
 ## Platform szolgáltatások
 
 - [Platform Services Summary][Platform Services Summary] – Többplatformos szolgáltatás absztrakciók
@@ -31,6 +35,7 @@ Ezek a dokumentumok biztosítják:
 [Algorithm]: ./Algorithm.hu.md
 [State Machine]: ./StateMachine.hu.md
 [Future Architecture]: ./FutureArchitecture.hu.md
+[SPARROW Requirements]: ./SPARROW-Requirements.hu.md
 [Platform Services Summary]: ./PlatformServicesSummary.hu.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.hu.md
 [ColorValue Design]: ./ColorValue-Design-Decision.hu.md

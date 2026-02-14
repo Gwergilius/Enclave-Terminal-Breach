@@ -10,6 +10,10 @@ Technical architecture, design decisions, and system specifications.
 - [State Machine] - Application state management design
 - [Future Architecture] - Planned optimizations and patterns
 
+## Platform Requirements
+
+- [SPARROW Requirements] - Business and technical requirements for the SPARROW (DOS console) release
+
 ## Platform Services
 
 - [Platform Services Summary] - Cross-platform service abstractions
@@ -30,6 +34,7 @@ These documents provide:
 [Algorithm]: ./Algorithm.md
 [State Machine]: ./StateMachine.md
 [Future Architecture]: ./FutureArchitecture.md
+[SPARROW Requirements]: ./SPARROW-Requirements.md
 [Platform Services Summary]: ./PlatformServicesSummary.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.md
 [ColorValue Design]: ./ColorValue-Design-Decision.md

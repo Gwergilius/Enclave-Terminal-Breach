@@ -30,12 +30,12 @@ public class PasswordSolverAlgorithmPerformanceTests
     ];
 
     /// <summary>Solver variants for comparison: TieBreaker (current), BestScoreOnly (Excel), Random (blind).</summary>
-    public static IEnumerable<object[]> SolverVariants => new[]
-    {
-        new object[] { "TieBreaker" },
-        new object[] { "BestScoreOnly" },
-        new object[] { "Random" },
-    };
+    public static IEnumerable<object[]> SolverVariants =>
+    [
+        ["TieBreaker"],
+        ["BestScoreOnly"],
+        ["Random"],
+    ];
 
     /// <summary>All (difficulty, solver) combinations for comparison tests; same seeds used per scenario.</summary>
     public static IEnumerable<object[]> DifficultyAndSolverCombinations =>
