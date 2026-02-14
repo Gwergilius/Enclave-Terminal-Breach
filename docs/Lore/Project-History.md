@@ -89,6 +89,8 @@ The team reverse-engineered RobCo UOS by:
 1. Exploiting the system's own diagnostic protocols
 1. Creating a complete "shadow specification" of UOS architecture
 
+The first executable deliverable was **SPARROW**: a minimal proof of concept on the **RobCo NX-12 terminal** (sequential stdin/stdout only; no cursor positioning or colour; no hardware abstraction beyond the terminal itself) to validate the password-elimination algorithm before any further RobCo terminal variants. SPARROW proved that the core solver logic worked in a scriptable, reproducible environment and established the version baseline for all later ECHELON phases.
+
 ## SIGNET - Signal Intelligence Network
 
 ### Overview
@@ -125,9 +127,9 @@ Fiber-optic connections between major Enclave facilities:
 
 ### ECHELON Deployment on SIGNET
 
-#### GHOST v1.0.0 - First SIGNET Deployment (September 2076)
+#### GHOST v2.0.0 - First SIGNET Deployment (September 2076)
 
-The GHOST v1.0.0 prototype was the first ECHELON version deployed on SIGNET via the **Looking Glass** browser, allowing authorized personnel to access the terminal breach system without requiring a Pip-Boy.
+The GHOST v2.0.0 prototype was the first ECHELON version deployed on SIGNET via the **Looking Glass** browser, allowing authorized personnel to access the terminal breach system without requiring a Pip-Boy.
 
 **Deployment Rationale:**
 
@@ -145,9 +147,9 @@ The GHOST v1.0.0 prototype was the first ECHELON version deployed on SIGNET via 
 * Automatic synchronization with NEST intelligence databases
 * Remote training modules for new operatives
 
-#### GHOST v1.2.4 "Ghost Revised" - Standard SIGNET Build
+#### GHOST v2.2.4 "Ghost Revised" - Standard SIGNET Build
 
-GHOST v1.2.4 remained the standard SIGNET deployment through October 2077, providing:
+GHOST v2.2.4 remained the standard SIGNET deployment through October 2077, providing:
 
 * Neural pattern recognition algorithms
 * Behavioral psychology-based word selection
@@ -165,12 +167,12 @@ GHOST v1.2.4 remained the standard SIGNET deployment through October 2077, provi
 
 The Enclave maintained a dual-deployment strategy:
 
-* **SIGNET (GHOST v1.2.4 via Looking Glass):** For training, testing, and facility-based operations
-* **Pip-Boy (ECHELON v2.1.7):** For field operatives requiring portable breach capability
+* **SIGNET (GHOST v2.2.4 via Looking Glass):** For training, testing, and facility-based operations
+* **Pip-Boy (ECHELON v3.1.7):** For field operatives requiring portable breach capability
 
 ##### Dr. Krane's Deployment Memo (September 2077):
 
-> "SIGNET deployment of GHOST v1.2.4 via Looking Glass serves as our testing ground and fallback position. Every field operative with ECHELON v2.1.7 on Pip-Boy should have SIGNET access for intelligence updates and collaborative analysis. Think of GHOST as the 'home base' and ECHELON as the 'field kit' - both essential, different purposes."
+> "SIGNET deployment of GHOST v2.2.4 via Looking Glass serves as our testing ground and fallback position. Every field operative with ECHELON v3.1.7 on Pip-Boy should have SIGNET access for intelligence updates and collaborative analysis. Think of GHOST as the 'home base' and ECHELON as the 'field kit' - both essential, different purposes."
 
 ### Post-War SIGNET Status
 
@@ -190,19 +192,44 @@ SIGNET remains operational in surviving Enclave facilities:
 * Coordination of terminal breach operations
 * Repository of 50,000+ breached terminal passwords (pre-war database)
 
-**GHOST v1.2.4 Looking Glass Access:** Still available on SIGNET for operatives who prefer browser-based interface or lack Pip-Boy access. Some post-war Enclave personnel exclusively use GHOST via Looking Glass on SIGNET terminals.
+**GHOST v2.2.4 Looking Glass Access:** Still available on SIGNET for operatives who prefer browser-based interface or lack Pip-Boy access. Some post-war Enclave personnel exclusively use GHOST via Looking Glass on SIGNET terminals.
 
 ### Version History & Development Milestones
+
+#### CODENAME: SPARROW (March-April 2076)
+**Status:** Proof of Concept
+
+* **v1.1.0** **"Sparrow"** - First executable proof of concept
+  * **Platform:** RobCo NX-12 terminal, basic features (sequential stdin/stdout only; no cursor positioning or colour)
+  * **Purpose:** Validate the password-elimination algorithm in a minimal, scriptable environment on NX-12 before targeting other RobCo hardware
+  * **Solver:** HOUSE gambit—statistical (random) guess selection
+  * **Performance:** ~55% success rate; adversarial worst-case ~15%
+  * **Outcome:** Demonstrated that the core breach logic was sound and ready for hardware-specific implementation
+
+##### Dr. Krane's Assessment (April 2076):
+
+> "We're using Robert House's own statistical gamble against his terminals. HOUSE gambit proves the math works—now we need intelligence."
+
+* **v1.2.0** (April 2076) - Input handling refinement
+  * Case-insensitive candidate and removal matching
+  * Multi-column alphabetical display of candidates after each input
+  * Stable baseline for RAVEN integration
+
+##### Transition to RAVEN:
+
+SPARROW v1.2.0 became the reference implementation from which RAVEN v1.3.1 drew the core solver; all later versions (RAVEN, GHOST, ECHELON) inherit the algorithm validated by SPARROW.
 
 #### CODENAME: RAVEN (April-August 2076)
 **Status:** Proof of Concept
 
-* **v0.3.1** "Raven" - First successful UOS breach in controlled environment
-  * Required 47 minutes to crack Average difficulty terminal
-  * Success rate: 34%
-  * Platform: Dedicated SIGINT console (180 lbs, not portable)
-  * **Direct NX-12 Implementation:** Breach code hardwired to NX-12 terminal hardware
-  * Critical Flaw: Easily detected by system logs
+* **v1.3.1** "Raven" - First successful UOS breach in controlled environment
+  * **Built on SPARROW:** Core breach algorithms ported from SPARROW v1.2.0 to NX-12 hardware
+  * **Solver: Best-bucket strategy introduced**—maximise distinct match-count outcomes (information score), then minimise worst-case bucket size; replaced SPARROW's random selection with information-theory-driven guess choice
+  * **Breach time:** 47 minutes (Average difficulty)
+  * **Success rate:** 34%
+  * **Platform:** Dedicated SIGINT console (180 lbs, not portable)
+  * **Direct NX-12 Implementation:** Breach code hardwired to NX-12 with full API access (cursor positioning, window handling, advanced terminal control)
+  * **Critical Flaw:** Easily detected by system logs
 
 ##### Internal Assessment:
 
@@ -210,17 +237,17 @@ SIGNET remains operational in surviving Enclave facilities:
 
 ##### The Abstraction Problem (June 2076):
 
-Dr. Krane's team hit a critical roadblock when field intelligence identified newer RobCo terminal models (NX-20 with 16-color displays, NX-120 with pointing device support). The v0.3.1 codebase was tightly coupled to NX-12 hardware specifications - supporting new models would require complete rewrites.
+Dr. Krane's team hit a critical roadblock when field intelligence identified newer RobCo terminal models (NX-20 with 16-color displays, NX-120 with pointing device support). The v1.3.1 codebase was tightly coupled to NX-12 hardware specifications - supporting new models would require complete rewrites.
 
 > "We can't rewrite the entire breach engine every time RobCo releases a new terminal. We need an abstraction layer - something that preserves our core algorithms while adapting to whatever hardware RobCo throws at us. Otherwise, we're playing an endless game of catch-up."  
 > - Dr. Elizabeth Krane, Technical Memo (June 15, 2076)
 
-* **v0.4.0** "Raven Evolved" (September 2076) - **PHOSPHOR 1.0 introduced**
+* **v1.4.0** "Raven Evolved" (September 2076) - **PHOSPHOR 1.0 introduced**
   * First hardware abstraction layer implementation
   * Breach time improved to 42 minutes (optimization during refactoring)
   * Success rate: 38%
   * Platform support: NX-12 (monochrome), NX-20 (monochrome mode)
-  * **Critical Achievement:** Core breach algorithms preserved unchanged from v0.3.1
+  * **Critical Achievement:** Core breach algorithms preserved unchanged from v1.3.1
   * **PHOSPHOR Innovation:** Same codebase runs on multiple terminal types
 
 ##### Dr. Krane's PHOSPHOR Breakthrough (August 2076):
@@ -231,7 +258,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 #### CODENAME: GHOST (September 2076-January 2077)
 **Status:** Field Prototype
 
-* **v1.0.0** **"Ghost Protocol"** - First Pip-Boy integrated version
+* **v2.0.0** **"Ghost Protocol"** - First Pip-Boy integrated version
   * Breach time reduced to 8 minutes (Average terminals)
   * Success rate: 67%
   * Platform: Pip-Boy 2000 AND **Looking Glass** web browser (SIGNET deployment)
@@ -245,7 +272,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "PHOSPHOR 1.5 is a game-changer. We've achieved true platform independence - the same breach code runs on a 180-pound terminal, a wrist-mounted Pip-Boy, and the Looking Glass browser on SIGNET. The operator doesn't need to know which platform they're on. PHOSPHOR handles everything."  
 > - Dr. Elizabeth Krane, Platform Architecture Review
 
-* **v1.2.0** (October 2076) - **PHOSPHOR 2.0 milestone**
+* **v2.2.0** (October 2076) - **PHOSPHOR 2.0 milestone**
   * **16-color support** for NX-20 and NX-120 terminals
   * **Four color palettes:** Green Phosphor, Amber Phosphor, White Phosphor, Blue Phosphor
   * Each palette maintains 4 brightness levels (Background, Dark, Normal, Bright)
@@ -253,13 +280,14 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
   * **Virtual cursor system:** Arrow key navigation for NX-12/NX-20
   * **Backward compatibility:** NX-12 runs all palettes in monochrome (4 green shades)
 
-##### Dr. Krane on Color Palette Strategy (October 1076):
+##### Dr. Krane on Color Palette Strategy (October 2076):
 
 > "Different operators prefer different aesthetics. Some want classic green CRT. Others prefer amber or white. PHOSPHOR 2.0 gives them choice while maintaining functional consistency. On an NX-12, every palette looks the same - four shades of green. On an NX-20, each palette has its own character. The interface adapts to the hardware without the operator changing their workflow."  
 > - Dr. Elizabeth Krane, User Experience Memo
 
-* **v1.2.4** **"Ghost Revised"** - Neural pattern recognition added
+* **v2.2.4** **"Ghost Revised"** - Neural pattern recognition added
   * First use of behavioral psychology in word selection algorithms
+  * **Solver: DIVERGENCE rule**—when multiple candidates tie on best-bucket score, choose the one *farthest from the previous guess* (maximise match-count distance from last guess); codename **DIVERGENCE** (polar selection) improved robustness when the terminal response left several equally good options
   * Success rate improved to 81%
   * Platform: **Looking Glass** browser via SIGNET (standard deployment)
   * Field Test: Successfully breached Vault 92 backup terminals (Pip-Boy version)
@@ -271,7 +299,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 
 ##### SIGNET Deployment Assessment (January 2077):
 
-> "GHOST v1.2.4 on SIGNET has proven invaluable for training and collaborative analysis. Recommend maintaining this version for facility-based operations while pursuing field-optimized ECHELON development for Pip-Boy deployment."
+> "GHOST v2.2.4 on SIGNET has proven invaluable for training and collaborative analysis. Recommend maintaining this version for facility-based operations while pursuing field-optimized ECHELON development for Pip-Boy deployment."
 > - Dr. Elizabeth Krane
 
 ##### PHOSPHOR 2.0 Impact Assessment (December 2076):
@@ -282,7 +310,8 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 #### CODENAME: ECHELON (February-October 2077)
 **Status:** Operational Deployment
 
-* **v2.0.0** **"Echelon"** - Complete system redesign
+* **v3.0.0** **"Echelon"** - Complete system redesign
+  * **Solver: Tie-breaker strategy**—deterministic choice among candidates with best information score and smallest worst-case bucket (stable ordering when still tied); replaced GHOST's DIVERGENCE heuristic with a reproducible tie-breaker for consistent field behaviour and auditability
   * Breach time: 2-4 minutes (Average), 6-9 minutes (Very Hard)
   * Success rate: 94%
   * **PHOSPHOR 3.0:** Graphical capabilities added (Pip-Boy 3000 Mark III/IV and Looking Glass only)
@@ -304,16 +333,16 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 
 ##### Backward Compatibility Verification (March 2077):
 
-> "We've successfully tested ECHELON v2.0.0 on every RobCo terminal variant from the NX-12 (2070) through the NX-120 (2076). The core breach algorithms written for RAVEN v0.3.1 in April 2076 still execute flawlessly. PHOSPHOR's abstraction layer has proven itself - no operator retraining required, no platform-specific patches needed."  
+> "We've successfully tested ECHELON v3.0.0 on every RobCo terminal variant from the NX-12 (2070) through the NX-120 (2076). The core breach algorithms written for RAVEN v1.3.1 in April 2076 still execute flawlessly. PHOSPHOR's abstraction layer has proven itself - no operator retraining required, no platform-specific patches needed."  
 > - Testing Division Report, Site-R
 
-* **v2.1.0** (May 2077) - Dictionary attack optimization
+* **v3.1.0** (May 2077) - Dictionary attack optimization
   * Reduced false positive rate by 23%
   * Added tactical breach scenarios database
   * Improved NEST mainframe synchronization
   * **PHOSPHOR 3.0 refinement:** Optimized phosphor decay timing algorithms
 
-* **v2.1.5** (August 2077) - Enhanced neural pattern recognition
+* **v3.1.5** (August 2077) - Enhanced neural pattern recognition
   * Incorporated data from 50,000+ breached terminals
   * Machine learning refinements
   * First "zero-attempt" breaches (correct password on first try: 12% of cases)
@@ -324,12 +353,12 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 > "We discovered that RobCo's 'secure' terminals perform authentication handshakes by measuring display response times down to the microsecond. They thought nobody could replicate the exact phosphor decay curves of their CRT displays. They were wrong. PHOSPHOR 3.0 defeats this by being physically identical to genuine RobCo displays at the hardware timing level."  
 > - Dr. Elizabeth Krane, Security Analysis Memo
 
-* **v2.1.6** (September 2077) - Counter-intrusion hardening
+* **v3.1.6** (September 2077) - Counter-intrusion hardening
   * Added honeypot countermeasures (defense against reverse-hacking)
   * Improved stealth protocol handlers
   * Emergency data wipe functionality
 
-* **v2.1.7** (October 2077) - Final pre-war version
+* **v3.1.7** (October 2077) - Final pre-war version
   * Optimized dictionary attack vectors
   * Improved stealth mode (undetectable even by military-grade intrusion detection)
   * Enhanced EMP buffer protection
@@ -342,7 +371,7 @@ Dr. Krane's team hit a critical roadblock when field intelligence identified new
 
 ##### Dr. Krane's Final Report on PHOSPHOR (October 20, 2077):
 
-> "Three iterations of PHOSPHOR - from the basic abstraction layer in RAVEN v0.4.0 to the universal platform in ECHELON v2.1.7. We've achieved something unprecedented: a single codebase that runs on hardware spanning seven years of evolution, from monochrome terminals to graphical Pip-Boys. Future Enclave operatives will benefit from this architecture for decades, perhaps centuries. PHOSPHOR isn't just technology - it's insurance against obsolescence."  
+> "Three iterations of PHOSPHOR - from the basic abstraction layer in RAVEN v1.4.0 to the universal platform in ECHELON v3.1.7. We've achieved something unprecedented: a single codebase that runs on hardware spanning seven years of evolution, from monochrome terminals to graphical Pip-Boys. Future Enclave operatives will benefit from this architecture for decades, perhaps centuries. PHOSPHOR isn't just technology - it's insurance against obsolescence."  
 > - Dr. Elizabeth Krane, ECHELON Final Documentation
 
 ## Post-War Legacy
@@ -397,7 +426,7 @@ The decision to build PHOSPHOR as a universal abstraction layer proved prescient
 ### Continued Development (Post-War)
 The system continued evolving in Raven Rock and later on the Poseidon Oil Rig under Dr. Aldridge's leadership:
 
-* **v2.2.x series** (2080s): Adapted for degraded pre-war terminals
+* **v3.2.x series** (2080s): Adapted for degraded pre-war terminals
   * PHOSPHOR enhancements for damaged CRT displays
   * Voltage fluctuation compensation
   * Degraded phosphor coating adaptation
@@ -407,7 +436,7 @@ The system continued evolving in Raven Rock and later on the Poseidon Oil Rig un
 > "Dr. Krane designed PHOSPHOR for pristine pre-war hardware. The wasteland gave us melted displays, failing power supplies, and radiation-damaged circuits. We're teaching PHOSPHOR to work with what survived, not what we wish had survived."  
 > - Dr. Marcus Aldridge, Technical Adaptation Report
 
-* **v2.2.5** (2085): **Power Armor Integration - Project IRONCLAD**
+* **v3.2.5** (2085): **Power Armor Integration - Project IRONCLAD**
   * ECHELON integrated into T-60 Power Armor HUD systems
   * Allows operatives to breach terminals while maintaining combat readiness
   * Standard deployment to all Enclave Power Armor units by 2090
@@ -425,15 +454,15 @@ When the Brotherhood of Steel began capturing Enclave T-60 units with integrated
 
 ECHELON integration was removed from standard Power Armor configurations. By the X-series Advanced Power Armor era, ECHELON remained exclusive to Hellfire-class units only - reserved for elite operatives whose armor was unlikely to be captured.
 
-* **v2.3.x series** (2150s): Brotherhood of Steel detection countermeasures
+* **v3.3.x series** (2150s): Brotherhood of Steel detection countermeasures
   * PHOSPHOR signature masking (prevents BoS detection of Enclave tools)
   * Power Armor integration limited to Hellfire-class units
 
-* **v2.4.x series** (2240s): Institute technology analysis integration
+* **v3.4.x series** (2240s): Institute technology analysis integration
   * PHOSPHOR extended to handle Institute hybrid terminal systems
 
 ### Modern Status (2287)
-ECHELON v2.1.7 remains the "gold standard" build:
+ECHELON v3.1.7 remains the "gold standard" build:
 
 * Most stable version
 * Fully compatible with all pre-war terminal types
@@ -441,14 +470,14 @@ ECHELON v2.1.7 remains the "gold standard" build:
 * Perfect preservation of Dr. Krane's original architecture
 * **PHOSPHOR 3.0 unchanged:** Still the definitive abstraction layer
 
-##### Why v2.1.7 Endures:
+##### Why v3.1.7 Endures:
 
-> "Later versions added features we don't need and complexity we can't maintain. v2.1.7 is elegant, proven, and deadly. When you're breaching a terminal in hostile territory with super mutants breathing down your neck, you want the version that's worked flawlessly for 210 years."
+> "Later versions added features we don't need and complexity we can't maintain. v3.1.7 is elegant, proven, and deadly. When you're breaching a terminal in hostile territory with super mutants breathing down your neck, you want the version that's worked flawlessly for 210 years."
 > - Colonel Autumn, Enclave Intelligence Division
 
 ##### PHOSPHOR's 210-Year Legacy (2287):
 
-> "Dr. Krane's PHOSPHOR abstraction layer has outlived her by two centuries. Every terminal we encounter - from pristine Vault-Tec systems to jury-rigged Brotherhood salvage - PHOSPHOR handles it. We're still using code she wrote in 2076. That's not just good engineering. That's immortality. Dr. Aldridge spent his career preserving her vision. We honor them both by keeping ECHELON v2.1.7 alive."  
+> "Dr. Krane's PHOSPHOR abstraction layer has outlived her by two centuries. Every terminal we encounter - from pristine Vault-Tec systems to jury-rigged Brotherhood salvage - PHOSPHOR handles it. We're still using code she wrote in 2076. That's not just good engineering. That's immortality. Dr. Aldridge spent his career preserving her vision. We honor them both by keeping ECHELON v3.1.7 alive."  
 > - Enclave Archivist, Historical Technology Preservation Division
 
 
@@ -468,6 +497,34 @@ Some Enclave analysts believe RobCo intentionally weakened UOS security at gover
 ##### Dr. Krane's Final Report (October 2077):
 
 > "We didn't break RobCo's security. We just read the manual they were afraid to publish."
+
+---
+
+## Vault-Tec Simulation Override Detected
+
+**[NOTICE: You are accessing ECHELON through a Vault-Tec 
+educational simulation terminal, Year 2026]**
+
+This recreation of the ECHELON system was developed as a 
+historical training simulation by:
+
+**Simulation Designer: Gwergilius (Gergely Tóth)**  
+Role: Vault-Tec Educational Software Division  
+Simulation Year: 2026 (51 years before Project ECHELON inception)  
+Purpose: Training future vault dwellers in pre-war hacking techniques  
+
+> "We found Dr. Krane's theoretical notes in a Vault-Tec archive. 
+> This simulation demonstrates what ECHELON might have been, 
+> had the project been completed before the Great War."  
+> - Gwergilius, Vault-Tec Sim-Tech Division (2026)
+
+**Historical Accuracy Notice:**  
+This simulation is based on fragmentary pre-war documentation. 
+Actual ECHELON development (2076-2077) may have differed from 
+this educational reconstruction.
+
+**Vault-Tec Disclaimer:**  
+"Your Safety is Our Concern. Your Curiosity is Our Opportunity."™
 
 ---
 

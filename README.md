@@ -104,6 +104,23 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 - The Fallout community for inspiration
 - RobCo Industries (fictional) for the UOS we're breaching
 
+## About the Developer
+
+**Gwergilius (Gergely Tóth)**  
+Cross-platform .NET developer with a passion for Fallout lore and software architecture.
+
+This project demonstrates:
+- Cross-platform development (Console, Blazor, MAUI)
+- MVVM architecture
+- Lore-driven design (fiction follows function)
+- PHOSPHOR abstraction layer (inspired by fictional technology)
+
+*"I found Dr. Krane's notes in a Vault-Tec storage facility. Turns out PHOSPHOR wasn't just fiction - it was good software architecture. So I built it."*
+
+## Contact
+- GitHub: [@gwergilius][Gwergilius-Github]
+- LinkedIn: [Gwergilius][Gwergilius-LinkedIn]
+
 ---
 
 **Disclaimer:** This is a fan project and is not affiliated with Bethesda Softworks or Bethesda Game Studios.
@@ -118,6 +135,8 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [Coding Standards]: ./.cursor/rules/README.md "Development guidelines"
 [src README]: ./src/README.md "Source code structure and configuration"
 [Magyar]: ./README.hu.md
+[Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
+[Gwergilius-Github]: https://github.com/Gwergilius/
 
 [Image-links]: #Image-references
 [version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
