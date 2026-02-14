@@ -1,15 +1,15 @@
-# CI: build, test, coverage. On push (any branch) = non-blocking; on PR to main = blocking.
+# CI: build, test, coverage. SonarCloud for quality and coverage badge (free for public repos).
+# Required: Add project at https://sonarcloud.io (import from GitHub), then set SONAR_TOKEN in repo secrets.
+# On push (any branch) = non-blocking; on PR to main = blocking.
 name: CI
 
 on:
   push:
-    # all branches: feature commits get build/test/coverage but do not block
   pull_request:
     branches: [main, master]
 
 env:
   DOTNET_VERSION: "10.0.x"
-  # Path relative to working-directory (src); use Enclave.Echelon.slnx when running from src/
   SOLUTION_PATH: "Enclave.Echelon.slnx"
 
 jobs:
@@ -24,17 +24,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # required for GitVersion
+          fetch-depth: 0  # required for GitVersion and SonarCloud
+
+      - name: Set SonarCloud project key
+        run: |
+          echo "SONAR_PROJECT_KEY=${GITHUB_REPOSITORY//\//_}" >> $GITHUB_ENV
+          echo "SONAR_ORGANIZATION=${{ github.repository_owner }}" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Install coverage tools
+      - name: Install tools
         run: |
           dotnet tool install -g dotnet-coverage
           dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install -g dotnet-sonarscanner
+
+      - name: SonarScanner begin
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"${{ env.SONAR_PROJECT_KEY }}" \
+            /o:"${{ env.SONAR_ORGANIZATION }}" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/sonar/coverage.opencover.xml"
+        continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Restore
         run: dotnet restore ${{ env.SOLUTION_PATH }}
@@ -72,6 +90,26 @@ jobs:
           fi
         continue-on-error: ${{ github.event_name == 'push' }}
 
+      - name: Convert Cobertura to OpenCover (for SonarCloud)
+        if: steps.test.outcome == 'success'
+        run: |
+          mkdir -p TestResults/sonar
+          reportgenerator -reports:TestResults/coverage.xml -reporttypes:OpenCover -targetdir:TestResults/sonar
+          # SonarCloud expects path given at begin; ensure file exists at that path
+          XML=$(find TestResults/sonar -name "*.xml" -type f | head -1)
+          if [ -n "$XML" ] && [ "$(basename "$XML")" != "coverage.opencover.xml" ]; then
+            cp "$XML" TestResults/sonar/coverage.opencover.xml
+          fi
+          ls -la TestResults/sonar/
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+      - name: SonarScanner end
+        if: always() && (steps.build.outcome == 'success' || steps.build.outcome == 'failure')
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        continue-on-error: ${{ github.event_name == 'push' }}
+
       - name: Set up GitVersion
         id: gitversion-setup
         if: always() && (steps.build.outcome == 'success' || github.event_name == 'pull_request')
@@ -98,12 +136,3 @@ jobs:
             -LineMinimum 80 \
             -BranchMinimum 95
         continue-on-error: ${{ github.event_name == 'push' }}
-
-      - name: Upload coverage to Codecov (for badge)
-        if: steps.test.outcome == 'success'
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: src/TestResults/coverage.xml
-          fail_ci_if_error: false
-          disable_search: true 
