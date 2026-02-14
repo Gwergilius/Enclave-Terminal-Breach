@@ -52,7 +52,8 @@ jobs:
             --filter "Category=UnitTest" \
             --logger "console;verbosity=normal" \
             --results-directory TestResults/raw \
-            --collect "XPlat Code Coverage"
+            --collect "XPlat Code Coverage" \
+            --settings ../coverage.runsettings
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Merge coverage results
@@ -105,3 +106,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: src/TestResults/coverage.xml
           fail_ci_if_error: false
+          disable_search: true 
