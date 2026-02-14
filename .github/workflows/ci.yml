@@ -26,11 +26,6 @@ jobs:
         with:
           fetch-depth: 0  # required for GitVersion and SonarCloud
 
-      - name: Set SonarCloud project key
-        run: |
-          echo "SONAR_PROJECT_KEY=${GITHUB_REPOSITORY//\//_}" >> $GITHUB_ENV
-          echo "SONAR_ORGANIZATION=${{ github.repository_owner }}" >> $GITHUB_ENV
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -47,8 +42,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet sonarscanner begin \
-            /k:"${{ env.SONAR_PROJECT_KEY }}" \
-            /o:"${{ env.SONAR_ORGANIZATION }}" \
+            /k:"${{ vars.SONAR_PROJECT_KEY }}" \
+            /o:"${{ vars.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.opencover.reportsPaths="TestResults/sonar/coverage.opencover.xml"
