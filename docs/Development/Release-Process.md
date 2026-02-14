@@ -224,9 +224,18 @@ gh release create sparrow-v1.1.0 \
   ./dist/Enclave-SPARROW-v1.1.0-win-x64.zip
 ```
 
-### Attach artifacts to a GitHub Release
+### CD pipeline (automated build and attach)
 
-To offer downloadable executables or installers with a release:
+The repository includes a CD workflow (`.github/workflows/cd-release.yml`) that:
+
+- **On tag push** (e.g. `sparrow-v1.1.0`): Builds SPARROW for Windows (win-x64, self-contained), creates a zip, then creates or updates the GitHub Release for that tag and attaches the zip. No need to build or upload manually.
+- **On push to main**: Builds the same Windows zip and uploads it as a **workflow artifact** so you can download it from the Actions run for testing before creating a release.
+
+To release SPARROW 1.1.0: merge to main, push the tag `sparrow-v1.1.0`; the workflow will build and attach `Enclave-SPARROW-v1.1.0-win-x64.zip` to the release. You can edit the release description afterward if needed. For RAVEN, add a `raven-v*` tag trigger and a build job when the project exists.
+
+### Attach artifacts to a GitHub Release (manual)
+
+To build and attach binaries manually (or for platforms not yet in the CD workflow):
 
 **1. Build the app** (example: SPARROW):
 ```bash
