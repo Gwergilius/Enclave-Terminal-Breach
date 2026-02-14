@@ -212,19 +212,54 @@ git push --tags
 2. **Choose tag:** `sparrow-v0.1.0`
 3. **Release title:** `SPARROW v0.1.0 - DOS Proof of Concept`
 4. **Description:** Copy from CHANGELOG + add highlights
-5. **Attach binaries** (optional):
-   - `Enclave.SPARROW-v0.1.0-win-x64.zip`
-   - `Enclave.SPARROW-v0.1.0-linux-x64.tar.gz`
+5. **Attach binaries** (optional): see [Attach artifacts to a GitHub Release](#attach-artifacts-to-a-github-release) below.
 6. **Mark as pre-release** (if alpha/beta)
 7. **Publish release**
 
 **Via GitHub CLI:**
 ```bash
-gh release create sparrow-v0.1.0 \
-  --title "SPARROW v0.1.0 - DOS Proof of Concept" \
+gh release create sparrow-v1.1.0 \
+  --title "SPARROW v1.1.0 - DOS Proof of Concept" \
   --notes-file release-notes.md \
-  ./dist/Enclave.SPARROW-v0.1.0-win-x64.zip
+  ./dist/Enclave-SPARROW-v1.1.0-win-x64.zip
 ```
+
+### Attach artifacts to a GitHub Release
+
+To offer downloadable executables or installers with a release:
+
+**1. Build the app** (example: SPARROW):
+```bash
+# From repo root
+VERSION=1.1.0
+dotnet publish src/Enclave.Sparrow/Enclave.Sparrow.csproj \
+  -c Release -r win-x64 --self-contained \
+  -o dist/sparrow-win-x64
+# Optional: Linux
+dotnet publish src/Enclave.Sparrow/Enclave.Sparrow.csproj \
+  -c Release -r linux-x64 --self-contained \
+  -o dist/sparrow-linux-x64
+```
+
+**2. Package into archives** (use the naming convention below):
+```bash
+# Windows zip (from repo root)
+cd dist && zip -r Enclave-SPARROW-v1.1.0-win-x64.zip sparrow-win-x64 && cd ..
+# Or on Windows (PowerShell):
+Compress-Archive -Path dist/sparrow-win-x64/* -DestinationPath dist/Enclave-SPARROW-v1.1.0-win-x64.zip
+```
+
+**3. Attach to the release**
+
+- **GitHub Web UI:** Open the release (e.g. **Releases** → **SPARROW v1.1.0**) → **Edit** → scroll to *Attach binaries by dropping them here or selecting them* → drag the `.zip` (or `.tar.gz`) file → **Save**.
+- **GitHub CLI:** Create the release with files, or add files to an existing release:
+```bash
+gh release upload sparrow-v1.1.0 dist/Enclave-SPARROW-v1.1.0-win-x64.zip
+# Or create release and upload in one go:
+gh release create sparrow-v1.1.0 --title "SPARROW v1.1.0" --notes "..." dist/Enclave-SPARROW-v1.1.0-win-x64.zip
+```
+
+Users can then download the archive from the release page and run the executable (e.g. `Enclave.Sparrow.exe` inside the zip on Windows). For an installer (e.g. MSI/Setup), you would add a separate build step (e.g. MSIX/installer tooling) and attach the resulting file the same way.
 
 ### 8. Announcement
 
@@ -338,8 +373,20 @@ standard-version --release-as minor
 
 Create platform-specific builds for release:
 ```bash
-# SPARROW (DOS)
-# (Manual packaging - no .NET build)
+# SPARROW (Console app - .NET)
+dotnet publish src/Enclave.Sparrow/Enclave.Sparrow.csproj \
+  -c Release \
+  -r win-x64 \
+  --self-contained \
+  -o dist/sparrow-win-x64
+
+# Optional: single-file executable (smaller download)
+dotnet publish src/Enclave.Sparrow/Enclave.Sparrow.csproj \
+  -c Release \
+  -r win-x64 \
+  --self-contained \
+  -p:PublishSingleFile=true \
+  -o dist/sparrow-win-x64
 
 # RAVEN (Console - Windows)
 dotnet publish src/Enclave.Echelon.RAVEN \
@@ -367,7 +414,8 @@ Follow consistent naming:
 Enclave-{PHASE}-v{VERSION}-{PLATFORM}.{EXT}
 
 Examples:
-Enclave-SPARROW-v0.1.0-dos.zip
+Enclave-SPARROW-v1.1.0-win-x64.zip
+Enclave-SPARROW-v1.1.0-linux-x64.tar.gz
 Enclave-RAVEN-v0.4.0-win-x64.zip
 Enclave-GHOST-v1.2.4-web.zip
 Enclave-ECHELON-v2.1.7-android.apk

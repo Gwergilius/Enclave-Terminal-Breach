@@ -23,6 +23,7 @@ This project uses a **GitHub Flow** variant optimized for solo development with 
 - Protected: Requires Pull Request for all feature development
 - Admin bypass permitted ONLY for changelog finalization
 - Source of truth for the project
+- **Releases live on main:** Each release (e.g. SPARROW v1.1.0) is merged to `main`; Git tags point to commits on `main`. All release versions are available from the main branch. Feature branches are temporary and are removed after their PR is merged.
 
 **Branch Protection Settings:**
 ```yaml

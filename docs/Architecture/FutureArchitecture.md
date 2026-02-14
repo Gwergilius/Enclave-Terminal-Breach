@@ -677,6 +677,45 @@ Visual Elements:
 - **Terminal Commands:** Type special commands in app (e.g., `/history`, `/personnel`)
 - **Version Number Secrets:** Clicking version number 7 times reveals changelog
 
+**Example: Developer Profile Easter Egg**
+
+When user types `/gwergilius` or `/developer` in the help terminal:
+```
+╔══════════════════════════════════════════╗
+║ ECHELON DEVELOPMENT TEAM                 ║
+╚══════════════════════════════════════════╝
+
+Historical Team (2076-2078):
+- Dr. Elizabeth Krane (Project Lead)
+- Dr. Marcus Aldridge (Deputy Director)
+- [23 additional personnel - see ECHELON-HIST-001]
+
+Modern Implementation (2025-2026):
+The ECHELON system you are using was reconstructed 
+from recovered pre-war documentation by:
+
+GWERGILIUS (Gergely Tóth)
+Software Developer & Historical Reconstruction Specialist
+Born: 1961 (Pre-War era, somehow still operational)
+Specialization: Cross-platform .NET, Fallout lore integration
+
+> "I found Dr. Krane's notes in a Vault-Tec storage 
+> facility. Turns out PHOSPHOR wasn't just fiction - 
+> it was good software architecture. So I built it."
+
+RECRUITMENT NOTICE:
+The Enclave seeks individuals skilled in:
+- Cross-platform development (.NET, MAUI, Blazor)
+- Terminal emulation and UI/UX design
+- Fallout universe documentation
+- Hungarian-English translation
+
+Contact: recruitment@enclave.gov
+(Signal currently unavailable due to nuclear war)
+
+Press [ESC] to return to main menu
+```
+
 #### 4. Exportable Field Manual
 
 **Concept:** Allow users to download comprehensive documentation as a single document.

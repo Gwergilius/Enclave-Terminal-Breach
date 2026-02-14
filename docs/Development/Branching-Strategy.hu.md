@@ -2,7 +2,7 @@
 
 **[English]** | Magyar
 
-Git workflow és branch kezelés. **GitHub Flow** variáns: PR-only feature fejlesztés, fázis alapú scope (sparrow, raven, ghost, echelon, core, arch, ci). Main védett; admin bypass **csak** changelog véglegesítésre.
+Git workflow és branch kezelés. **GitHub Flow** variáns: PR-only feature fejlesztés, fázis alapú scope (sparrow, raven, ghost, echelon, core, arch, ci). Main védett; admin bypass **csak** changelog véglegesítésre. **Release-ek a main-en:** minden release (pl. SPARROW v1.1.0) a main-re merge-ölve érhető el; a tag-ek a main commitjaira mutatnak; a feature branchek átmenetiek, merge után törlődnek.
 
 **Branch formátum:** `<type>/<scope>[-description]` – docs/, feature/, refactor/, fix/, test/, chore/. **Workflow:** main pull → feature branch → commit (Conventional Commits) → push → PR → review → Squash and Merge (vagy Merge commit) → changelog véglegesítés (admin bypass, csak changelog fájlok) → tag.
 
