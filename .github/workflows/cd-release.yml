@@ -1,6 +1,7 @@
 # CD: build downloadable artifacts for SPARROW (and later RAVEN).
 # - On tag push sparrow-v*: build Windows zip, create/update GitHub Release, attach zip.
 # - On push to main: build Windows zip, upload as workflow artifact (for testing).
+# Does NOT run on pull_request; only on push to main or push of a tag.
 name: CD – Release artifacts
 
 on:
@@ -54,6 +55,9 @@ jobs:
             -c Release -r win-x64 --self-contained \
             -o dist/sparrow-win-x64
 
+      - name: Install zip (for packaging)
+        run: sudo apt-get update && sudo apt-get install -y zip
+
       - name: Create zip
         id: zip
         run: |
@@ -76,7 +80,9 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: SPARROW ${{ steps.version.outputs.version }}
-          generate_release_notes: true
+          # generate_release_notes would need repo "Read and write" workflow permissions (403 with default token)
+          body: |
+            See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           files: ${{ steps.zip.outputs.zip_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
