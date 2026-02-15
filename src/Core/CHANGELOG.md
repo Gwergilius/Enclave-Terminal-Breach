@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-14
+
 ### Changed
 - **Solver implementations renamed (Lore-aligned):** `PasswordSolver` → `TieBreakerPasswordSolver`, `BestScoreOnlySolver` → `BestBucketPasswordSolver`, `RandomGuessSolver` → `HouseGambitPasswordSolver`. Corresponding test classes renamed.
 - **Abstract base class:** All solvers now inherit from `PasswordSolverBase`, which provides virtual defaults for `GetBestGuess`, `CalculateInformationScore`, and `NarrowCandidates`; only `GetBestGuesses` is abstract. Implementations override only where strategy differs.
