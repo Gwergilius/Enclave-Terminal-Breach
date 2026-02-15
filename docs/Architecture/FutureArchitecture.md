@@ -75,7 +75,7 @@ public class Password
     /// </summary>
     internal Password(string word)
     {
-        _validator.ValidateAndThrowArgumentException(word, nameof(word));
+        _validator.ValidateAndThrowArgumentException(word);
         Word = word.ToUpperInvariant();
     }
 
@@ -241,7 +241,7 @@ public class GameSession
     /// <param name="registry">The password registry to use.</param>
     public GameSession(IEnumerable<string> words, PasswordRegistry registry)
     {
-        _validator.ValidateAndThrowArgumentException(words, nameof(words));
+        _validator.ValidateAndThrowArgumentException(words);
 
         if (registry is null)
         {

@@ -1,5 +1,4 @@
-global using System.Globalization;
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 using Enclave.Sparrow.IO;
 using Enclave.Sparrow.Session;
 
@@ -8,17 +7,11 @@ namespace Enclave.Sparrow.Phases;
 /// <summary>
 /// Data-input phase: prompts for password candidates until empty line; fills session (SPARROW-Requirements §2).
 /// </summary>
-public sealed class DataInputPhase : IDataInputPhase
+public sealed class DataInputPhase(IGameSession session, IConsoleIO console) : IDataInputPhase
 {
-    private readonly IGameSession _session;
-    private readonly IConsoleIO _console;
-    private static readonly StringComparer CaseInsensitive = StringComparer.OrdinalIgnoreCase;
-
-    public DataInputPhase(IGameSession session, IConsoleIO console)
-    {
-        _session = session ?? throw new ArgumentNullException(nameof(session));
-        _console = console ?? throw new ArgumentNullException(nameof(console));
-    }
+    private readonly IGameSession _session = session ?? throw new ArgumentNullException(nameof(session));
+    private readonly IConsoleIO _console = console ?? throw new ArgumentNullException(nameof(console));
+    private static readonly StringComparer _caseInsensitive = StringComparer.OrdinalIgnoreCase;
 
     /// <inheritdoc />
     public void Run()
@@ -28,26 +21,7 @@ public sealed class DataInputPhase : IDataInputPhase
 
         while (line != null && !string.IsNullOrWhiteSpace(line))
         {
-            var tokens = line.Split((string[]?)null, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-
-            foreach (var token in tokens)
-            {
-                var t = token.Trim();
-                if (string.IsNullOrEmpty(t)) continue;
-
-                if (t.StartsWith("-", StringComparison.Ordinal))
-                {
-                    var toRemove = t[1..].Trim();
-                    if (string.IsNullOrEmpty(toRemove)) continue;
-                    var removed = RemoveCandidate(toRemove);
-                    if (!removed)
-                        _console.WriteLine($"Not in list (ignored): {toRemove}");
-                }
-                else
-                {
-                    ProcessAddWord(t);
-                }
-            }
+            ProcessInputLine(line);
 
             WriteCandidateCountAndList();
 
@@ -56,20 +30,48 @@ public sealed class DataInputPhase : IDataInputPhase
         }
     }
 
+    private void ProcessInputLine(string line)
+    {
+        var tokens = GetTokens(line);
+
+        foreach (var token in tokens)
+        {
+            if (token.StartsWith('-'))
+            {
+                RemoveWord(token);
+            }
+            else
+            {
+                AddWord(token);
+            }
+        }
+    }
+
+    private static IEnumerable<string> GetTokens(string line)
+    {
+        return line.Split((string[]?)null, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => t.Trim())
+                    .Where(t => !string.IsNullOrEmpty(t));
+    }
+
     private bool RemoveCandidate(string word)
     {
         for (var i = 0; i < _session.Candidates.Count; i++)
         {
-            if (CaseInsensitive.Equals(_session.Candidates[i].Word, word))
+            if (_caseInsensitive.Equals(_session.Candidates[i].Word, word))
             {
                 _session.Candidates.RemoveAt(i);
+                if (_session.Candidates.Count == 0)
+                {
+                    _session.WordLength = null;
+                }
                 return true;
             }
         }
         return false;
     }
 
-    private void ProcessAddWord(string word)
+    private void AddWord(string word)
     {
         Password password;
         try
@@ -90,7 +92,7 @@ public sealed class DataInputPhase : IDataInputPhase
             return;
         }
 
-        if (_session.Candidates.Any(c => CaseInsensitive.Equals(c.Word, password.Word)))
+        if (_session.Candidates.Any(c => _caseInsensitive.Equals(c.Word, password.Word)))
         {
             _console.WriteLine($"Already in list (ignored): {password.Word}");
             return;
@@ -98,6 +100,16 @@ public sealed class DataInputPhase : IDataInputPhase
 
         _session.WordLength ??= len;
         _session.Candidates.Add(password);
+    }
+
+    private bool RemoveWord(string token)
+    {
+        var toRemove = token[1..].Trim();
+        if (string.IsNullOrEmpty(toRemove)) return false;
+        var removed = RemoveCandidate(toRemove);
+        if (!removed)
+            _console.WriteLine($"Not in list (ignored): {toRemove}");
+        return true;
     }
 
     private void WriteCandidateCountAndList()

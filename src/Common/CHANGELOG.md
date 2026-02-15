@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-14
+
 ### Added
 - **ResourceExtensions** – `GetResourceStream`, `GetResourceString`, `GetJsonResource<T>` for loading embedded resources from `Assembly` or `Type`; path normalization for manifest names (`/`, `\`, `-`).
 - **NotFoundError** – FluentResults error type for resource-not-found failures (e.g. with list of available manifest names).

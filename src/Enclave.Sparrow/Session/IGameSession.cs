@@ -14,7 +14,7 @@ public interface IGameSession
     IList<Password> Candidates { get; }
 
     /// <summary>
-    /// Required word length (set when the first word is accepted in data-input). Null until then.
+    /// Required word length (set when the first word is accepted in data-input). Null until then, or when the list is cleared (e.g. last candidate removed).
     /// </summary>
     int? WordLength { get; set; }
 }

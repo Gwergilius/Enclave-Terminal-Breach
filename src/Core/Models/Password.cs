@@ -1,4 +1,4 @@
-﻿using Enclave.Echelon.Core.Extensions;
+using Enclave.Echelon.Core.Extensions;
 using Enclave.Echelon.Core.Validators;
 
 namespace Enclave.Echelon.Core.Models;
@@ -35,7 +35,7 @@ public class Password
     /// <exception cref="ArgumentException">Thrown when word is empty, whitespace, or contains non-letter characters.</exception>
     public Password(string word)
     {
-        _validator.ValidateAndThrowArgumentException(word, nameof(word));
+        _validator.ValidateAndThrowArgumentException(word);
 
         Word = word.ToUpperInvariant();
         IsEliminated = false;

@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Test.Core;
+using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Extensions;
 using Enclave.Echelon.Core.Validators;
 
@@ -45,16 +45,16 @@ public class ValidationExtensionsTests
     [Theory,
         InlineData(""),
         InlineData("null")]
-    public void ValidateAndThrowArgumentException_WithDefaultParameterName_UsesValue(string input)
+    public void ValidateAndThrowArgumentException_WhenParameterNameOmitted_UsesCallerArgumentExpression(string input)
     {
-        // Arrange
+        // Arrange - when second argument is omitted, [CallerArgumentExpression(nameof(instance))] yields "input"
         var validator = new PasswordValidator();
-        input = input == "null" ? null! : input; // Simulate null input for "null" case 
+        input = input == "null" ? null! : input; // Simulate null input for "null" case
 
         // Act & Assert
         var ex = Should.Throw<ArgumentException>(() =>
             validator.ValidateAndThrowArgumentException(input));
-        ex.ParamName.ShouldBe("value");
+        ex.ParamName.ShouldBe("input");
     }
 
     [Theory, InlineData("bad", "param")]

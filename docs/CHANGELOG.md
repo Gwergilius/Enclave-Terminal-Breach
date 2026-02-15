@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-14
+
 ### Added
 - **Architecture/Algorithm.md** (and **Algorithm.hu.md**): Section *Automated performance test (Fallout difficulty levels, 4-step cap)* with success-rate table (random secret, seed 17) and note that longer-word levels are not harder for the algorithm. **SolverComparison.md**: Comparison of TieBreaker, BestScoreOnly, and Random strategies under random secret and adversarial scenarios (tables and conclusion).
 - **Repository**: Initial README and folder structure (docs, src, .cursor/rules, .gitignore, LICENSE)
