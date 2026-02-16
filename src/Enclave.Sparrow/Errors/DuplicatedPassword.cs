@@ -1,4 +1,4 @@
-using FluentResults;
+﻿using FluentResults;
 
 namespace Enclave.Sparrow.Errors;
 
@@ -6,7 +6,7 @@ namespace Enclave.Sparrow.Errors;
 /// Error indicating that a password candidate is already in the candidate list.
 /// </summary>
 /// <param name="word">The duplicated word.</param>
-public class DuplicatedPassword(string word) : Error($"Already in list (ignored): {word}"), IError
+public class DuplicatedPassword(string word) : Error($"Already in list (ignored): {word}")
 {
     /// <summary>
     /// Gets the duplicated word.

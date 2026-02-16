@@ -8,7 +8,7 @@ namespace Enclave.Echelon.Core.Tests.Validators;
 [UnitTest, TestOf(nameof(PasswordValidator))]
 public class PasswordValidatorTests
 {
-    private readonly IValidator<string> _validator = new PasswordValidator();
+    private readonly PasswordValidator _validator = new();
 
     [Theory]
     [InlineData("A")]
@@ -31,7 +31,8 @@ public class PasswordValidatorTests
         // FluentValidation rejects null before running rules; the Password constructor
         // uses ValidationExtensions.ValidateAndThrowArgumentException which throws ArgumentNullException for null.
         // Act & Assert
-        Should.Throw<InvalidOperationException>(() => _validator.Validate(null!));
+        string word = null!;
+        Should.Throw<InvalidOperationException>(() => _validator.Validate(word));
     }
 
     [Theory, InlineData("")]

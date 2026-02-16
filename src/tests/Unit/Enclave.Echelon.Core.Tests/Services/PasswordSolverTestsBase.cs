@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -12,75 +12,92 @@ public abstract class PasswordSolverTestsBase
 {
     protected abstract IPasswordSolver Solver { get; }
 
+    private static readonly Dictionary<string, HashSet<Password>> _testData = new ()
+    {
+        ["TERMS"] = [.. "TERMS TEXAS TIRES TANKS".Split().Select(w => new Password(w))],
+        ["SALES"] = [.. "SALES SALTY SAUCE SAVES".Split().Select(w => new Password(w))],
+        ["DANTA"] = [.. "DANTA DHOBI LILTS OAKUM ALEFS".Split().Select(w => new Password(w))]
+    };
+
+    private static readonly Dictionary<string, HashSet<Password>> _acceptableGuesses = new ()
+    {
+        ["TERMS"] = [.. "TERMS TEXAS TIRES".Split().Select(w => new Password(w))],
+        ["SALES"] = [.. "SALES".Split().Select(w => new Password(w))],
+        ["DANTA"] = [.. "LILTS".Split().Select(w => new Password(w))]
+    };
+
+    private static readonly Dictionary<string, HashSet<Password>> _expectedBestGuesses = new ()
+    {
+        ["TERMS"] = [.. "TERMS TEXAS TIRES".Split().Select(w => new Password(w))],
+        ["SALES"] = [.. "SALES".Split().Select(w => new Password(w))],
+        ["DANTA"] = [.. "LILTS".Split().Select(w => new Password(w))]
+    };
+
+    private static readonly Dictionary<string, (int Value, int WorstCase)> _expectedScores = new()
+    {
+        ["TERMS"] = (3, 2),
+        ["TANKS"] = (2, 3),
+        ["TEXAS"] = (3, 2),
+        ["SALES"] = (4, 1),
+        ["LILTS"] = (3, 2)
+    };
+
+    protected virtual Dictionary<string, HashSet<Password>> TestData => _testData;
+    protected virtual Dictionary<string, HashSet<Password>> AcceptableGuesses => _acceptableGuesses;
+    protected virtual Dictionary<string, HashSet<Password>> ExpectedBestGuesses => _expectedBestGuesses;
+    protected virtual Dictionary<string, (int Value, int WorstCase)> ExpectedScores => _expectedScores;
+
     #region GetBestGuess
 
     [Fact]
     public void GetBestGuess_WithEmptyCandidates_ReturnsNull()
     {
-        var candidates = Array.Empty<Password>();
+        Password[] candidates = [];
 
         var result = Solver.GetBestGuess(candidates);
 
         result.ShouldBeNull();
     }
 
-    [Fact]
-    public void GetBestGuess_WithSingleCandidate_ReturnsThatPassword()
+    [Theory, InlineData("TERMS")]
+    public void GetBestGuess_WithSingleCandidate_ReturnsThatPassword(string word)
     {
-        var single = new Password("TERMS");
-        var candidates = new[] { single };
+        var single = new Password(word);
+        Password[] candidates = [single];
 
         var result = Solver.GetBestGuess(candidates);
 
         result.ShouldBe(single);
-        result!.Word.ShouldBe("TERMS");
+        result!.Word.ShouldBe(word);
     }
 
     /// <summary>
-    /// Algorithm.md: TERMS, TEXAS, TIRES, TANKS — GetBestGuess returns one of the optimal guesses (score 3: TERMS, TEXAS, TIRES); TANKS has score 2.
+    /// Algorithm.md examples
     /// Strategy may return one of the best-scoring set or any candidate; derived classes can override expected set.
     /// </summary>
-    [Fact]
-    public virtual void GetBestGuess_WithTermsTexasTiresTanks_ReturnsOneOfBestScoringGuesses()
-    {
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
-        var acceptableWords = GetAcceptableBestGuessWordsForTermsTexasTiresTanks();
-
-        var result = Solver.GetBestGuess(candidates);
-
-        result.ShouldNotBeNull();
-        acceptableWords.ShouldContain(result.Word);
-    }
-
-    /// <summary>
-    /// Algorithm.md: SALES is the only guess with four distinct outcomes for SALES, SALTY, SAUCE, SAVES. Derived may accept only SALES or any (e.g. Random).
-    /// </summary>
-    [Fact]
-    public virtual void GetBestGuess_WithSalesSaltySauceSaves_ReturnsSales()
-    {
-        var candidates = new[] { "SALES", "SALTY", "SAUCE", "SAVES" }.Select(w => new Password(w)).ToList();
-        var acceptable = GetAcceptableBestGuessWordsForSalesSaltySauceSaves();
-
-        var result = Solver.GetBestGuess(candidates);
-
-        result.ShouldNotBeNull();
-        acceptable.ShouldContain(result.Word);
-    }
-
-    /// <summary>
-    /// Algorithm.md Example 3 (tie-breaker): DANTA, DHOBI, LILTS, OAKUM, ALEFS — LILTS has score 3 and smallest worst-case (2).
+    /// <example>
+    /// TERMS, TEXAS, TIRES, TANKS — GetBestGuess returns one of the optimal guesses (score 3: TERMS, TEXAS, TIRES); TANKS has score 2.
+    /// </example>
+    /// <example>
+    /// SALES is the only guess with four distinct outcomes for SALES, SALTY, SAUCE, SAVES. Derived may accept only SALES or any (e.g. Random).
+    /// </example>
+    /// <example>
+    /// Example 3 (tie-breaker): DANTA, DHOBI, LILTS, OAKUM, ALEFS — LILTS has score 3 and smallest worst-case (2).
     /// Strategy may return LILTS only or one of the best-score set; derived classes override expected set if needed.
-    /// </summary>
-    [Fact]
-    public virtual void GetBestGuess_WithDantaDhobiLiltsOakumAlefs_ReturnsOneOfBest()
+    /// </example>
+    [Theory]
+    [InlineData("TERMS")]
+    [InlineData("SALES")]
+    [InlineData("DANTA")]
+    public virtual void GetBestGuess_ReturnsOneOfBestScoringGuesses(string example)
     {
-        var candidates = new[] { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" }.Select(w => new Password(w)).ToList();
-        var acceptableWords = GetAcceptableBestGuessWordsForDantaDhobiLiltsOakumAlefs();
+        var candidates = TestData[example];
+        var acceptableWords = AcceptableGuesses[example];
 
         var result = Solver.GetBestGuess(candidates);
 
         result.ShouldNotBeNull();
-        acceptableWords.ShouldContain(result.Word);
+        acceptableWords.ShouldContain(result);
     }
 
     #endregion
@@ -100,121 +117,65 @@ public abstract class PasswordSolverTestsBase
     [Fact]
     public void GetBestGuesses_WithEmptyCandidates_ReturnsEmptyList()
     {
-        var candidates = Array.Empty<Password>();
+        Password[] candidates = [];
 
         var result = Solver.GetBestGuesses(candidates);
 
         result.ShouldBeEmpty();
     }
 
-    [Fact]
-    public void GetBestGuesses_WithSingleCandidate_ReturnsThatPassword()
+    [Theory, InlineData("TERMS")]
+    public void GetBestGuesses_WithSingleCandidate_ReturnsThatPassword(string word)
     {
-        var single = new Password("TERMS");
+        var single = new Password(word);
         var candidates = new[] { single };
 
         var result = Solver.GetBestGuesses(candidates);
 
         result.ShouldHaveSingleItem();
-        result[0].Word.ShouldBe("TERMS");
+        result[0].Word.ShouldBe(word);
     }
 
     /// <summary>
-    /// Algorithm.md: TERMS, TEXAS, TIRES, TANKS — best guesses have score 3 (TERMS, TEXAS, TIRES). Derived classes define expected count and set.
+    /// Algorithm.md:
+    /// <list type="bullet">
+    /// <item>TERMS, TEXAS, TIRES have score 3; TANKS has score 2. Derived may return all three or any subset (e.g. Random).</item>
+    /// <item>SALES, SALTY, SAUCE, SAVES — only SALES has score 4. Derived may assert single SALES or single any (e.g. Random).</item>
+    /// <item>Example 3: tie-breaker — only LILTS has worst-case 2. Derived classes define expected count and set</item>
+    /// </list>
+    /// Derived classes define expected count and set.
     /// </summary>
-    [Fact]
-    public virtual void GetBestGuesses_WithTermsTexasTiresTanks_ReturnsExpectedBestSet()
+    [Theory]
+    [InlineData("TERMS")]
+    [InlineData("SALES")]
+    [InlineData("DANTA")]
+    public virtual void GetBestGuesses_ReturnsExpectedBestSet(string key)
     {
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
+        var candidates = TestData[key];        
         var result = Solver.GetBestGuesses(candidates);
-        AssertGetBestGuessesForTermsTexasTiresTanks(result, candidates);
+        AssertGetBestGuessesFor(result, candidates, key);
     }
-
-    /// <summary>
-    /// Algorithm.md: SALES, SALTY, SAUCE, SAVES — only SALES has score 4. Derived may assert single SALES or single any (e.g. Random).
-    /// </summary>
-    [Fact]
-    public virtual void GetBestGuesses_WithSalesSaltySauceSaves_ReturnsOnlySales()
-    {
-        var candidates = new[] { "SALES", "SALTY", "SAUCE", "SAVES" }.Select(w => new Password(w)).ToList();
-        var result = Solver.GetBestGuesses(candidates);
-        AssertGetBestGuessesForSalesSaltySauceSaves(result, candidates);
-    }
-
-    /// <summary>
-    /// Algorithm.md Example 3: tie-breaker — only LILTS has worst-case 2. Derived classes define expected count and set.
-    /// </summary>
-    [Fact]
-    public virtual void GetBestGuesses_WithDantaDhobiLiltsOakumAlefs_ReturnsExpectedBestSet()
-    {
-        var candidates = new[] { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" }.Select(w => new Password(w)).ToList();
-        var result = Solver.GetBestGuesses(candidates);
-        AssertGetBestGuessesForDantaDhobiLiltsOakumAlefs(result, candidates);
-    }
-
     #endregion
 
     #region CalculateInformationScore (Algorithm.md requirements)
 
-    [Fact]
-    public void CalculateInformationScore_SalesAgainstFourCandidates_ReturnsScore4()
+    [Theory]
+    [InlineData("SALES")]
+    [InlineData("TERMS")]
+    [InlineData("TANKS")]
+    [InlineData("TEXAS")]
+    [InlineData("LILTS")]
+    public void CalculateInformationScore(string word)
     {
-        var guess = new Password("SALES");
-        var candidates = new[] { "SALES", "SALTY", "SAUCE", "SAVES" }.Select(w => new Password(w)).ToList();
+        var guess = new Password(word);
+        var candidates = TestData.Values.First(list => list.Contains(guess));
+        (int expectedValue, int expectedWorstCase) = ExpectedScores[word];
 
         var scoreInfo = Solver.CalculateInformationScore(guess, candidates);
 
-        scoreInfo.Password.Word.ShouldBe("SALES");
-        scoreInfo.Value.ShouldBe(4);
-        scoreInfo.WorstCase.ShouldBe(1);
-    }
-
-    [Fact]
-    public void CalculateInformationScore_TermsAgainstFourCandidates_ReturnsScore3()
-    {
-        var guess = new Password("TERMS");
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
-
-        var scoreInfo = Solver.CalculateInformationScore(guess, candidates);
-
-        scoreInfo.Value.ShouldBe(3);
-        scoreInfo.WorstCase.ShouldBe(2);
-    }
-
-    [Fact]
-    public void CalculateInformationScore_TanksAgainstFourCandidates_ReturnsScore2WorstCase3()
-    {
-        var guess = new Password("TANKS");
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
-
-        var scoreInfo = Solver.CalculateInformationScore(guess, candidates);
-
-        scoreInfo.Value.ShouldBe(2);
-        scoreInfo.WorstCase.ShouldBe(3);
-    }
-
-    [Fact]
-    public void CalculateInformationScore_TexasAgainstFourCandidates_ReturnsScore3WorstCase2()
-    {
-        var guess = new Password("TEXAS");
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
-
-        var scoreInfo = Solver.CalculateInformationScore(guess, candidates);
-
-        scoreInfo.Value.ShouldBe(3);
-        scoreInfo.WorstCase.ShouldBe(2);
-    }
-
-    [Fact]
-    public void CalculateInformationScore_LiltsAgainstFiveCandidates_ReturnsScore3WorstCase2()
-    {
-        var guess = new Password("LILTS");
-        var candidates = new[] { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" }.Select(w => new Password(w)).ToList();
-
-        var scoreInfo = Solver.CalculateInformationScore(guess, candidates);
-
-        scoreInfo.Value.ShouldBe(3);
-        scoreInfo.WorstCase.ShouldBe(2);
+        scoreInfo.Password.Word.ShouldBe(word);
+        scoreInfo.Value.ShouldBe(expectedValue);
+        scoreInfo.WorstCase.ShouldBe(expectedWorstCase);
     }
 
     [Fact]
@@ -227,7 +188,7 @@ public abstract class PasswordSolverTestsBase
 
         scoreInfo.Value.ShouldBe(1);
         scoreInfo.WorstCase.ShouldBe(1);
-        scoreInfo[5].ShouldBe(1);
+        scoreInfo[5].ShouldBe(1);   // Bucket size (value) belonging to a specific matchcount
     }
 
     [Fact]
@@ -281,7 +242,7 @@ public abstract class PasswordSolverTestsBase
     [Fact]
     public void NarrowCandidates_KeepsOnlyCandidatesWithSameMatchCountAsResponse()
     {
-        var candidates = new[] { "TERMS", "TEXAS", "TIRES", "TANKS" }.Select(w => new Password(w)).ToList();
+        var candidates = TestData["TERMS"];
         var guess = new Password("TERMS");
         var response = 2;
 
@@ -294,7 +255,7 @@ public abstract class PasswordSolverTestsBase
     #endregion
 
     #region Strategy-specific expectations (override in derived classes)
-
+    /** /
     /// <summary>Acceptable words for GetBestGuess(TERMS, TEXAS, TIRES, TANKS). Default: best score only (exclude TANKS).</summary>
     protected virtual IReadOnlySet<string> GetAcceptableBestGuessWordsForTermsTexasTiresTanks() =>
         new HashSet<string> { "TERMS", "TEXAS", "TIRES" };
@@ -314,28 +275,16 @@ public abstract class PasswordSolverTestsBase
     /// <summary>Expected (count, sorted words) for GetBestGuesses(DANTA, DHOBI, LILTS, OAKUM, ALEFS). Default: 1 item (LILTS).</summary>
     protected virtual (int Count, IEnumerable<string> Words) GetExpectedGetBestGuessesForDantaDhobiLiltsOakumAlefs() =>
         (1, new[] { "LILTS" });
+    /**/
 
     /// <summary>Assert result of GetBestGuesses(TERMS, TEXAS, TIRES, TANKS). Default: count and exact set.</summary>
-    protected virtual void AssertGetBestGuessesForTermsTexasTiresTanks(IReadOnlyList<Password> result, List<Password> candidates)
+    protected virtual void AssertGetBestGuessesFor(IReadOnlyList<Password> result, IEnumerable<Password> candidates, string key)
     {
-        var (expectedCount, expectedWords) = GetExpectedGetBestGuessesForTermsTexasTiresTanks();
-        result.Count.ShouldBe(expectedCount);
-        result.Select(p => p.Word).OrderBy(w => w).ShouldBe(expectedWords.OrderBy(w => w));
-    }
-
-    /// <summary>Assert result of GetBestGuesses(DANTA, DHOBI, LILTS, OAKUM, ALEFS). Default: count and exact set.</summary>
-    protected virtual void AssertGetBestGuessesForDantaDhobiLiltsOakumAlefs(IReadOnlyList<Password> result, List<Password> candidates)
-    {
-        var (expectedCount, expectedWords) = GetExpectedGetBestGuessesForDantaDhobiLiltsOakumAlefs();
-        result.Count.ShouldBe(expectedCount);
-        result.Select(p => p.Word).OrderBy(w => w).ShouldBe(expectedWords.OrderBy(w => w));
-    }
-
-    /// <summary>Assert result of GetBestGuesses(SALES, SALTY, SAUCE, SAVES). Default: single SALES.</summary>
-    protected virtual void AssertGetBestGuessesForSalesSaltySauceSaves(IReadOnlyList<Password> result, List<Password> candidates)
-    {
-        result.ShouldHaveSingleItem();
-        result[0].Word.ShouldBe("SALES");
+        var expectedWords = ExpectedBestGuesses[key];
+        var expectedCount = expectedWords.Count; // ensure count matches words for easier override
+        var message = $"Expected [{string.Join(", ", expectedWords.Words())}], but got [{string.Join(", ", result.Words())}]";
+        result.Count.ShouldBe(expectedCount, message);
+        result.Words().ShouldBeEquivalentTo(expectedWords.Words(), message);
     }
 
     #endregion

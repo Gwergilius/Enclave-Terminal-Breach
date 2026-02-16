@@ -1,3 +1,4 @@
+﻿using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -11,11 +12,14 @@ public class BestBucketPasswordSolverTests : PasswordSolverTestsBase
 {
     private const int Seed = 42;
 
+    private static readonly Dictionary<string, HashSet<Password>> _acceptableGuesses = new()
+    {
+        ["TERMS"] = [.. "TERMS TEXAS TIRES".Split().Select(w => new Password(w))],
+        ["SALES"] = [.. "SALES".Split().Select(w => new Password(w))],
+        ["DANTA"] = [.. "DANTA DHOBI LILTS OAKUM ALEFS".Split().Select(w => new Password(w))]
+    };
+
     protected override IPasswordSolver Solver { get; } = new BestBucketPasswordSolver(Seed);
-
-    protected override IReadOnlySet<string> GetAcceptableBestGuessWordsForDantaDhobiLiltsOakumAlefs() =>
-        new HashSet<string> { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" };
-
-    protected override (int Count, IEnumerable<string> Words) GetExpectedGetBestGuessesForDantaDhobiLiltsOakumAlefs() =>
-        (5, new[] { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" });
+    protected override Dictionary<string, HashSet<Password>> AcceptableGuesses => _acceptableGuesses;
+    protected override Dictionary<string, HashSet<Password>> ExpectedBestGuesses => _acceptableGuesses;
 }

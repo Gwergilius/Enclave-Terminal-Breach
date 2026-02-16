@@ -40,32 +40,10 @@ public class ScoreInfo(Password password)
     /// <summary>
     /// The number of distinct match count groups (higher is better - more information gained).
     /// </summary>
-    public int Value
-    {
-        get
-        {
-            int count = 0;
-            foreach (var c in _matchCounts)
-            {
-                if (c > 0) count++;
-            }
-            return count;
-        }
-    }
+    public int Value => _matchCounts.Count(c => c > 0);
 
     /// <summary>
     /// The size of the largest group (lower is better - minimizes worst-case remaining candidates).
     /// </summary>
-    public int WorstCase
-    {
-        get
-        {
-            int max = 0;
-            foreach (var c in _matchCounts)
-            {
-                if (c > max) max = c;
-            }
-            return max;
-        }
-    }
+    public int WorstCase => _matchCounts.Max();
 }

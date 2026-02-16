@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 

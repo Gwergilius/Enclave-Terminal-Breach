@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -13,39 +13,15 @@ public class HouseGambitPasswordSolverTests : PasswordSolverTestsBase
 
     protected override IPasswordSolver Solver { get; } = new HouseGambitPasswordSolver(Seed);
 
-    protected override IReadOnlySet<string> GetAcceptableBestGuessWordsForTermsTexasTiresTanks() =>
-        new HashSet<string> { "TERMS", "TEXAS", "TIRES", "TANKS" };
+    // All candidates are acceptable for all keys, since the solver is blind to scores and just picks randomly from the full set of candidates.
+    protected override Dictionary<string, HashSet<Password>> AcceptableGuesses => TestData;
 
-    protected override IReadOnlySet<string> GetAcceptableBestGuessWordsForDantaDhobiLiltsOakumAlefs() =>
-        new HashSet<string> { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" };
+    // All candidates are acceptable for all keys, since the solver is blind to scores and just picks randomly from the full set of candidates.
+    protected override Dictionary<string, HashSet<Password>> ExpectedBestGuesses => TestData;
 
-    protected override IReadOnlySet<string> GetAcceptableBestGuessWordsForSalesSaltySauceSaves() =>
-        new HashSet<string> { "SALES", "SALTY", "SAUCE", "SAVES" };
-
-    protected override (int Count, IEnumerable<string> Words) GetExpectedGetBestGuessesForTermsTexasTiresTanks() =>
-        (1, Array.Empty<string>()); // single random element; assertion overridden below
-
-    protected override (int Count, IEnumerable<string> Words) GetExpectedGetBestGuessesForDantaDhobiLiltsOakumAlefs() =>
-        (1, Array.Empty<string>());
-
-    protected override void AssertGetBestGuessesForTermsTexasTiresTanks(IReadOnlyList<Password> result, List<Password> candidates)
-    {
-        result.Count.ShouldBe(1);
-        var allowed = new HashSet<string> { "TERMS", "TEXAS", "TIRES", "TANKS" };
-        allowed.ShouldContain(result[0].Word);
-    }
-
-    protected override void AssertGetBestGuessesForDantaDhobiLiltsOakumAlefs(IReadOnlyList<Password> result, List<Password> candidates)
-    {
-        result.Count.ShouldBe(1);
-        var allowed = new HashSet<string> { "DANTA", "DHOBI", "LILTS", "OAKUM", "ALEFS" };
-        allowed.ShouldContain(result[0].Word);
-    }
-
-    protected override void AssertGetBestGuessesForSalesSaltySauceSaves(IReadOnlyList<Password> result, List<Password> candidates)
+    protected override void AssertGetBestGuessesFor(IReadOnlyList<Password> result, IEnumerable<Password> candidates, string key)
     {
         result.ShouldHaveSingleItem();
-        var allowed = new HashSet<string> { "SALES", "SALTY", "SAUCE", "SAVES" };
-        allowed.ShouldContain(result[0].Word);
+        candidates.ShouldContain(result[0]);
     }
 }

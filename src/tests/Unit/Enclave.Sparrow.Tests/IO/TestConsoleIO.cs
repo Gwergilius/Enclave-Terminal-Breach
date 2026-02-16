@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Enclave.Sparrow.IO;
+﻿using Enclave.Sparrow.IO;
 
 namespace Enclave.Sparrow.Tests.IO;
 

@@ -7,7 +7,7 @@ namespace Enclave.Echelon.Core.Errors;
 /// </summary>
 /// <param name="word">The invalid word.</param>
 /// <param name="message">Human-readable reason (e.g. validation failure, length mismatch).</param>
-public class InvalidPassword(string word, string message) : Error(message), IError
+public class InvalidPassword(string word, string message) : Error(message)
 {
     /// <summary>
     /// Gets the word that failed validation.

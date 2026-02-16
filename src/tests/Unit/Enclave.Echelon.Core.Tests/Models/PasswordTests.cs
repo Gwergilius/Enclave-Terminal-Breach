@@ -169,6 +169,139 @@ public class PasswordTests
     }
     #endregion GetMatchCount Tests
 
+    #region Equality operator (== and !=) Tests
+    [Fact]
+    public void EqualityOperator_WhenSameInstance_ReturnsTrue()
+    {
+        // Arrange
+        var p = new Password("TERMS");
+        var same = p;
+
+        // Act & Assert
+        (p == same).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void EqualityOperator_WhenBothNull_ReturnsTrue()
+    {
+        // Arrange
+        Password? left = null;
+        Password? right = null;
+
+        // Act & Assert
+        (left == right).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void EqualityOperator_WhenLeftNullRightNotNull_ReturnsFalse()
+    {
+        // Arrange
+        Password? left = null;
+        var right = new Password("TERMS");
+
+        // Act & Assert
+        (left == right).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void EqualityOperator_WhenLeftNotNullRightNull_ReturnsFalse()
+    {
+        // Arrange
+        var left = new Password("TERMS");
+        Password? right = null;
+
+        // Act & Assert
+        (left == right).ShouldBeFalse();
+    }
+
+    [Theory]
+    [InlineData("TERMS")]
+    [InlineData("TEXAS")]
+    [InlineData("tanks")]
+    public void EqualityOperator_WhenSameWordDifferentInstances_ReturnsTrue(string word)
+    {
+        // Arrange
+        var p1 = new Password(word.ToUpperInvariant());
+        var p2 = new Password(word.ToLowerInvariant());
+
+        // Act & Assert
+        (p1 == p2).ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData("TERMS", "TEXAS")]
+    [InlineData("RELEASED", "DIRECTOR")]
+    public void EqualityOperator_WhenDifferentWords_ReturnsFalse(string word1, string word2)
+    {
+        // Arrange
+        var p1 = new Password(word1);
+        var p2 = new Password(word2);
+
+        // Act & Assert
+        (p1 == p2).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void InequalityOperator_WhenSameInstance_ReturnsFalse()
+    {
+        // Arrange
+        var p = new Password("TERMS");
+        var same = p;
+
+        // Act & Assert
+        (p != same).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void InequalityOperator_WhenBothNull_ReturnsFalse()
+    {
+        // Arrange
+        Password? left = null;
+        Password? right = null;
+
+        // Act & Assert
+        (left != right).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void InequalityOperator_WhenOneNull_ReturnsTrue()
+    {
+        // Arrange
+        Password? left = null;
+        var right = new Password("TERMS");
+
+        // Act & Assert
+        (left != right).ShouldBeTrue();
+        (right != left).ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData("TERMS")]
+    [InlineData("tanks")]
+    public void InequalityOperator_WhenSameWordDifferentInstances_ReturnsFalse(string word)
+    {
+        // Arrange
+        var p1 = new Password(word.ToUpperInvariant());
+        var p2 = new Password(word.ToLowerInvariant());
+
+        // Act & Assert
+        (p1 != p2).ShouldBeFalse();
+    }
+
+    [Theory]
+    [InlineData("TERMS", "TEXAS")]
+    [InlineData("RELEASED", "DIRECTOR")]
+    public void InequalityOperator_WhenDifferentWords_ReturnsTrue(string word1, string word2)
+    {
+        // Arrange
+        var p1 = new Password(word1);
+        var p2 = new Password(word2);
+
+        // Act & Assert
+        (p1 != p2).ShouldBeTrue();
+    }
+    #endregion Equality operator (== and !=) Tests
+
     #region Equality & GetHascode Tests
     [Theory]
     [InlineData("TERMS")]
@@ -196,6 +329,7 @@ public class PasswordTests
         // Assert
         p1.Equals(p2).ShouldBeTrue();
         p1.Equals((object)p2).ShouldBeTrue();
+        p1.Equals(word).ShouldBeTrue();
     }
 
     [Theory]
@@ -210,7 +344,7 @@ public class PasswordTests
         // Assert
         p1.Equals(p2).ShouldBeFalse();
         p1.Equals((object?)null).ShouldBeFalse();
-        p1.Equals(word1).ShouldBeFalse();
+        p1.Equals(word2).ShouldBeFalse();
     }
 
     [Theory]
