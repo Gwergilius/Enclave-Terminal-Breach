@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-02-16
+
+### Added
+- **SPARROW unit tests** (Enclave.Sparrow.Tests): GameSession, DataInputPhase, HackingLoopPhase, StartupBadgePhase, PhaseRunner, Startup, ProductInfo, ConsoleIntReader, InvalidPassword, CandidateListFormatter. Coverage: ~98% line, ~93% branch.
+
+### Changed
+- **PhaseRunner** extracted from Program; Program uses IPhaseRunner.
+- **ReadInt(min, max, defaultValue)** added to IConsoleIO; ConsoleIntReader helper for testability.
+- **ProductInfo** extracted to public class.
+- **Null checks** replaced with [NotNull] in DataInputPhase, HackingLoopPhase, StartupBadgePhase.
+- **SetCandidate** simplified (direct indexer assignment).
+- **ExcludeFromCodeCoverage** for Program (composition root), ConsoleIO (thin wrapper).
+
 ## [1.1.0] - 2026-02-14
 
 ### Added
@@ -19,5 +32,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 See [Documentation Changelog](docs/CHANGELOG.md) for detailed documentation changes.
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.0...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.1...HEAD
+[1.1.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.0...sparrow-v1.1.1
 [1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/sparrow-v1.1.0

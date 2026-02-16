@@ -6,7 +6,7 @@
     <RootNamespace>Enclave.Sparrow</RootNamespace>
     <AssemblyName>Enclave.Sparrow</AssemblyName>
     <Product>SPARROW</Product>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Description>SPARROW – DOS-style console POC for Enclave Terminal Breach (stdin/stdout).</Description>
   </PropertyGroup>
 
