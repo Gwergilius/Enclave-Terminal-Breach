@@ -35,7 +35,7 @@ public class Password
     /// <exception cref="ArgumentException">Thrown when word is empty, whitespace, or contains non-letter characters.</exception>
     public Password(string word)
     {
-        _validator.ValidateAndThrowArgumentException(word, nameof(word));
+        _validator.ValidateAndThrowArgumentException(word);
 
         Word = word.ToUpperInvariant();
         IsEliminated = false;
@@ -167,7 +167,7 @@ public class Password
     }
 
     public static implicit operator string(Password password) => password.Word;
-    public static implicit operator Password(string word) => new Password(word);
+    public static implicit operator Password(string word) => new(word);
 }
 
 

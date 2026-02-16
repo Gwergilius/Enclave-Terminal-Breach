@@ -8,6 +8,7 @@
     <Project Path="tests/Common.Test.Core/Common.Test.Core.csproj" />
     <Project Path="tests/Unit/Enclave.Echelon.Common.Tests/Enclave.Echelon.Common.Tests.csproj" Id="5a1f6715-7807-4bd0-9519-7c81f7e19d52" />
     <Project Path="tests\Unit\Enclave.Echelon.Core.Tests\Enclave.Echelon.Core.Tests.csproj" />
+    <Project Path="tests/Unit/Enclave.Sparrow.Tests/Enclave.Sparrow.Tests.csproj" />
   </Folder>
   <Project Path="Common\Enclave.Common.csproj" />
   <Project Path="Core\Enclave.Echelon.Core.csproj" />

@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Sparrow.Phases;
 
@@ -7,12 +7,12 @@ namespace Enclave.Sparrow.Phases;
 /// </summary>
 internal static class CandidateListFormatter
 {
-    private static readonly StringComparer WordComparer = StringComparer.OrdinalIgnoreCase;
+    private static readonly StringComparer _caseInsensitive = StringComparer.OrdinalIgnoreCase;
 
     /// <summary>Formats candidates in columns (column count = word length), row-major, alphabetically by Word.</summary>
     public static string Format(IEnumerable<Password> candidates, int wordLength)
     {
-        var sorted = candidates.OrderBy(c => c.Word, WordComparer).ToList();
+        var sorted = candidates.OrderBy(c => c.Word, _caseInsensitive).ToList();
         if (sorted.Count == 0) return string.Empty;
         var columns = Math.Max(1, wordLength);
         var colWidth = wordLength + 2;

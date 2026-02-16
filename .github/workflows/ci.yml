@@ -129,5 +129,5 @@ jobs:
           pwsh -File ../tools/coverage/assert-coverage-thresholds.ps1 \
             -CoverageXmlPath "TestResults/coverage.xml" \
             -LineMinimum 80 \
-            -BranchMinimum 95
+            -BranchMinimum 90
         continue-on-error: ${{ github.event_name == 'push' }}

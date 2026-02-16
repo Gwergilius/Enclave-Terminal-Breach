@@ -1,113 +1,75 @@
-global using System.Globalization;
-using Enclave.Echelon.Core.Models;
+using System.Diagnostics.CodeAnalysis;
 using Enclave.Sparrow.IO;
-using Enclave.Sparrow.Session;
+using Enclave.Sparrow.Models;
 
 namespace Enclave.Sparrow.Phases;
 
 /// <summary>
 /// Data-input phase: prompts for password candidates until empty line; fills session (SPARROW-Requirements §2).
 /// </summary>
-public sealed class DataInputPhase : IDataInputPhase
+public sealed class DataInputPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console) : IDataInputPhase
 {
-    private readonly IGameSession _session;
-    private readonly IConsoleIO _console;
-    private static readonly StringComparer CaseInsensitive = StringComparer.OrdinalIgnoreCase;
-
-    public DataInputPhase(IGameSession session, IConsoleIO console)
+    private readonly IGameSession _session = session;
+    private readonly IConsoleIO _console = console;
+    private static class Prompts
     {
-        _session = session ?? throw new ArgumentNullException(nameof(session));
-        _console = console ?? throw new ArgumentNullException(nameof(console));
+        public const string Initial = "Enter password candidates:";
+        public const string More = "Enter more password candidates (empty line to finish):";
     }
 
     /// <inheritdoc />
     public void Run()
     {
-        _console.WriteLine("Enter password candidates:");
+        _console.WriteLine(Prompts.Initial);
         var line = _console.ReadLine();
 
         while (line != null && !string.IsNullOrWhiteSpace(line))
         {
-            var tokens = line.Split((string[]?)null, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-
-            foreach (var token in tokens)
-            {
-                var t = token.Trim();
-                if (string.IsNullOrEmpty(t)) continue;
-
-                if (t.StartsWith("-", StringComparison.Ordinal))
-                {
-                    var toRemove = t[1..].Trim();
-                    if (string.IsNullOrEmpty(toRemove)) continue;
-                    var removed = RemoveCandidate(toRemove);
-                    if (!removed)
-                        _console.WriteLine($"Not in list (ignored): {toRemove}");
-                }
-                else
-                {
-                    ProcessAddWord(t);
-                }
-            }
+            ProcessInputLine(line);
 
             WriteCandidateCountAndList();
 
-            _console.WriteLine("Enter more password candidates (empty line to finish):");
+            _console.WriteLine(Prompts.More);
             line = _console.ReadLine();
         }
     }
 
-    private bool RemoveCandidate(string word)
+    private void ProcessInputLine(string line)
     {
-        for (var i = 0; i < _session.Candidates.Count; i++)
+        var tokens = GetTokens(line);
+
+        foreach (var token in tokens)
         {
-            if (CaseInsensitive.Equals(_session.Candidates[i].Word, word))
+            if (token.StartsWith('-'))
             {
-                _session.Candidates.RemoveAt(i);
-                return true;
+                var result = _session.Remove(token[1..].Trim());
+                if (result.IsFailed)
+                    _console.WriteLine(result.Errors[0].Message);
+            }
+            else
+            {
+                var result = _session.Add(token);
+                if (result.IsFailed)
+                    _console.WriteLine(result.Errors[0].Message);
             }
         }
-        return false;
     }
 
-    private void ProcessAddWord(string word)
+    private static IEnumerable<string> GetTokens(string line)
     {
-        Password password;
-        try
-        {
-            password = new Password(word);
-        }
-        catch (ArgumentException ex)
-        {
-            _console.WriteLine($"Invalid word (skipped): {ex.Message}");
-            return;
-        }
-
-        var len = password.Word.Length;
-
-        if (_session.WordLength.HasValue && _session.WordLength.Value != len)
-        {
-            _console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Word length must be {0}. Skipping: {1}", _session.WordLength.Value, password.Word));
-            return;
-        }
-
-        if (_session.Candidates.Any(c => CaseInsensitive.Equals(c.Word, password.Word)))
-        {
-            _console.WriteLine($"Already in list (ignored): {password.Word}");
-            return;
-        }
-
-        _session.WordLength ??= len;
-        _session.Candidates.Add(password);
+        return line.Split((string[]?)null, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => t.Trim())
+                    .Where(t => !string.IsNullOrEmpty(t));
     }
 
     private void WriteCandidateCountAndList()
     {
-        var n = _session.Candidates.Count;
+        var n = _session.Count;
         var len = _session.WordLength ?? 0;
         _console.WriteLine();
         _console.WriteLine($"{n} candidate(s):");
         if (n > 0 && len > 0)
-            _console.WriteLine(CandidateListFormatter.Format(_session.Candidates.ToList(), len));
+            _console.WriteLine(CandidateListFormatter.Format(_session, len));
         _console.WriteLine();
     }
 }
