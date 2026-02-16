@@ -1,7 +1,8 @@
 using Enclave.Echelon.Core.Services;
 using Enclave.Sparrow.IO;
+using Enclave.Sparrow.Models;
 using Enclave.Sparrow.Phases;
-using Enclave.Sparrow.Session;
+using Enclave.Sparrow.Services;
 
 namespace Enclave.Sparrow;
 
@@ -28,6 +29,11 @@ public static class Startup
         services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();
         services.AddScoped<IDataInputPhase, DataInputPhase>();
         services.AddScoped<IHackingLoopPhase, HackingLoopPhase>();
+
+        // Phase runner: executes phases in order.
+        services.AddSingleton<IPhaseRunner>(sp => new PhaseRunner(
+            sp.GetRequiredService<IServiceScopeFactory>(),
+            [typeof(IStartupBadgePhase), typeof(IDataInputPhase), typeof(IHackingLoopPhase)]));
 
         return services;
     }

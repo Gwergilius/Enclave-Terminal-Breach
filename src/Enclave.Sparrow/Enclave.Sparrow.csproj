@@ -11,10 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentResults" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Enclave.Sparrow.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Enclave.Common.csproj" />
     <ProjectReference Include="..\Core\Enclave.Echelon.Core.csproj" />
   </ItemGroup>
 

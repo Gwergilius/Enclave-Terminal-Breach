@@ -2,12 +2,8 @@
 
 namespace Enclave.Common.Errors;
 
-public class NotFoundError : Error, IError
+public class NotFoundError(string message) : Error(message), IError
 {
-    public NotFoundError(string message) : base(message)
-    {
-    }
-
     public NotFoundError() : this("Resource not found")
     {
     }

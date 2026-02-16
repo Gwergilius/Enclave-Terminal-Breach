@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Extensions;
+﻿using Enclave.Echelon.Core.Extensions;
 using Enclave.Echelon.Core.Validators;
 
 namespace Enclave.Echelon.Core.Models;
@@ -167,7 +167,7 @@ public class Password
     }
 
     public static implicit operator string(Password password) => password.Word;
-    public static implicit operator Password(string word) => new Password(word);
+    public static implicit operator Password(string word) => new(word);
 }
 
 

@@ -1,23 +1,24 @@
-﻿using Enclave.Echelon.Core.Services;
+using System.Diagnostics.CodeAnalysis;
+using Enclave.Echelon.Core.Services;
 using Enclave.Sparrow.IO;
-using Enclave.Sparrow.Session;
+using Enclave.Sparrow.Models;
 
 namespace Enclave.Sparrow.Phases;
 
 /// <summary>
 /// Hacking loop: suggest guess, read match count, narrow candidates until win (SPARROW-Requirements §3).
 /// </summary>
-public sealed class HackingLoopPhase(IGameSession session, IConsoleIO console, IPasswordSolver solver) : IHackingLoopPhase
+public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console, [NotNull] IPasswordSolver solver) : IHackingLoopPhase
 {
-    private readonly IGameSession _session = session ?? throw new ArgumentNullException(nameof(session));
-    private readonly IConsoleIO _console = console ?? throw new ArgumentNullException(nameof(console));
-    private readonly IPasswordSolver _solver = solver ?? throw new ArgumentNullException(nameof(solver));
+    private readonly IGameSession _session = session;
+    private readonly IConsoleIO _console = console;
+    private readonly IPasswordSolver _solver = solver;
 
     /// <inheritdoc />
     public void Run()
     {
         var wordLength = _session.WordLength ?? 0;
-        if (wordLength <= 0 || _session.Candidates.Count == 0)
+        if (wordLength <= 0 || _session.Count == 0)
         {
             _console.WriteLine("No candidates. Exiting.");
             return;
@@ -25,7 +26,7 @@ public sealed class HackingLoopPhase(IGameSession session, IConsoleIO console, I
 
         while (true)
         {
-            var guess = _solver.GetBestGuess(_session.Candidates);
+            var guess = _solver.GetBestGuess(_session);
             if (guess == null)
             {
                 _console.WriteLine("No candidates left. Exiting.");
@@ -49,40 +50,23 @@ public sealed class HackingLoopPhase(IGameSession session, IConsoleIO console, I
     private void WriteCandidates(int wordLength)
     {
         _console.WriteLine();
-        _console.WriteLine($"{_session.Candidates.Count} candidate(s):");
-        _console.WriteLine(CandidateListFormatter.Format(_session.Candidates.ToList(), wordLength));
+        _console.WriteLine($"{_session.Count} candidate(s):");
+        _console.WriteLine(CandidateListFormatter.Format(_session, wordLength));
     }
 
     private void NarrowCandidates(Echelon.Core.Models.Password guess, int matchCount)
     {
-        var narrowed = _solver.NarrowCandidates(_session.Candidates, guess, matchCount);
-        _session.Candidates.Clear();
+        var narrowed = _solver.NarrowCandidates(_session, guess, matchCount);
+        _session.Clear();
         foreach (var p in narrowed)
-            _session.Candidates.Add(p);
+            _session.Add(p);
     }
 
     private int ReadMatchCount(Echelon.Core.Models.Password guess)
     {
-        int wordLength = guess.Word.Length;  
+        var wordLength = guess.Word.Length;
         _console.WriteLine();
         _console.WriteLine($"Suggested guess: `{guess.Word}`");
-        _console.Write("Match count? ");
-
-        int matchCount = -1;
-        while (matchCount < 0)
-        {
-            var line = _console.ReadLine();
-
-            if (line == null)
-            {
-                matchCount = wordLength;
-            }
-            else if (!int.TryParse(line.Trim(), CultureInfo.InvariantCulture, out matchCount) || matchCount < 0 || matchCount > wordLength)
-            {
-                _console.WriteLine($"Enter a number between 0 and {wordLength}.");
-            }
-        }
-
-        return matchCount;
+        return _console.ReadInt(0, wordLength, wordLength, "Match count? ");
     }
 }

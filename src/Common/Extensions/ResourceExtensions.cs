@@ -47,7 +47,7 @@ public static class ResourceExtensions
     public static Result<Stream> GetResourceStream(this Type referenceType, string resourcePath)
         => referenceType.Assembly.GetResourceStream(resourcePath);
 
-    private static Dictionary<char, char> _replacements= new ()
+    private static readonly Dictionary<char, char> _replacements= new ()
     {
         { '\\', '.' },
         { '/', '.' },

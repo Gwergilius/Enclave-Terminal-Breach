@@ -1,8 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Enclave.Sparrow.IO;
 
 /// <summary>
 /// Standard console implementation: <see cref="Console"/> stdin/stdout.
 /// </summary>
+[ExcludeFromCodeCoverage(Justification = "Thin wrapper around Console.Write/ReadLine; testing would only verify BCL behavior.")]
 public sealed class ConsoleIO : IConsoleIO
 {
     /// <inheritdoc />
@@ -13,4 +16,8 @@ public sealed class ConsoleIO : IConsoleIO
 
     /// <inheritdoc />
     public string? ReadLine() => Console.ReadLine();
+
+    /// <inheritdoc />
+    public int ReadInt(int min, int max, int defaultValue, string prompt = "Enter value: ", string? errorMessage = null)
+        => ConsoleIntReader.Read(this, min, max, defaultValue, prompt, errorMessage);
 }
