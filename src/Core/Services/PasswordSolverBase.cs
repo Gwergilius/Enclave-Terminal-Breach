@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
@@ -28,8 +28,8 @@ public abstract class PasswordSolverBase : IPasswordSolver
     /// </remarks>
     public virtual ScoreInfo CalculateInformationScore(Password password, IEnumerable<Password> candidates)
     {
-        ArgumentNullException.ThrowIfNull(password, nameof(password));
-        ArgumentNullException.ThrowIfNull(candidates, nameof(candidates));
+        ArgumentNullException.ThrowIfNull(password);
+        ArgumentNullException.ThrowIfNull(candidates);
 
         var scoreInfo = new ScoreInfo(password);
 
@@ -49,6 +49,6 @@ public abstract class PasswordSolverBase : IPasswordSolver
         ArgumentNullException.ThrowIfNull(candidates, nameof(candidates));
         ArgumentNullException.ThrowIfNull(guess, nameof(guess));
 
-        return candidates.Where(c => guess.GetMatchCount(c) == matchCount).ToList();
+        return [.. candidates.Where(c => guess.GetMatchCount(c) == matchCount)];
     }
 }

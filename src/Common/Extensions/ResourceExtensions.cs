@@ -6,6 +6,13 @@ namespace Enclave.Common.Extensions;
 
 public static class ResourceExtensions
 {
+    private static readonly Dictionary<char, char> _replacements = new()
+    {
+        { '\\', '.' },
+        { '/', '.' },
+        { '-', '_' },
+    };
+
     public static Result<IEnumerable<T>> GetJsonResource<T>(this Type referenceType, string resourcePath)
         => referenceType.Assembly.GetJsonResource<T>(resourcePath);
 
@@ -47,12 +54,6 @@ public static class ResourceExtensions
     public static Result<Stream> GetResourceStream(this Type referenceType, string resourcePath)
         => referenceType.Assembly.GetResourceStream(resourcePath);
 
-    private static readonly Dictionary<char, char> _replacements= new ()
-    {
-        { '\\', '.' },
-        { '/', '.' },
-        { '-', '_' },
-    };
     public static Result<Stream> GetResourceStream(this Assembly assembly, string resourcePath)
     {
         if (string.IsNullOrWhiteSpace(resourcePath))

@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- **Password** – `==` and `!=` operators (reference equality, null-safe, delegates to `Equals`). Unit tests in `PasswordTests` for both operators (same instance, both null, one null, same word, different words).
+
 ## [1.1.0] - 2026-02-14
 
 ### Changed

@@ -11,7 +11,7 @@ public class TieBreakerPasswordSolver : PasswordSolverBase
     /// <inheritdoc />
     public override IReadOnlyList<Password> GetBestGuesses(IEnumerable<Password> candidates)
     {
-        ArgumentNullException.ThrowIfNull(candidates, nameof(candidates));
+        ArgumentNullException.ThrowIfNull(candidates);
 
         var remaining = candidates.ToList();
 

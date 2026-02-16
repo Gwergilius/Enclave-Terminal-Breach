@@ -7,7 +7,7 @@ namespace Enclave.Echelon.Core.Models;
 /// Represents a potential password in the terminal hacking mini-game.
 /// Match count results are cached for O(1) subsequent lookups.
 /// </summary>
-public class Password
+public class Password: IEquatable<Password>
 {
     private static readonly PasswordValidator _validator = new();
     
@@ -121,21 +121,15 @@ public class Password
     /// </summary>
     /// <param name="obj">The object to compare with.</param>
     /// <returns>True if the objects are equal; otherwise, false.</returns>
-    public override bool Equals(object? obj)
-    {
-        if (obj is Password other)
-        {
-            return Word.Equals(other.Word, StringComparison.OrdinalIgnoreCase);
-        }
-
-        return false;
-    }
+    public override bool Equals(object? obj) => obj is Password other && Equals(other);
 
     /// <summary>
     /// Returns a hash code for this password.
     /// </summary>
     /// <returns>A hash code for the current password.</returns>
     public override int GetHashCode() => Word.GetHashCode(StringComparison.OrdinalIgnoreCase);
+
+    public bool Equals(Password? other) => Word.Equals(other?.Word, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Calculates the difference (number of non-matching characters) between two passwords.
@@ -168,7 +162,29 @@ public class Password
 
     public static implicit operator string(Password password) => password.Word;
     public static implicit operator Password(string word) => new(word);
+
+    public static bool operator ==(Password? left, Password? right)
+    {
+        if (ReferenceEquals(left, right))
+        {
+            return true;
+        }
+        if (left is null || right is null)
+        {
+            return false;
+        }
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Password? left, Password? right) => !(left == right);
 }
 
-
-
+public static class PasswordExtensions
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="passwords"></param>
+    /// <returns></returns>
+    public static string[] Words(this IEnumerable<Password> passwords) => [.. passwords.Select(p => p.Word)];
+}

@@ -1,4 +1,4 @@
-using Enclave.Common.Extensions;
+﻿using Enclave.Common.Extensions;
 using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 using Xunit.Abstractions;
@@ -11,13 +11,11 @@ namespace Enclave.Echelon.Core.Tests.Services;
 /// Test passes if ≥90% of runs find the secret in at most 4 steps (20 runs per difficulty).
 /// </summary>
 [PerformanceTest, TestOf(nameof(TieBreakerPasswordSolver))]
-public class PasswordSolverAlgorithmPerformanceTests
+public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
 {
-    private static readonly Lazy<IReadOnlyList<string>> Words = new(LoadWordsFromCore);
-    private readonly IPasswordSolver _solver = new TieBreakerPasswordSolver();
-    private readonly ITestOutputHelper _output;
-
-    public PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output) => _output = output;
+    private static readonly Lazy<IReadOnlyList<string>> _words = new(LoadWordsFromCore);
+    private readonly TieBreakerPasswordSolver _solver = new ();
+    private readonly ITestOutputHelper _output = output;
 
     /// <summary>Terminal level and allowed password length range (min, max) per Minigame.md.</summary>
     public static IEnumerable<object[]> DifficultyLevels =>
@@ -62,7 +60,7 @@ public class PasswordSolverAlgorithmPerformanceTests
         const int runsPerDifficulty = 20;
         const int maxSteps = 4;
         const double minSuccessRate = 0.90; // 90%
-        var wordList = Words.Value;
+        var wordList = _words.Value;
         var rnd = new Random(Seed: 17); // fixed seed for reproducible 90% convergence check
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
@@ -99,7 +97,7 @@ public class PasswordSolverAlgorithmPerformanceTests
                     break;
                 }
 
-                remaining = _solver.NarrowCandidates(remaining, guess, response).ToList();
+                remaining = [.. _solver.NarrowCandidates(remaining, guess, response)];
             }
 
             if (foundByGuess)
@@ -127,7 +125,7 @@ public class PasswordSolverAlgorithmPerformanceTests
         const int maxSteps = 4;
         // Very Easy (4–5 letters) is harder in adversarial mode due to fewer distinct outcomes; allow 65%.
         var minSuccessRate = difficultyName == "Very Easy" ? 0.65 : 0.80;
-        var wordList = Words.Value;
+        var wordList = _words.Value;
         var rnd = new Random(Seed: 31); // fixed seed for reproducible adversarial stats
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
@@ -183,7 +181,7 @@ public class PasswordSolverAlgorithmPerformanceTests
         const int maxSteps = 4;
         const int gameSeed = 17;
         var solver = CreateSolver(solverName, gameSeed);
-        var wordList = Words.Value;
+        var wordList = _words.Value;
         var rnd = new Random(gameSeed);
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
@@ -201,7 +199,7 @@ public class PasswordSolverAlgorithmPerformanceTests
             var secret = candidates[rnd.Next(candidates.Count)];
 
             var steps = 0;
-            var remaining = candidates.ToList();
+            IReadOnlyList<Password> remaining = candidates;
             var foundByGuess = false;
 
             while (remaining.Count > 0 && steps < maxSteps)
@@ -211,7 +209,7 @@ public class PasswordSolverAlgorithmPerformanceTests
                 var response = secret.GetMatchCount(guess);
                 steps++;
                 if (response == secret.Word.Length) { foundByGuess = true; break; }
-                remaining = solver.NarrowCandidates(remaining, guess, response).ToList();
+                remaining = solver.NarrowCandidates(remaining, guess, response);
             }
 
             if (foundByGuess) successCount++;
@@ -233,7 +231,7 @@ public class PasswordSolverAlgorithmPerformanceTests
         const int runsPerDifficulty = 20;
         const int gameSeed = 31;
         var solver = CreateSolver(solverName, gameSeed);
-        var wordList = Words.Value;
+        var wordList = _words.Value;
         var rnd = new Random(gameSeed);
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
@@ -267,7 +265,7 @@ public class PasswordSolverAlgorithmPerformanceTests
     /// <summary>
     /// Runs one adversarial game with the given solver. Returns (found in ≤4 steps, total steps to find).
     /// </summary>
-    private (bool foundWithin4, int totalStepsToFind) RunOneAdversarialGameWith(
+    private static (bool foundWithin4, int totalStepsToFind) RunOneAdversarialGameWith(
         IPasswordSolver solver, List<Password> candidates)
     {
         var remaining = candidates.ToList();
@@ -309,7 +307,7 @@ public class PasswordSolverAlgorithmPerformanceTests
     /// Loads the word list from the Core assembly embedded resource using ResourceExtensions.
     /// The list contains only valid words (4–15 chars); no filtering applied.
     /// </summary>
-    private static IReadOnlyList<string> LoadWordsFromCore()
+    private static List<string> LoadWordsFromCore()
     {
         var result = typeof(TieBreakerPasswordSolver).Assembly.GetResourceString("words.txt");
         result.IsSuccess.ShouldBeTrue("Word list resource missing or failed: " + string.Join("; ", result.Errors.Select(e => e.Message)));

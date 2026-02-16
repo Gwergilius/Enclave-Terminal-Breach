@@ -1,4 +1,4 @@
-using Enclave.Sparrow.IO;
+﻿using Enclave.Sparrow.IO;
 
 namespace Enclave.Sparrow.Tests.IO;
 
@@ -41,7 +41,7 @@ public class ConsoleIntReaderTests
         var result = console.ReadInt(0, 5, 0);
 
         result.ShouldBe(2);
-        console.WrittenLines.ShouldContain(s => s.Contains("0") && s.Contains("5"));
+        console.WrittenLines.ShouldContain(s => s.Contains('0') && s.Contains('5'));
     }
 
     [Fact]

@@ -1,6 +1,4 @@
-using System.Globalization;
-
-namespace Enclave.Sparrow.IO;
+﻿namespace Enclave.Sparrow.IO;
 
 /// <summary>
 /// Helper for reading a validated integer from console I/O. Extracted for testability.

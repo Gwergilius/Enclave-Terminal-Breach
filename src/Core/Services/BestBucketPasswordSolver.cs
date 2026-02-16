@@ -29,7 +29,7 @@ public class BestBucketPasswordSolver(Random? random=null) : PasswordSolverBase
     /// <inheritdoc />
     public override IReadOnlyList<Password> GetBestGuesses(IEnumerable<Password> candidates)
     {
-        ArgumentNullException.ThrowIfNull(candidates, nameof(candidates));
+        ArgumentNullException.ThrowIfNull(candidates);
 
         var remaining = candidates.ToList();
         if (remaining.Count <= 1) return remaining;

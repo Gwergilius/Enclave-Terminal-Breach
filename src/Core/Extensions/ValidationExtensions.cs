@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Enclave.Echelon.Core.Extensions;
 
@@ -40,7 +40,7 @@ public static class ValidationExtensions
             return;
         }
 
-        var firstError = result.Errors.First();
+        var firstError = result.Errors[0];
 
         // Determine which exception to throw based on the error
         if (firstError.ErrorMessage.Contains("null", StringComparison.OrdinalIgnoreCase))
