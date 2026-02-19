@@ -1,4 +1,4 @@
-﻿using Enclave.Echelon.Core.Models;
+using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -19,7 +19,7 @@ public class BestBucketPasswordSolverTests : PasswordSolverTestsBase
         ["DANTA"] = [.. "DANTA DHOBI LILTS OAKUM ALEFS".Split().Select(w => new Password(w))]
     };
 
-    protected override IPasswordSolver Solver { get; } = new BestBucketPasswordSolver(Seed);
+    protected override IPasswordSolver Solver { get; } = new BestBucketPasswordSolver(new GameRandom(Seed));
     protected override Dictionary<string, HashSet<Password>> AcceptableGuesses => _acceptableGuesses;
     protected override Dictionary<string, HashSet<Password>> ExpectedBestGuesses => _acceptableGuesses;
 }

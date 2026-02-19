@@ -1,14 +1,17 @@
-﻿using Enclave.Echelon.Core.Models;
+using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
 /// <summary>
 /// Base class for <see cref="IPasswordSolver"/> implementations. Provides default (virtual) behaviour for
 /// <see cref="GetBestGuess"/>, <see cref="CalculateInformationScore"/>, and <see cref="NarrowCandidates"/>.
-/// Subclasses implement <see cref="GetBestGuesses"/> and override the others only when strategy differs.
+/// Subclasses implement <see cref="Level"/> and <see cref="GetBestGuesses"/> and override the others only when strategy differs.
 /// </summary>
 public abstract class PasswordSolverBase : IPasswordSolver
 {
+    /// <inheritdoc />
+    public abstract SolverLevel Level { get; }
+
     /// <inheritdoc />
     /// <remarks>Default: returns the first element of <see cref="GetBestGuesses"/>, or null if empty.</remarks>
     public virtual Password? GetBestGuess(IEnumerable<Password> candidates)

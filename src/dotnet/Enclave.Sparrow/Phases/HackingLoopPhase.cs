@@ -8,11 +8,11 @@ namespace Enclave.Sparrow.Phases;
 /// <summary>
 /// Hacking loop: suggest guess, read match count, narrow candidates until win (SPARROW-Requirements §3).
 /// </summary>
-public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console, [NotNull] IPasswordSolver solver) : IHackingLoopPhase
+public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console, [NotNull] ISolverFactory solverFactory) : IHackingLoopPhase
 {
     private readonly IGameSession _session = session;
     private readonly IConsoleIO _console = console;
-    private readonly IPasswordSolver _solver = solver;
+    private readonly IPasswordSolver _solver = solverFactory.GetSolver();
 
     /// <inheritdoc />
     public void Run()

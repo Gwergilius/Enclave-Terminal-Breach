@@ -41,15 +41,16 @@ public class StartupTests
     }
 
     [Fact]
-    public void ConfigureServices_ResolvesIPasswordSolver()
+    public void ConfigureServices_ResolvesISolverFactory()
     {
         var services = new ServiceCollection();
         Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
-        var solver = provider.GetRequiredService<IPasswordSolver>();
+        var factory = provider.GetRequiredService<ISolverFactory>();
 
-        solver.ShouldNotBeNull();
+        factory.ShouldNotBeNull();
+        factory.GetSolver().ShouldNotBeNull();
     }
 
     [Fact]

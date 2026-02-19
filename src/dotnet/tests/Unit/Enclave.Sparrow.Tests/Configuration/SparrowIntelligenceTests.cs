@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Test.Core;
+using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Services;
 using Enclave.Sparrow.Configuration;
 
@@ -50,7 +50,7 @@ public class SparrowIntelligenceTests
     public void Normalize_WithInvalidValue_ReturnsOne(object invalid)
     {
         if(invalid.ToString() == "null") invalid = null!;
-        SparrowIntelligence.Normalize(invalid).ShouldBe(SolverByIntelligence.DefaultLevel);
+        SparrowIntelligence.Normalize(invalid).ShouldBe(SolverLevel.Default.Value);
     }
 
     [Theory]

@@ -30,13 +30,11 @@ public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourc
         {
             using var stream = streamResult.Value;
             Load(stream);
-            return;
         } 
         else if (_source.Optional)
         {
             // Optional resource not found - just return without loading
             Data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-            return;
         }
         else
         {

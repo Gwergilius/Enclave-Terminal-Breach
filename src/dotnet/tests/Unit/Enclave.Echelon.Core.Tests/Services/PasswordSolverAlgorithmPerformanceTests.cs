@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Extensions;
+using Enclave.Common.Extensions;
 using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
 using Xunit.Abstractions;
@@ -41,13 +41,13 @@ public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
         from s in SolverVariants
         select new[] { d[0], d[1], d[2], s[0] };
 
-    private static IPasswordSolver CreateSolver(string solverName, int seed)
+    private static IPasswordSolver CreateSolver(string solverName, IRandom random)
     {
         return solverName switch
         {
             "TieBreaker" => new TieBreakerPasswordSolver(),
-            "BestBucket" => new BestBucketPasswordSolver(seed),
-            "HouseGambit" => new HouseGambitPasswordSolver(seed),
+            "BestBucket" => new BestBucketPasswordSolver(random),
+            "HouseGambit" => new HouseGambitPasswordSolver(random),
             _ => throw new ArgumentOutOfRangeException(nameof(solverName), solverName, null)
         };
     }
@@ -61,7 +61,7 @@ public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
         const int maxSteps = 4;
         const double minSuccessRate = 0.90; // 90%
         var wordList = _words.Value;
-        var rnd = new Random(Seed: 17); // fixed seed for reproducible 90% convergence check
+        var rnd = new GameRandom(seed: 17); // fixed seed for reproducible 90% convergence check
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
             .Where(len => wordList.Count(w => w.Length == len) >= 18).ToList();
@@ -126,7 +126,7 @@ public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
         // Very Easy (4–5 letters) is harder in adversarial mode due to fewer distinct outcomes; allow 65%.
         var minSuccessRate = difficultyName == "Very Easy" ? 0.65 : 0.80;
         var wordList = _words.Value;
-        var rnd = new Random(Seed: 31); // fixed seed for reproducible adversarial stats
+        var rnd = new GameRandom(seed: 31); // fixed seed for reproducible adversarial stats
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
             .Where(len => wordList.Count(w => w.Length == len) >= 18).ToList();
@@ -180,9 +180,9 @@ public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
         const int runsPerDifficulty = 20;
         const int maxSteps = 4;
         const int gameSeed = 17;
-        var solver = CreateSolver(solverName, gameSeed);
+        var rnd = new GameRandom(gameSeed);
+        var solver = CreateSolver(solverName, rnd);
         var wordList = _words.Value;
-        var rnd = new Random(gameSeed);
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
             .Where(len => wordList.Count(w => w.Length == len) >= 18).ToList();
@@ -230,9 +230,9 @@ public class PasswordSolverAlgorithmPerformanceTests(ITestOutputHelper output)
     {
         const int runsPerDifficulty = 20;
         const int gameSeed = 31;
-        var solver = CreateSolver(solverName, gameSeed);
+        var rnd = new GameRandom(gameSeed);
+        var solver = CreateSolver(solverName, rnd);
         var wordList = _words.Value;
-        var rnd = new Random(gameSeed);
 
         var validLengths = Enumerable.Range(minLength, maxLength - minLength + 1)
             .Where(len => wordList.Count(w => w.Length == len) >= 18).ToList();

@@ -12,6 +12,13 @@ namespace Enclave.Sparrow.Tests.Phases;
 [UnitTest, TestOf(nameof(HackingLoopPhase))]
 public class HackingLoopPhaseTests
 {
+    private static ISolverFactory CreateSolverFactory(IPasswordSolver solver)
+    {
+        var factory = Mock.Of<ISolverFactory>();
+        factory.AsMock().Setup(f => f.GetSolver()).Returns(solver);
+        return factory;
+    }
+
     [Fact]
     public void Run_WhenNoCandidates_WritesMessageAndExits()
     {
@@ -19,7 +26,7 @@ public class HackingLoopPhaseTests
         var console = Mock.Of<IConsoleIO>();
         var session = new GameSession();
         var solver = Mock.Of<IPasswordSolver>();
-        var phase = new HackingLoopPhase(session, console, solver);
+        var phase = new HackingLoopPhase(session, console, CreateSolverFactory(solver));
 
         var writtenLines = new List<string>();
         console.AsMock()
@@ -56,7 +63,7 @@ public class HackingLoopPhaseTests
             .Setup(c => c.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
-        var phase = new HackingLoopPhase(session, console, solver);
+        var phase = new HackingLoopPhase(session, console, CreateSolverFactory(solver));
 
         // Act
         phase.Run();
@@ -83,7 +90,7 @@ public class HackingLoopPhaseTests
             .Setup(c => c.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
-        var phase = new HackingLoopPhase(session, console, solver);
+        var phase = new HackingLoopPhase(session, console, CreateSolverFactory(solver));
 
         // Act
         phase.Run();
@@ -123,7 +130,7 @@ public class HackingLoopPhaseTests
             .Setup(c => c.ReadInt(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), null))
             .Returns(() => readIntCalls++ == 0 ? 3 : 5); // first guess: 3, second: 5 (correct)
 
-        var phase = new HackingLoopPhase(session, console, solver);
+        var phase = new HackingLoopPhase(session, console, CreateSolverFactory(solver));
 
         // Act
         phase.Run();

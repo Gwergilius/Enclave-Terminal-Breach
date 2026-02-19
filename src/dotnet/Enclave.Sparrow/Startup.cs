@@ -33,12 +33,17 @@ public static class Startup
         // I/O: stdin/stdout abstraction for testability and sequential console I/O.
         services.AddSingleton<IConsoleIO, ConsoleIO>();
 
-        // Solver: chosen by Intelligence (0 = HouseGambit, 1 = BestBucket, 2 = TieBreaker). Use raw config so CLI aliases (e.g. "house") work.
-        const int seed = 17;
-        var rawIntelligence = configuration["Sparrow:Intelligence"];
-        var intelligence = SparrowIntelligence.Normalize(rawIntelligence ?? options.Intelligence);
-        var solver = SolverByIntelligence.GetSolver(intelligence, seed);
-        services.AddSingleton<IPasswordSolver>(_ => solver);
+        // Random: single instance for solver tie-breaking / random choice (non-security use).
+        services.AddSingleton<IRandom, GameRandom>();
+
+        // Solvers: each strategy registered as IPasswordSolver; factory selects by config.
+        services.AddSingleton<IPasswordSolver, HouseGambitPasswordSolver>();
+        services.AddSingleton<IPasswordSolver, BestBucketPasswordSolver>();
+        services.AddSingleton<IPasswordSolver, TieBreakerPasswordSolver>();
+
+        // Solver factory: resolves requested solver from the registered set using config (SparrowOptions).
+        services.AddSingleton<ISolverConfiguration>(sp => sp.GetRequiredService<SparrowOptions>());
+        services.AddSingleton<ISolverFactory, SolverFactory>();
 
         // Phases: each phase is a separate component; order of execution is driven from Program.
         services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();

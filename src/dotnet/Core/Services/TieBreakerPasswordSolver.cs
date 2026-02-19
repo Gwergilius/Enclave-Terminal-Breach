@@ -1,4 +1,4 @@
-﻿using Enclave.Echelon.Core.Models;
+using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
@@ -8,6 +8,9 @@ namespace Enclave.Echelon.Core.Services;
 /// </summary>
 public class TieBreakerPasswordSolver : PasswordSolverBase
 {
+    /// <inheritdoc />
+    public override SolverLevel Level => SolverLevel.TieBreaker;
+
     /// <inheritdoc />
     public override IReadOnlyList<Password> GetBestGuesses(IEnumerable<Password> candidates)
     {

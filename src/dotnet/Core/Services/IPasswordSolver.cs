@@ -1,4 +1,4 @@
-﻿using Enclave.Echelon.Core.Models;
+using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
@@ -7,6 +7,11 @@ namespace Enclave.Echelon.Core.Services;
 /// </summary>
 public interface IPasswordSolver
 {
+    /// <summary>
+    /// The solver level (strategy) this implementation represents.
+    /// </summary>
+    SolverLevel Level { get; }
+
     /// <summary>
     /// Gets the best password guess from the remaining passwords.
     /// The best guess is the one that provides the most information, i.e., produces

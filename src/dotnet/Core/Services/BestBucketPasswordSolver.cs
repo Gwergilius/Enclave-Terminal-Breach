@@ -1,4 +1,3 @@
-using Enclave.Common.Extensions;
 using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
@@ -7,13 +6,12 @@ namespace Enclave.Echelon.Core.Services;
 /// Best information score only; on tie, picks uniformly at random among the best (no worst-case tie-breaker).
 /// Lore: RAVEN best-bucket strategy (Excel prototype behaviour). Uses base for <see cref="CalculateInformationScore"/> and <see cref="NarrowCandidates"/>; overrides <see cref="GetBestGuess"/> to pick randomly among best.
 /// </summary>
-/// <remarks>If no <see cref="Random"/> is provided, uses a new <see cref="Random"/> instance (non-deterministic).</remarks>
-public class BestBucketPasswordSolver(Random? random=null) : PasswordSolverBase
+public class BestBucketPasswordSolver(IRandom random) : PasswordSolverBase
 {
-    private readonly Random _random = random.Enforce();
+    private readonly IRandom _random = random;
 
-    /// <summary>Creates a solver that uses best score only; ties are broken randomly using the given seed.</summary>
-    public BestBucketPasswordSolver(int seed) : this(new Random(seed)) { }
+    /// <inheritdoc />
+    public override SolverLevel Level => SolverLevel.BestBucket;
 
     /// <inheritdoc />
     public override Password? GetBestGuess(IEnumerable<Password> candidates)
