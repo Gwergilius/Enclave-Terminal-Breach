@@ -1,8 +1,10 @@
 using Enclave.Echelon.Core.Services;
+using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.IO;
 using Enclave.Sparrow.Models;
 using Enclave.Sparrow.Phases;
 using Enclave.Sparrow.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Enclave.Sparrow;
 
@@ -12,18 +14,36 @@ namespace Enclave.Sparrow;
 public static class Startup
 {
     /// <summary>
-    /// Registers all services required for the SPARROW UI: session state, I/O, solver, and phase components.
+    /// Registers all services required for the SPARROW UI: configuration, session state, I/O, solver, and phase components.
     /// </summary>
-    public static IServiceCollection ConfigureServices(IServiceCollection services)
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">Application configuration (command-line overrides + appsettings.json + defaults).</param>
+    public static IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
+        var sparrowSection = configuration.GetSection("Sparrow");
+        var options = new SparrowOptions();
+        sparrowSection.Bind(options);
+
+        services.AddSingleton(options);
+        services.AddSingleton<IConfiguration>(configuration);
+
         // Session: shared state between data-input and hacking phases (one scope per run).
         services.AddScoped<IGameSession, GameSession>();
 
         // I/O: stdin/stdout abstraction for testability and sequential console I/O.
         services.AddSingleton<IConsoleIO, ConsoleIO>();
 
-        // Solver: production tie-breaker strategy from Core.
-        services.AddSingleton<IPasswordSolver, TieBreakerPasswordSolver>();
+        // Solver: chosen by Intelligence (0 = HouseGambit, 1 = BestBucket, 2 = TieBreaker). Use raw config so CLI aliases (e.g. "house") work.
+        const int seed = 17;
+        // CLI overrides config; raw key supports both numeric and alias (e.g. "tie" from appsettings or CLI)
+        var rawIntelligence = configuration["Sparrow:Intelligence"];
+        var intelligence = SparrowIntelligence.Normalize(rawIntelligence ?? options.Intelligence);
+        services.AddSingleton<IPasswordSolver>(_ => intelligence switch
+        {
+            0 => new HouseGambitPasswordSolver(seed),
+            1 => new BestBucketPasswordSolver(seed),
+            _ => new TieBreakerPasswordSolver()
+        });
 
         // Phases: each phase is a separate component; order of execution is driven from Program.
         services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();

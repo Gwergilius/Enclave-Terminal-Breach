@@ -1,10 +1,10 @@
 using Enclave.Echelon.Core.Services;
 using Enclave.Sparrow;
-using Microsoft.Extensions.DependencyInjection;
 using Enclave.Sparrow.IO;
-using Enclave.Sparrow.Models;
 using Enclave.Sparrow.Phases;
 using Enclave.Sparrow.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Enclave.Sparrow.Tests;
 
@@ -14,11 +14,14 @@ namespace Enclave.Sparrow.Tests;
 [UnitTest, TestOf(nameof(Startup))]
 public class StartupTests
 {
+    private static IConfiguration CreateMinimalConfiguration() =>
+        new ConfigurationBuilder().Build();
+
     [Fact]
     public void ConfigureServices_ResolvesIGameSession()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         using var scope = services.BuildServiceProvider().CreateScope();
 
         var session = scope.ServiceProvider.GetRequiredService<IGameSession>();
@@ -30,7 +33,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesIConsoleIO()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
         var console = provider.GetRequiredService<IConsoleIO>();
@@ -42,7 +45,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesIPasswordSolver()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
         var solver = provider.GetRequiredService<IPasswordSolver>();
@@ -54,7 +57,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesAllPhases()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         using var scope = services.BuildServiceProvider().CreateScope();
 
         scope.ServiceProvider.GetRequiredService<IStartupBadgePhase>().ShouldNotBeNull();
@@ -66,7 +69,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesIPhaseRunner()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
         var runner = provider.GetRequiredService<IPhaseRunner>();
@@ -78,7 +81,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesIConsoleIO_AsSingleton()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
         var a = provider.GetRequiredService<IConsoleIO>();
@@ -91,7 +94,7 @@ public class StartupTests
     public void ConfigureServices_ResolvesIGameSession_AsScoped()
     {
         var services = new ServiceCollection();
-        Startup.ConfigureServices(services);
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
         IGameSession session1;

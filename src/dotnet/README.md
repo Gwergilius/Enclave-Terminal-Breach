@@ -8,8 +8,8 @@
 
 | Folder | Contents |
 |--------|----------|
-| **Common/** | [Enclave.Common](Common/) – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
-| **Core/** | [Enclave.Echelon.Core](Core/) – core business logic: Password Solver, Password Repository, domain models. References Common. |
+| **Common/** | [Enclave.Common] – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
+| **Core/** | [Enclave.Echelon.Core] – core business logic: Password Solver, Password Repository, domain models. References Common. |
 | **Enclave.Sparrow/** | SPARROW console app (DOS-style stdin/stdout). |
 | **tests/Common.Test.Core/** | Shared test helpers and attributes (e.g. `[UnitTest]`, `TestOf`). |
 | **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests). |
@@ -38,12 +38,15 @@ These files in **src/dotnet/** apply to every project in this folder:
 
 ## Documentation
 
-- [Coding standards][coding standards] – development guidelines
-- [Architecture](../../docs/Architecture/) – system design
-- [Coverage report][coverage] – how to generate code coverage (PowerShell script under `tools/coverage/`)
+- [Coding standards] – development guidelines
+- [Architecture] – system design
+- [Coverage report] – how to generate code coverage (PowerShell script under `tools/coverage/`)
 
 [//]: #References
 [CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
-[coding standards]: ../../.cursor/rules/README.md
-[coverage]: ../../tools/coverage/README.md "Code coverage script and usage"
 [Magyar]: ./README.hu.md
+[Enclave.Common]: ./Common/README.md
+[Enclave.Echelon.Core]: ./Core/README.md
+[Architecture]: ../../docs/Architecture/README.md
+[Coding standards]: ../../.cursor/rules/README.md
+[Coverage report]: ../../tools/coverage/README.md "Code coverage script and usage"

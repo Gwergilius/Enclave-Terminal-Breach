@@ -8,8 +8,8 @@ Az Enclave Terminal Breach .NET implementációja. Ebben a mappában (**src/dotn
 
 | Mappa | Tartalom |
 |--------|----------|
-| **Common/** | [Enclave.Common](Common/) – projektfüggetlen utilityk és kiterjesztések (pl. ResourceExtensions, StringExtensions, TimeSpanExtensions). |
-| **Core/** | [Enclave.Echelon.Core](Core/) – core üzleti logika: Password Solver, Password Repository, domain modellek. A Commonra hivatkozik. |
+| **Common/** | [Enclave.Common] – projektfüggetlen utilityk és kiterjesztések (pl. ResourceExtensions, StringExtensions, TimeSpanExtensions). |
+| **Core/** | [Enclave.Echelon.Core] – core üzleti logika: Password Solver, Password Repository, domain modellek. A Commonra hivatkozik. |
 | **Enclave.Sparrow/** | SPARROW konzol alkalmazás (DOS-stílusú stdin/stdout). |
 | **tests/Common.Test.Core/** | Közös teszt segédletek és attribútumok (pl. `[UnitTest]`, `TestOf`). |
 | **tests/Unit/** | Unit teszt projektek (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests). |
@@ -38,12 +38,16 @@ A **src/dotnet/** mappában lévő fájlok erre a mappára vonatkoznak:
 
 ## Dokumentáció
 
-- [Kódolási szabályok][coding standards] – fejlesztési irányelvek
-- [Architektúra](../../docs/Architecture/) – rendszertervezés
-- [Coverage riport][coverage] – code coverage készítése (PowerShell script: `tools/coverage/`)
+- [Kódolási szabályok] – fejlesztési irányelvek
+- [Architektúra] – rendszertervezés
+- [Coverage riport] – code coverage készítése (PowerShell script: `tools/coverage/`)
 
 [//]: #References
 [CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
-[coding standards]: ../../.cursor/rules/README.hu.md
-[coverage]: ../../tools/coverage/README.hu.md "Coverage script és használat"
 [English]: ./README.md
+
+[Enclave.Common]: ./Common/README.hu.md
+[Enclave.Echelon.Core]: ./Core/README.hu.md
+[Architektúra]: ../../docs/Architecture/README.hu.md
+[Kódolási szabályok]: ../../.cursor/rules/README.hu.md
+[Coverage riport]: ../../tools/coverage/README.hu.md "Coverage script és használat"

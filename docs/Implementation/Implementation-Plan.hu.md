@@ -1,6 +1,6 @@
 # Blazor PWA UI implementációs lépések (Pip-Boy terminál)
 
-**[English]** | Magyar
+[English] | **Magyar**
 
 ## Hatókör
 

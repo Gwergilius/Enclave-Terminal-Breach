@@ -1,6 +1,6 @@
 # Implementációs dokumentáció
 
-**[English]** | Magyar
+[English] | **Magyar**
 
 Implementációs tervek, útmapok és platform-specifikus útmutatók.
 

@@ -1,25 +1,45 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.IO;
 
 namespace Enclave.Sparrow.Phases;
 
 /// <summary>
-/// Prints SPARROW banner and load time (SPARROW-Requirements §1).
+/// Prints SPARROW banner and load time when enabled in options (SPARROW-Requirements §1).
 /// </summary>
-public sealed class StartupBadgePhase([NotNull] IConsoleIO console) : IStartupBadgePhase
+public sealed class StartupBadgePhase(
+    [NotNull] IConsoleIO console,
+    [NotNull] SparrowOptions options) : IStartupBadgePhase
 {
     private readonly IConsoleIO _console = console;
+    private readonly SparrowOptions _options = options;
 
     /// <inheritdoc />
     public void Run()
     {
         var sw = Stopwatch.StartNew();
-        var info = ProductInfo.GetCurrent();
-        _console.WriteLine($"{info.Name} {info.Version}");
-        sw.Stop();
 
-        _console.WriteLine($"Loading system profiles...{sw.ElapsedMilliseconds} ms");
-        _console.WriteLine();
+        if (_options.Startup.ShowBanner)
+        {
+            var info = ProductInfo.GetCurrent();
+            _console.WriteLine($"{info.Name} {info.Version}");
+        }
+
+        sw.Stop();
+        if (_options.Startup.ShowLoadTime)
+            _console.WriteLine($"Loading system profiles...{sw.ElapsedMilliseconds} ms");
+
+        if (_options.Startup.ShowBanner || _options.Startup.ShowLoadTime)
+        {
+            var level = SparrowIntelligence.Normalize(_options.Intelligence);
+            var displayName = SparrowIntelligence.GetDisplayName(level);
+            _console.WriteLine($"Intelligence level: {displayName} ({level})");
+
+            var dictionarySource = string.IsNullOrWhiteSpace(_options.WordListPath) ? "internal" : _options.WordListPath;
+            _console.WriteLine($"Dictionary: {dictionarySource}");
+
+            _console.WriteLine();
+        }
     }
 }

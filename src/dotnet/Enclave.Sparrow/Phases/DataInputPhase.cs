@@ -1,16 +1,22 @@
 using System.Diagnostics.CodeAnalysis;
+using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.IO;
 using Enclave.Sparrow.Models;
 
 namespace Enclave.Sparrow.Phases;
 
 /// <summary>
-/// Data-input phase: prompts for password candidates until empty line; fills session (SPARROW-Requirements §2).
+/// Data-input phase: loads candidates from file when WordListPath is set, otherwise prompts until empty line (SPARROW-Requirements §2).
 /// </summary>
-public sealed class DataInputPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console) : IDataInputPhase
+public sealed class DataInputPhase(
+    [NotNull] IGameSession session,
+    [NotNull] IConsoleIO console,
+    [NotNull] SparrowOptions options) : IDataInputPhase
 {
     private readonly IGameSession _session = session;
     private readonly IConsoleIO _console = console;
+    private readonly SparrowOptions _options = options;
+
     private static class Prompts
     {
         public const string Initial = "Enter password candidates:";
@@ -20,6 +26,13 @@ public sealed class DataInputPhase([NotNull] IGameSession session, [NotNull] ICo
     /// <inheritdoc />
     public void Run()
     {
+        if (!string.IsNullOrWhiteSpace(_options.WordListPath))
+        {
+            LoadCandidatesFromFile(_options.WordListPath!);
+            WriteCandidateCountAndList();
+            return;
+        }
+
         _console.WriteLine(Prompts.Initial);
         var line = _console.ReadLine();
 
@@ -31,6 +44,34 @@ public sealed class DataInputPhase([NotNull] IGameSession session, [NotNull] ICo
 
             _console.WriteLine(Prompts.More);
             line = _console.ReadLine();
+        }
+    }
+
+    private void LoadCandidatesFromFile(string path)
+    {
+        if (!File.Exists(path))
+        {
+            _console.WriteLine($"Word list file not found: {path}");
+            return;
+        }
+
+        foreach (var line in File.ReadLines(path))
+        {
+            foreach (var token in GetTokens(line))
+            {
+                if (token.StartsWith('-'))
+                {
+                    var result = _session.Remove(token[1..].Trim());
+                    if (result.IsFailed)
+                        _console.WriteLine(result.Errors[0].Message);
+                }
+                else
+                {
+                    var result = _session.Add(token);
+                    if (result.IsFailed)
+                        _console.WriteLine(result.Errors[0].Message);
+                }
+            }
         }
     }
 

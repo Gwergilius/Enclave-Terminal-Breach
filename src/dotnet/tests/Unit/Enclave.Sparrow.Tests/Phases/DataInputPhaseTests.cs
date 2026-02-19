@@ -1,4 +1,5 @@
-using Enclave.Common.Test.Core;
+﻿using Enclave.Common.Test.Core;
+using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.IO;
 using Enclave.Sparrow.Phases;
 
@@ -22,7 +23,8 @@ public class DataInputPhaseTests
             .Returns(() => readLineCalls++ == 0 ? "TERMS TEXAS" : "");
 
         var session = new GameSession();
-        var phase = new DataInputPhase(session, console);
+        var options = new SparrowOptions(); // WordListPath null = manual input
+        var phase = new DataInputPhase(session, console, options);
 
         // Act
         phase.Run();
@@ -54,7 +56,8 @@ public class DataInputPhaseTests
             });
 
         var session = new GameSession();
-        var phase = new DataInputPhase(session, console);
+        var options = new SparrowOptions(); // WordListPath null = manual input
+        var phase = new DataInputPhase(session, console, options);
 
         // Act
         phase.Run();
@@ -79,7 +82,8 @@ public class DataInputPhaseTests
             .Returns(() => readLineCalls++ == 0 ? "TERMS TERM1" : "");
 
         var session = new GameSession();
-        var phase = new DataInputPhase(session, console);
+        var options = new SparrowOptions(); // WordListPath null = manual input
+        var phase = new DataInputPhase(session, console, options);
 
         // Act
         phase.Run();
@@ -113,7 +117,8 @@ public class DataInputPhaseTests
             });
 
         var session = new GameSession();
-        var phase = new DataInputPhase(session, console);
+        var options = new SparrowOptions(); // WordListPath null = manual input
+        var phase = new DataInputPhase(session, console, options);
 
         // Act
         phase.Run();
@@ -132,7 +137,8 @@ public class DataInputPhaseTests
         console.AsMock().Setup(c => c.ReadLine()).Returns("");
 
         var session = new GameSession();
-        var phase = new DataInputPhase(session, console);
+        var options = new SparrowOptions(); // WordListPath null = manual input
+        var phase = new DataInputPhase(session, console, options);
 
         // Act
         phase.Run();
