@@ -1,4 +1,5 @@
-﻿using Enclave.Echelon.Core.Models;
+using Enclave.Common.Extensions;
+using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
@@ -9,7 +10,7 @@ namespace Enclave.Echelon.Core.Services;
 /// <remarks>If no <see cref="Random"/> is provided, uses a new <see cref="Random"/> instance (non-deterministic).</remarks>
 public class BestBucketPasswordSolver(Random? random=null) : PasswordSolverBase
 {
-    private readonly Random _random = random ?? new Random();
+    private readonly Random _random = random.Enforce();
 
     /// <summary>Creates a solver that uses best score only; ties are broken randomly using the given seed.</summary>
     public BestBucketPasswordSolver(int seed) : this(new Random(seed)) { }

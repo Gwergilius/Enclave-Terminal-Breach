@@ -1,6 +1,7 @@
-﻿using Enclave.Common.Test.Core;
+using Enclave.Common.Test.Core;
 using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.IO;
+using Enclave.Sparrow.Models;
 using Enclave.Sparrow.Phases;
 
 namespace Enclave.Sparrow.Tests.Phases;
@@ -145,5 +146,98 @@ public class DataInputPhaseTests
 
         // Assert
         session.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Run_WithWordListPath_WhenFileExists_LoadsCandidatesAndWritesCountAndList()
+    {
+        // Arrange: WordListPath set → LoadCandidatesFromFile + WriteCandidateCountAndList (no ReadLine)
+        var tempFile = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempFile, "TERMS TEXAS\nTIRES\n");
+
+            var writtenLines = new List<string>();
+            var console = Mock.Of<IConsoleIO>();
+            console.AsMock()
+                .Setup(c => c.WriteLine(It.IsAny<string?>()))
+                .Callback<string?>(s => writtenLines.Add(s ?? ""));
+
+            var session = new GameSession();
+            var options = new SparrowOptions { WordListPath = tempFile };
+            var phase = new DataInputPhase(session, console, options);
+
+            // Act
+            phase.Run();
+
+            // Assert: session loaded from file; no prompt; count and list written
+            session.Count.ShouldBe(3);
+            session.WordLength.ShouldBe(5);
+            session.Any(p => p.Word == "TERMS").ShouldBeTrue();
+            session.Any(p => p.Word == "TEXAS").ShouldBeTrue();
+            session.Any(p => p.Word == "TIRES").ShouldBeTrue();
+            writtenLines.ShouldContain(l => l == "3 candidate(s):");
+            writtenLines.ShouldContain(l => l.Contains("TERMS") && l.Contains("TEXAS") && l.Contains("TIRES"));
+        }
+        finally
+        {
+            if (File.Exists(tempFile))
+                File.Delete(tempFile);
+        }
+    }
+
+    [Fact]
+    public void Run_WithWordListPath_WhenFileDoesNotExist_WritesErrorAndLeavesSessionEmpty()
+    {
+        // Arrange: non-existent path → LoadCandidatesFromFile writes error, returns without throwing
+        var nonExistentPath = Path.Combine(Path.GetTempPath(), $"sparrow-test-{Guid.NewGuid():N}.txt");
+        var writtenLines = new List<string>();
+        var console = Mock.Of<IConsoleIO>();
+        console.AsMock()
+            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+            .Callback<string?>(s => writtenLines.Add(s ?? ""));
+
+        var session = new GameSession();
+        var options = new SparrowOptions { WordListPath = nonExistentPath };
+        var phase = new DataInputPhase(session, console, options);
+
+        // Act
+        phase.Run();
+
+        // Assert
+        writtenLines.ShouldContain(l => l.StartsWith("Word list file not found:") && l.Contains(nonExistentPath));
+        session.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Run_WithWordListPath_WhenFileContainsMinusToken_IgnoresRemovalToken()
+    {
+        // Arrange: removal (-TEXAS) not supported when loading from file; minus tokens are skipped
+        var tempFile = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempFile, "TERMS TEXAS\n-TEXAS\n");
+
+            var console = Mock.Of<IConsoleIO>();
+            console.AsMock()
+                .Setup(c => c.WriteLine(It.IsAny<string?>()));
+
+            var session = new GameSession();
+            var options = new SparrowOptions { WordListPath = tempFile };
+            var phase = new DataInputPhase(session, console, options);
+
+            // Act
+            phase.Run();
+
+            // Assert: -TEXAS skipped; TERMS and TEXAS both in session
+            session.Count.ShouldBe(2);
+            session.Any(p => p.Word == "TERMS").ShouldBeTrue();
+            session.Any(p => p.Word == "TEXAS").ShouldBeTrue();
+        }
+        finally
+        {
+            if (File.Exists(tempFile))
+                File.Delete(tempFile);
+        }
     }
 }

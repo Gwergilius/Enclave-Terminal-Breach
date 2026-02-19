@@ -21,6 +21,10 @@
     <EmbeddedResource Include="Resources\words.txt" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 
 </Project>
 

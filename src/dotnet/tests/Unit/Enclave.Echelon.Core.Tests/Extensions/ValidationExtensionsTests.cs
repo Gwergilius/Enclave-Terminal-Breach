@@ -1,4 +1,4 @@
-using Enclave.Common.Test.Core;
+﻿using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Extensions;
 using Enclave.Echelon.Core.Validators;
 
@@ -24,15 +24,18 @@ public class ValidationExtensionsTests
         Should.NotThrow(() => validator.ValidateAndThrowArgumentException(input, nameof(validator)));
     }
 
-    [Theory,
-        InlineData("", "word"),
-        InlineData("null", "word")]
+    [Theory]
+    [InlineData("", "word")]
+    [InlineData("null", "word")]
     public void ValidateAndThrowArgumentException_WithInvalidInstance_ThrowsArgumentException(string input, string paramName)
     {
         // Arrange
         var validator = new PasswordValidator();
-        string expectedMessagePart = input == "null" ? "null" : "empty";
-        input = input == "null" ? null! : input; // Simulate null input for "null" case 
+        var expectedMessagePart = string.IsNullOrEmpty(input) ? "empty" : "null";
+        if (input == "null")
+        {
+            input = null!;
+        }
 
         // Act & Assert
         var ex = Should.Throw<ArgumentException>(() =>
@@ -41,20 +44,16 @@ public class ValidationExtensionsTests
         ex.Message.Contains(expectedMessagePart, StringComparison.OrdinalIgnoreCase).ShouldBeTrue();
     }
 
-
-    [Theory,
-        InlineData(""),
-        InlineData("null")]
-    public void ValidateAndThrowArgumentException_WhenParameterNameOmitted_UsesCallerArgumentExpression(string input)
+    [Fact]
+    public void ValidateAndThrowArgumentException_WhenParameterNameOmitted_UsesCallerArgumentExpression()
     {
-        // Arrange - when second argument is omitted, [CallerArgumentExpression(nameof(instance))] yields "input"
+        // Arrange - when second argument is omitted, [CallerArgumentExpression(nameof(instance))] yields "parameter"
         var validator = new PasswordValidator();
-        input = input == "null" ? null! : input; // Simulate null input for "null" case
-
-        // Act & Assert
+        var parameter = string.Empty;
+        // Act & Assert (empty string -> ArgumentException; param name from caller)
         var ex = Should.Throw<ArgumentException>(() =>
-            validator.ValidateAndThrowArgumentException(input));
-        ex.ParamName.ShouldBe("input");
+            validator.ValidateAndThrowArgumentException(parameter));
+        ex.ParamName.ShouldBe(nameof(parameter));
     }
 
     [Theory, InlineData("bad", "param")]
@@ -64,11 +63,11 @@ public class ValidationExtensionsTests
         var validator = Mock.Of<IValidator<string>>();
         validator.AsMock()
             .Setup(v => v.Validate(It.IsAny<string>()))
-            .Returns(new FluentValidation.Results.ValidationResult(new[]
-            {
+            .Returns(new FluentValidation.Results.ValidationResult(
+            [
                 new FluentValidation.Results.ValidationFailure("x", "First error."),
                 new FluentValidation.Results.ValidationFailure("y", "Second error.")
-            }));
+            ]));
 
         // Act & Assert
         var ex = Should.Throw<ArgumentException>(() =>
@@ -78,16 +77,35 @@ public class ValidationExtensionsTests
         ex.ParamName.ShouldBe(paramName);
     }
 
-    [Theory, InlineData("null", "word")]
-    public void ValidateAndThrowArgumentException_WhenFirstErrorContainsNull_ThrowsArgumentNullException(string input, string paramName)
+    [Theory]
+    [InlineData("word")]
+    public void ValidateAndThrowArgumentException_WhenRequiredFieldMissing_ValidationErrorContainsNull_ThrowsArgumentNullException(string paramName)
     {
-        // Arrange - FluentValidation's null rule message typically contains "null"
-        var validator = new PasswordValidator();
-        input = input == "null" ? null! : input; // Simulate null input for "null" case 
+        // Arrange: instance is non-null but a required field is missing (null); validator returns error message containing "null" -> line 48
+        var validator = Mock.Of<IValidator<string>>();
+        validator.AsMock()
+            .Setup(v => v.Validate(It.IsAny<string>()))
+            .Returns(new FluentValidation.Results.ValidationResult(
+            [
+                new FluentValidation.Results.ValidationFailure("RequiredField", "Required field is null.")
+            ]));
 
         // Act & Assert
         var ex = Should.Throw<ArgumentNullException>(() =>
-            validator.ValidateAndThrowArgumentException(input, paramName));
+            validator.ValidateAndThrowArgumentException("something", paramName));
         ex.ParamName.ShouldBe(paramName);
+        ex.Message.ShouldContain("Required field is null.");
+    }
+
+    [Fact]
+    public void ValidateAndThrowArgumentException_WhenValidatorIsNull_ThrowsArgumentNullException()
+    {
+        // Arrange
+        IValidator<string>? validator = null;
+
+        // Act & Assert
+        var ex = Should.Throw<ArgumentNullException>(() =>
+            validator!.ValidateAndThrowArgumentException("x", "param"));
+        ex.ParamName.ShouldBe("validator");
     }
 }

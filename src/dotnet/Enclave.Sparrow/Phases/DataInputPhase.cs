@@ -59,18 +59,9 @@ public sealed class DataInputPhase(
         {
             foreach (var token in GetTokens(line))
             {
-                if (token.StartsWith('-'))
-                {
-                    var result = _session.Remove(token[1..].Trim());
-                    if (result.IsFailed)
-                        _console.WriteLine(result.Errors[0].Message);
-                }
-                else
-                {
-                    var result = _session.Add(token);
-                    if (result.IsFailed)
-                        _console.WriteLine(result.Errors[0].Message);
-                }
+                var result = _session.Add(token);
+                if (result.IsFailed)
+                    _console.WriteLine(result.Errors[0].Message);
             }
         }
     }

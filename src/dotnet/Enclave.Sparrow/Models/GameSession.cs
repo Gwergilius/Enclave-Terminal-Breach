@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Enclave.Common.Errors;
 using Enclave.Echelon.Core.Errors;
 using Enclave.Echelon.Core.Models;
@@ -78,7 +78,7 @@ public sealed class GameSession : IGameSession
         throw new NotImplementedException();
     }
 
-    public void RemoveAt(int index) => RemoveCandidate(Candidates[index]);
+    public void RemoveAt(int index) => throw new NotImplementedException();
 
     public bool Remove(Password item) => RemoveCandidate(item);
 

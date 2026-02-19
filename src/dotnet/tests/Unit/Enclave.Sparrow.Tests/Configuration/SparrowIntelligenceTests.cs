@@ -1,4 +1,5 @@
-using Enclave.Common.Test.Core;
+﻿using Enclave.Common.Test.Core;
+using Enclave.Echelon.Core.Services;
 using Enclave.Sparrow.Configuration;
 
 namespace Enclave.Sparrow.Tests.Configuration;
@@ -24,6 +25,9 @@ public class SparrowIntelligenceTests
     [InlineData("tie", 2)]
     [InlineData("House", 0)]
     [InlineData("GENIUS", 2)]
+    [InlineData("0", 0)]
+    [InlineData("1", 1)]
+    [InlineData("2", 2)]
     public void Normalize_WithAlias_ReturnsExpectedLevel(string alias, int expected)
     {
         SparrowIntelligence.Normalize(alias).ShouldBe(expected);
@@ -38,18 +42,22 @@ public class SparrowIntelligenceTests
         SparrowIntelligence.Normalize(alias).ShouldBe(expected);
     }
 
-    [Fact]
-    public void Normalize_WithInvalidValue_ReturnsOne()
+    [Theory]
+    [InlineData("invalid")]
+    [InlineData(-1)]
+    [InlineData(99)]
+    [InlineData("null")]
+    public void Normalize_WithInvalidValue_ReturnsOne(object invalid)
     {
-        SparrowIntelligence.Normalize("invalid").ShouldBe(1);
-        SparrowIntelligence.Normalize(99).ShouldBe(1);
-        SparrowIntelligence.Normalize(null).ShouldBe(1);
+        if(invalid.ToString() == "null") invalid = null!;
+        SparrowIntelligence.Normalize(invalid).ShouldBe(SolverByIntelligence.DefaultLevel);
     }
 
     [Theory]
     [InlineData(0, "baseline")]
     [InlineData(1, "tactical")]
     [InlineData(2, "optimal")]
+    [InlineData(99, "99")]
     public void GetDisplayName_ReturnsMilitaryAlias(int level, string expected)
     {
         SparrowIntelligence.GetDisplayName(level).ShouldBe(expected);

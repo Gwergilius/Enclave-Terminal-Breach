@@ -22,11 +22,6 @@ public class ScoreInfo(Password password)
     public Password Password { get; } = password;
 
     /// <summary>
-    /// Gets the match counts array. Index = match count, Value = number of words with that match count.
-    /// </summary>
-    public ReadOnlySpan<int> MatchCounts => _matchCounts;
-
-    /// <summary>
     /// Gets or sets the count for a specific match count value.
     /// </summary>
     /// <param name="matchCount">The match count (0 to word length).</param>

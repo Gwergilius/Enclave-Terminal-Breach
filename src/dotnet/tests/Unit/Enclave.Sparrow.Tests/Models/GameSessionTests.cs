@@ -421,34 +421,27 @@ public class GameSessionTests
     }
 
     [Fact]
-    public void RemoveAt_RemovesItemAtIndex()
+    public void RemoveAt_IsNotAllowed_ThrowsNotImplementedException()
     {
-        // Arrange
+        // Arrange: GameSession implements IList<Password> but RemoveAt is not supported; use Remove(string) to remove by word.
         var session = new GameSession();
         session.Add("TERMS").IsSuccess.ShouldBeTrue();
         session.Add("TEXAS").IsSuccess.ShouldBeTrue();
 
-        // Act
-        session.RemoveAt(1);
-
-        // Assert
-        session.Count.ShouldBe(1);
-        session[0].Word.ShouldBe("TERMS");
+        // Act & Assert
+        Should.Throw<NotImplementedException>(() => session.RemoveAt(0));
     }
 
     [Fact]
-    public void RemoveAt_WhenLastItem_ResetsWordLength()
+    public void Insert_IsNotAllowed_ThrowsNotImplementedException()
     {
-        // Arrange
+        // Arrange: GameSession implements IList<Password> but Insert is not supported (candidates are added only via Add).
         var session = new GameSession();
         session.Add("TERMS").IsSuccess.ShouldBeTrue();
+        var item = new Password("TEXAS");
 
-        // Act
-        session.RemoveAt(0);
-
-        // Assert
-        session.Count.ShouldBe(0);
-        session.WordLength.ShouldBeNull();
+        // Act & Assert
+        Should.Throw<NotImplementedException>(() => session.Insert(0, item));
     }
 
     [Fact]

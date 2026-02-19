@@ -35,15 +35,10 @@ public static class Startup
 
         // Solver: chosen by Intelligence (0 = HouseGambit, 1 = BestBucket, 2 = TieBreaker). Use raw config so CLI aliases (e.g. "house") work.
         const int seed = 17;
-        // CLI overrides config; raw key supports both numeric and alias (e.g. "tie" from appsettings or CLI)
         var rawIntelligence = configuration["Sparrow:Intelligence"];
         var intelligence = SparrowIntelligence.Normalize(rawIntelligence ?? options.Intelligence);
-        services.AddSingleton<IPasswordSolver>(_ => intelligence switch
-        {
-            0 => new HouseGambitPasswordSolver(seed),
-            1 => new BestBucketPasswordSolver(seed),
-            _ => new TieBreakerPasswordSolver()
-        });
+        var solver = SolverByIntelligence.GetSolver(intelligence, seed);
+        services.AddSingleton<IPasswordSolver>(_ => solver);
 
         // Phases: each phase is a separate component; order of execution is driven from Program.
         services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();

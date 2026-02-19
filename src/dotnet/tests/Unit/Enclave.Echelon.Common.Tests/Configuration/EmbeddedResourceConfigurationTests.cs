@@ -5,11 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Moq;
 using Shouldly;
 
-namespace Enclave.Common.Test.Configuration;
+namespace Enclave.Echelon.Common.Tests.Configuration;
 
 /// <summary>
 /// Unit tests for embedded resource configuration extensions and providers.
 /// </summary>
+[UnitTest, TestOf(nameof(EmbeddedResourceConfigurationExtensions))]
 public class EmbeddedResourceConfigurationTests
 {
     [Fact]
