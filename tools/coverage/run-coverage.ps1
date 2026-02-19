@@ -42,8 +42,8 @@
     .\run-coverage.ps1 -OutputPath "CustomTestResults"
 
 .EXAMPLE
-    cd src; ..\tools\coverage\run-coverage.ps1 -SolutionPath .
-    # Run from src/ (global.json and solution in scope)
+    cd src/dotnet; ..\..\tools\coverage\run-coverage.ps1 -SolutionPath .
+    # Run from src/dotnet/ (global.json and solution in scope)
 
 .NOTES
     - The script deletes the output folder (e.g. TestResults) before each run
@@ -134,13 +134,20 @@ else {
     # First: current directory
     $solutionFile = Get-ChildItem -Path . -Filter "*.slnx" -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $solutionFile) { $solutionFile = Get-ChildItem -Path . -Filter "*.sln" -ErrorAction SilentlyContinue | Select-Object -First 1 }
-    # Then: src/ relative to repo root
+    # Then: src/dotnet/ or src/ relative to repo root
     if (-not $solutionFile) {
-        $solutionFile = Get-ChildItem -Path $SrcDir -Filter "*.slnx" -ErrorAction SilentlyContinue | Select-Object -First 1
-        if (-not $solutionFile) { $solutionFile = Get-ChildItem -Path $SrcDir -Filter "*.sln" -ErrorAction SilentlyContinue | Select-Object -First 1 }
+        $dotnetDir = Join-Path $SrcDir "dotnet"
+        if (Test-Path $dotnetDir) {
+            $solutionFile = Get-ChildItem -Path $dotnetDir -Filter "*.slnx" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $solutionFile) { $solutionFile = Get-ChildItem -Path $dotnetDir -Filter "*.sln" -ErrorAction SilentlyContinue | Select-Object -First 1 }
+        }
+        if (-not $solutionFile) {
+            $solutionFile = Get-ChildItem -Path $SrcDir -Filter "*.slnx" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $solutionFile) { $solutionFile = Get-ChildItem -Path $SrcDir -Filter "*.sln" -ErrorAction SilentlyContinue | Select-Object -First 1 }
+        }
     }
     if (-not $solutionFile) {
-        Write-ColorOutput "❌ No solution file found (current directory or $SrcDir)!" "Error"
+        Write-ColorOutput "❌ No solution file found (current directory, $SrcDir, or $SrcDir/dotnet)!" "Error"
         exit 1
     }
 }

@@ -11,7 +11,7 @@ Tools live under **`~/tools/coverage`** (repository root: `tools/coverage/`). Th
 ## Requirements
 
 - **PowerShell 7+** (see [Development Environment](../../.cursor/rules/development-environment.md))
-- **.NET SDK** (e.g. 10.x; see `src/global.json`)
+- **.NET SDK** (e.g. 10.x; see `src/dotnet/global.json`)
 - **ReportGenerator** (global tool, required):
   ```bash
   dotnet tool install -g ReportGenerator
@@ -32,14 +32,14 @@ From **repository root**:
 .\tools\coverage\run-coverage.ps1
 ```
 
-From **`src/`** (so `global.json` and solution are in scope):
+From **`src/dotnet/`** (so `global.json` and solution are in scope):
 ```powershell
-cd src
-..\tools\coverage\run-coverage.ps1 -SolutionPath .
+cd src/dotnet
+..\..\tools\coverage\run-coverage.ps1 -SolutionPath .
 ```
 
 The script will:
-- Find the solution file (`.slnx` or `.sln`) in the current directory or under `src/`
+- Find the solution file (`.slnx` or `.sln`) in the current directory or under `src/dotnet/` (or `src/`)
 - Run **only tests marked with `[UnitTest]`** (xunit.categories) for coverage – integration, e2e, smoke, etc. are excluded by default
 - Collect coverage via **Coverlet** (Cobertura format, **line + branch coverage**); merge multiple Cobertura files if there are several test projects
 - Generate an HTML report (excluding test projects and test framework; same filters as in CI)
@@ -93,7 +93,7 @@ The output folder (default `TestResults`) is **cleaned before each run**.
 The script does **not** use a hardcoded list of test projects. It runs **`dotnet test <solution>`** once:
 
 - The solution file (`.sln` or `.slnx`) contains all projects; every test project in the solution is executed.
-- Both **`.sln`** and **`.slnx`** are supported. The script looks in the current directory first, then under `src/` relative to the repository root.
+- Both **`.sln`** and **`.slnx`** are supported. The script looks in the current directory first, then under `src/dotnet/` (or `src/`) relative to the repository root.
 
 Adding a new test project to the solution is enough for it to be included in coverage.
 
@@ -110,7 +110,7 @@ Adding a new test project to the solution is enough for it to be included in cov
 |--------|----------|
 | `dotnet-coverage` not found | `dotnet tool install -g dotnet-coverage` |
 | `reportgenerator` not found | `dotnet tool install -g ReportGenerator` |
-| No solution file found | Run from repo root or from `src/`, or pass `-SolutionPath path\to\solution` or `path\to\folder` |
+| No solution file found | Run from repo root or from `src/dotnet/`, or pass `-SolutionPath path\to\solution` or `path\to\folder` |
 | Coverage collection fails | Run `dotnet test` first and fix any failing tests |
 | HTML report does not open | Open `TestResults/html/index.html` manually in a browser |
 

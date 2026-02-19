@@ -61,10 +61,10 @@ Minden fázis jelentős architektúra mérföldkő, a végső ECHELON v2.1.7 bev
 
 ## 📁 Forráskód
 
-A mappa szerkezet, megosztott komponensek (Common, Core, tesztek, teszt segédletek), a solution és a build/stílus konfiguráció a **[src/README][src README]**-ben van leírva. A solution a `src/Enclave.Echelon.slnx` fájlból nyitható. A buildet a **src/** mappából kell futtatni: 
+A mappa szerkezet a **[src/README][src README]**-ben van leírva (platformok: **dotnet**, excel-prototype; tervezett: python, typescript). A .NET solution a **src/dotnet/** alatt van. A solutiont a `src/dotnet/Enclave.Echelon.slnx` fájlból nyisd, a buildet a **src/dotnet/** mappából futtatod:
 
 ```Powershell
-cd src
+cd src/dotnet
 dotnet build Enclave.Echelon.slnx
 ```
 

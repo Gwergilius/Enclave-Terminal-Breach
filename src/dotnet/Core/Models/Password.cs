@@ -7,7 +7,7 @@ namespace Enclave.Echelon.Core.Models;
 /// Represents a potential password in the terminal hacking mini-game.
 /// Match count results are cached for O(1) subsequent lookups.
 /// </summary>
-public class Password: IEquatable<Password>
+public sealed class Password: IEquatable<Password>
 {
     private static readonly PasswordValidator _validator = new();
     
@@ -124,12 +124,21 @@ public class Password: IEquatable<Password>
     public override bool Equals(object? obj) => obj is Password other && Equals(other);
 
     /// <summary>
+    /// Determines whether the specified <see cref="Password"/> instance is equal to the current instance, using a
+    /// case-insensitive comparison of their word values.
+    /// </summary>
+    /// <param name="other">The <see cref="Password"/> instance to compare with the current instance. This parameter can be <see
+    /// langword="null"/>.</param>
+    /// <returns><see langword="true"/> if the specified <see cref="Password"/> instance is equal to the current instance;
+    /// otherwise, <see langword="false"/>.</returns>
+    public bool Equals(Password? other) => Word.Equals(other?.Word, StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
     /// Returns a hash code for this password.
     /// </summary>
     /// <returns>A hash code for the current password.</returns>
     public override int GetHashCode() => Word.GetHashCode(StringComparison.OrdinalIgnoreCase);
 
-    public bool Equals(Password? other) => Word.Equals(other?.Word, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Calculates the difference (number of non-matching characters) between two passwords.

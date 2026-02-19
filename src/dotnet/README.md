@@ -1,0 +1,49 @@
+# Source Code
+
+**English** | [Magyar]
+
+.NET implementation of the Enclave Terminal Breach system. This folder (**src/dotnet/**) contains the C# solution, production code, tests, test helpers, and build/style configuration. The Excel prototype remains in [src/excel-prototype](../excel-prototype/) (not part of this solution).
+
+## Folder structure
+
+| Folder | Contents |
+|--------|----------|
+| **Common/** | [Enclave.Common](Common/) – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
+| **Core/** | [Enclave.Echelon.Core](Core/) – core business logic: Password Solver, Password Repository, domain models. References Common. |
+| **Enclave.Sparrow/** | SPARROW console app (DOS-style stdin/stdout). |
+| **tests/Common.Test.Core/** | Shared test helpers and attributes (e.g. `[UnitTest]`, `TestOf`). |
+| **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests). |
+| **tests/Integration/** | *Planned.* Integration test projects. |
+| **tests/E2E/** | *Planned.* End-to-end test projects (e.g. GHOST E2E). |
+
+## Configuration (this folder)
+
+These files in **src/dotnet/** apply to every project in this folder:
+
+| File | Purpose |
+|------|---------|
+| **Enclave.Echelon.slnx** | Solution file. Open this to work with the codebase; build with `dotnet build Enclave.Echelon.slnx` from this folder. |
+| **global.json** | SDK version selection (e.g. .NET 10). Run `dotnet build` / `dotnet test` from **src/dotnet/** to use the specified SDK. |
+| **.editorconfig** | Code style and formatting for C# and project files. |
+| **Directory.Build.props** | Shared MSBuild properties: `LangVersion`, `ImplicitUsings`, `Nullable`, company/copyright, common `NoWarn`. |
+| **Directory.Packages.props** | [Central Package Management][CPM]: NuGet package versions; projects reference packages without a version. |
+| **.runsettings** | Test run settings (e.g. code coverage). Use `dotnet test --settings .runsettings` when running from **src/dotnet/**. |
+
+## Technology stack
+
+- .NET 10.0
+- C# 14
+- MAUI (mobile), Blazor (web) – per phase
+- xUnit + Shouldly + Moq (testing); ReqNRoll + Playwright (integration/E2E)
+
+## Documentation
+
+- [Coding standards][coding standards] – development guidelines
+- [Architecture](../../docs/Architecture/) – system design
+- [Coverage report][coverage] – how to generate code coverage (PowerShell script under `tools/coverage/`)
+
+[//]: #References
+[CPM]: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management "Central Package Management"
+[coding standards]: ../../.cursor/rules/README.md
+[coverage]: ../../tools/coverage/README.md "Code coverage script and usage"
+[Magyar]: ./README.hu.md

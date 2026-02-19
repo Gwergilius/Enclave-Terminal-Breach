@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+- **Source layout**: .NET solution and projects moved under **src/dotnet/**; **src/excel-prototype/** unchanged. Prepares for future **src/python/** and **src/typescript/** implementations. Added **src/README.md** and **src/README.hu.md**; updated root README, **src/dotnet/** READMEs, CI/CD workflows, and coverage docs/paths to use **src/dotnet/**.
+
 ## [1.1.2] - 2026-02-16
 
 ### Fixed
