@@ -76,7 +76,7 @@ public class StartupBadgePhaseTests
 
         // Assert: badge always shows military display name (optimal, tactical, baseline)
         writtenLines.ShouldContain(l => l.StartsWith("Intelligence level: optimal (2)"));
-        writtenLines.ShouldContain(l => l == "Dictionary: internal");
+        writtenLines.ShouldContain(l => l == "Dictionary: manual");
     }
 
 }

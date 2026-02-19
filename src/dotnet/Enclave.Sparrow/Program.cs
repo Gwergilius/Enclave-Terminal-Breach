@@ -56,7 +56,7 @@ internal static class Program
                                               Aliases: house, bucket, tie
 
               -w, --words <file>            Word list file path (optional)
-                                              Load candidates from file instead of manual input
+                                              Load candidates from file; when omitted, startup shows Dictionary: manual
 
               -h, --help                    Show help message and exit
               -v, --version                 Show version information and exit

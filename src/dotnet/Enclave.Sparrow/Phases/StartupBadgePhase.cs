@@ -36,7 +36,7 @@ public sealed class StartupBadgePhase(
             var displayName = SparrowIntelligence.GetDisplayName(level);
             _console.WriteLine($"Intelligence level: {displayName} ({level})");
 
-            var dictionarySource = string.IsNullOrWhiteSpace(_options.WordListPath) ? "internal" : _options.WordListPath;
+            var dictionarySource = string.IsNullOrWhiteSpace(_options.WordListPath) ? "manual" : _options.WordListPath;
             _console.WriteLine($"Dictionary: {dictionarySource}");
 
             _console.WriteLine();
