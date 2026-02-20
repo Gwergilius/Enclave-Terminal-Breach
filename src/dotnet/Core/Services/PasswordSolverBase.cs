@@ -1,4 +1,4 @@
-using Enclave.Echelon.Core.Models;
+﻿using Enclave.Echelon.Core.Models;
 
 namespace Enclave.Echelon.Core.Services;
 
@@ -49,8 +49,8 @@ public abstract class PasswordSolverBase : IPasswordSolver
     /// <remarks>Default: keeps only candidates whose match count with the guess equals the reported response.</remarks>
     public virtual IReadOnlyList<Password> NarrowCandidates(IEnumerable<Password> candidates, Password guess, int matchCount)
     {
-        ArgumentNullException.ThrowIfNull(candidates, nameof(candidates));
-        ArgumentNullException.ThrowIfNull(guess, nameof(guess));
+        ArgumentNullException.ThrowIfNull(candidates);
+        ArgumentNullException.ThrowIfNull(guess);
 
         return [.. candidates.Where(c => guess.GetMatchCount(c) == matchCount)];
     }

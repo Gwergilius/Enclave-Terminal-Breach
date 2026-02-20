@@ -1,7 +1,8 @@
 # CD: build downloadable artifacts for SPARROW (and later RAVEN).
-# - On tag push sparrow-v*: build Windows zip, create/update GitHub Release, attach zip.
-# - On push to main: build Windows zip, upload as workflow artifact (for testing).
-# Does NOT run on pull_request; only on push to main or push of a tag.
+# - On push to main: GitVersion computes the version, creates a tag (sparrow-vX.Y.Z),
+#   builds a Windows zip and creates a GitHub Release – unless the tag already exists.
+# - On tag push sparrow-v*: same build + release (manual override / hotfix flow).
+# - workflow_dispatch: same as main push (manual trigger from Actions tab).
 name: CD – Release artifacts
 
 on:
@@ -11,55 +12,110 @@ on:
       # - 'raven-v*'   # uncomment when RAVEN exists
     branches:
       - main
-  # Allow manual run (e.g. "Run workflow" from Actions tab)
   workflow_dispatch:
+
+permissions:
+  contents: write   # required for tag creation and GitHub Release
 
 env:
   DOTNET_VERSION: "10.0.x"
 
 jobs:
-  build-sparrow:
-    name: Build SPARROW (Windows)
+  release-sparrow:
+    name: Release SPARROW (Windows)
     runs-on: ubuntu-latest
-    # On tag: always run. On branch: only main (artifact for testing).
     if: |
       startsWith(github.ref, 'refs/tags/sparrow-v') ||
-      (github.event_name == 'push' && github.ref == 'refs/heads/main')
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      zip_name: ${{ steps.zip.outputs.zip_name }}
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for GitVersion
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Set version from tag or default
+      # --- Version resolution ---
+
+      - name: Setup GitVersion (main push / manual)
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        uses: gittools/actions/gitversion/setup@v4.2.0
+        with:
+          versionSpec: "6.4.x"
+
+      - name: Execute GitVersion (main push / manual)
+        id: gitversion
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        uses: gittools/actions/gitversion/execute@v4.2.0
+
+      - name: Resolve version and tag name
         id: version
         run: |
           if [[ "${{ github.ref }}" == refs/tags/sparrow-v* ]]; then
+            # Tag push: derive version directly from the tag
             VER="${GITHUB_REF#refs/tags/sparrow-v}"
           else
-            VER="1.1.0"
+            # Main push / manual: use GitVersion output (e.g. 1.2.0)
+            VER="${{ steps.gitversion.outputs.majorMinorPatch }}"
           fi
           echo "version=$VER" >> $GITHUB_OUTPUT
-          echo "Version: $VER"
+          echo "tag=sparrow-v${VER}" >> $GITHUB_OUTPUT
+          echo "Resolved version: $VER (tag: sparrow-v${VER})"
+
+      # --- Tag creation (only on main push / manual) ---
+
+      - name: Check if tag already exists
+        id: tag_check
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag $TAG already exists – skipping release."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag $TAG does not exist – will create release."
+          fi
+
+      - name: Create and push tag (main push / manual, new tag only)
+        if: |
+          (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') &&
+          steps.tag_check.outputs.exists == 'false'
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "Created and pushed tag $TAG"
+
+      # --- Build & package (skip if tag already existed) ---
 
       - name: Publish SPARROW (win-x64, self-contained)
+        if: |
+          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          steps.tag_check.outputs.exists == 'false'
         run: |
           dotnet publish src/dotnet/Enclave.Sparrow/Enclave.Sparrow.csproj \
             -c Release -r win-x64 --self-contained \
             -o dist/sparrow-win-x64
 
-      - name: Install zip (for packaging)
+      - name: Install zip
+        if: |
+          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          steps.tag_check.outputs.exists == 'false'
         run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Create zip
         id: zip
+        if: |
+          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          steps.tag_check.outputs.exists == 'false'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           ZIP_NAME="Enclave-SPARROW-v${VERSION}-win-x64.zip"
@@ -67,24 +123,20 @@ jobs:
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
           echo "Created $ZIP_NAME"
 
-      - name: Upload artifact (for testing on main)
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: sparrow-win-x64
-          path: ${{ steps.zip.outputs.zip_name }}
+      # --- GitHub Release ---
 
-      - name: Create/update Release and upload zip (on tag)
-        if: startsWith(github.ref, 'refs/tags/sparrow-v')
+      - name: Create GitHub Release
+        if: |
+          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          steps.tag_check.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ steps.version.outputs.tag }}
           name: SPARROW ${{ steps.version.outputs.version }}
-          # generate_release_notes would need repo "Read and write" workflow permissions (403 with default token)
           body: |
             See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           files: ${{ steps.zip.outputs.zip_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Future: build-raven (same pattern for raven-v* tags)
+  # Future: release-raven (same pattern for raven-v* tags)
