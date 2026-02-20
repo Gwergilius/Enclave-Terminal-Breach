@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: src
+        working-directory: src/dotnet
 
     steps:
       - name: Checkout
@@ -46,7 +46,7 @@ jobs:
             /o:"${{ vars.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="TestResults/sonar/coverage.opencover.xml"
+            /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Restore
@@ -66,7 +66,7 @@ jobs:
             --logger "console;verbosity=normal" \
             --results-directory TestResults/raw \
             --collect "XPlat Code Coverage" \
-            --settings ../coverage.runsettings
+            --settings ../../coverage.runsettings
         continue-on-error: ${{ github.event_name == 'push' }}
 
       - name: Merge coverage results
@@ -126,7 +126,7 @@ jobs:
       - name: Run coverage threshold check
         if: steps.test.outcome == 'success'
         run: |
-          pwsh -File ../tools/coverage/assert-coverage-thresholds.ps1 \
+          pwsh -File ../../tools/coverage/assert-coverage-thresholds.ps1 \
             -CoverageXmlPath "TestResults/coverage.xml" \
             -LineMinimum 80 \
             -BranchMinimum 90

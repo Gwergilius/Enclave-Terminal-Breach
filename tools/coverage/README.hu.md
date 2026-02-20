@@ -18,7 +18,7 @@ dotnet tool install -g dotnet-coverage
 dotnet tool install -g ReportGenerator
 ```
 
-Továbbá: **PowerShell 7+**, **.NET SDK** (pl. 10.x, lásd `src/global.json`).
+Továbbá: **PowerShell 7+**, **.NET SDK** (pl. 10.x, lásd `src/dotnet/global.json`).
 
 ## Használat
 
@@ -29,10 +29,10 @@ Továbbá: **PowerShell 7+**, **.NET SDK** (pl. 10.x, lásd `src/global.json`).
 .\tools\coverage\run-coverage.ps1
 ```
 
-**src/ mappából** (így a `global.json` és a solution érvényesül):
+**src/dotnet/ mappából** (így a `global.json` és a solution érvényesül):
 ```powershell
-cd src
-..\tools\coverage\run-coverage.ps1 -SolutionPath .
+cd src/dotnet
+..\..\tools\coverage\run-coverage.ps1 -SolutionPath .
 ```
 
 A szkript:
@@ -88,7 +88,7 @@ A kimeneti mappa (alapértelmezett: `TestResults`) **minden futtatás előtt tö
 A szkript **nem** használ beégetett projektlistát. Egyszer futtatja a **`dotnet test <solution>`** parancsot:
 
 - A solution (`.sln` vagy `.slnx`) tartalmazza az összes projektet; a solutionben lévő minden tesztprojekt lefut.
-- **`.sln`** és **`.slnx** is támogatott. A szkript először az aktuális mappában, majd a repó gyökeréhez képest a **`src/`** alatt keresi a solutiont.
+- **`.sln`** és **`.slnx`** is támogatott. A szkript először az aktuális mappában, majd a repó gyökeréhez képest a **`src/dotnet/`** (vagy `src/`) alatt keresi a solutiont.
 
 Új tesztprojekt solutionhöz adásával automatikusan belekerül a coverage-ba.
 
@@ -105,7 +105,7 @@ A szkript **nem** használ beégetett projektlistát. Egyszer futtatja a **`dotn
 |----------|----------|
 | dotnet-coverage nem található | `dotnet tool install -g dotnet-coverage` |
 | reportgenerator nem található | `dotnet tool install -g ReportGenerator` |
-| Nem található solution | Futtasd a repó gyökeréből vagy `src/`-ból, vagy add meg: `-SolutionPath útvonal` |
+| Nem található solution | Futtasd a repó gyökeréből vagy `src/dotnet/`-ból, vagy add meg: `-SolutionPath útvonal` |
 | Coverage gyűjtés sikertelen | Futtasd először: `dotnet test`, és javítsd a törő teszteket |
 | HTML riport nem nyílik meg | Nyisd meg kézzel: `TestResults/html/index.html` |
 

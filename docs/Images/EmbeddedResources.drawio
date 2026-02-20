@@ -1,0 +1,31 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="ResourceExtensions-Integration" id="1P2bvc2U3o0To5V8Z_NR">
+    <mxGraphModel dx="1014" dy="597" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-10" edge="1" parent="1" source="4CGQWA0Qx5XrkGGlxr0O-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4CGQWA0Qx5XrkGGlxr0O-9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-5" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;ConfigurationSource:&lt;br&gt;EmbeddedResourceConfigurationSource&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;Assembly = Assembly&lt;br&gt;ResourcePath = &quot;appsettings.json&quot;&lt;br&gt;Optional = false&lt;/p&gt;" vertex="1">
+          <mxGeometry height="90" width="310" x="40" y="117" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-8" edge="1" parent="1" source="4CGQWA0Qx5XrkGGlxr0O-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="4CGQWA0Qx5XrkGGlxr0O-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-7" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;ConfigurationBuilder:&lt;/b&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;«IConfigurationBuilder»&lt;/span&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;AddEmbeddedJsonFile(&quot;appsettings&quot;)&lt;br&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="55" width="310" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-12" edge="1" parent="1" source="4CGQWA0Qx5XrkGGlxr0O-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4CGQWA0Qx5XrkGGlxr0O-11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-9" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;ConfigurationProvider:&lt;br&gt;EmbeddedResourceConfigurationProvider&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;Extends: JsonConfigurationProvider&lt;br&gt;Load(): Uses&amp;nbsp;ResourceExtensions&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="80" width="310" x="40" y="226" as="geometry" />
+        </mxCell>
+        <mxCell id="4CGQWA0Qx5XrkGGlxr0O-11" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;ResourceExtensions:&lt;br&gt;GetResourceStream()&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;Automatic name conversion&lt;br&gt;FluentResult error handling&lt;br&gt;Stream management&lt;/p&gt;" vertex="1">
+          <mxGeometry height="90" width="310" x="40" y="325" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

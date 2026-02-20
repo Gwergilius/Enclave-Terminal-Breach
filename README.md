@@ -61,10 +61,10 @@ Each phase represents a significant architectural milestone, culminating in the 
 
 ## 📁 Source code
 
-Folder structure, shared components (Common, Core, tests, test helpers), solution, and build/style configuration are described in the **[src/README][src README]**. Open the solution from `src/Enclave.Echelon.slnx`. Run the build from the **src/** folder: 
+Folder structure is described in the **[src/README][src README]** (platforms: **dotnet**, excel-prototype; future: python, typescript). The .NET solution lives under **src/dotnet/**. Open the solution from `src/dotnet/Enclave.Echelon.slnx` and run the build from **src/dotnet/**:
 
 ```Powershell
-cd src
+cd src/dotnet
 dotnet build Enclave.Echelon.slnx
 ```
 

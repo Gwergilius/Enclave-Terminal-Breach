@@ -56,6 +56,8 @@ Examples:
   sparrow -i 2 -w words.txt     # Combine options
 ```
 
+**Note:** When running with `dotnet run`, the `dotnet` CLI consumes `--help`, `-v`, etc. before the app sees them. Pass application options **after** `--` so they are forwarded to SPARROW: e.g. `dotnet run --project Enclave.Sparrow.csproj -- --help` or `dotnet run -- --help` from the project directory.
+
 **Intelligence Level Aliases:**
 
 | Numeric | Algorithm Name | User-Friendly | Description |
