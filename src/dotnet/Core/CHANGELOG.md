@@ -6,8 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-16
+
 ### Added
 - **Password** – `==` and `!=` operators (reference equality, null-safe, delegates to `Equals`). Unit tests in `PasswordTests` for both operators (same instance, both null, one null, same word, different words).
+- **IRandom** and **GameRandom** – abstraction for non-security RNG; solvers and factory depend on it (DI, test mocks).
+- **ISolverFactory** / **SolverFactory** – selects **IPasswordSolver** from registered collection by **ISolverConfiguration.Level**; caches instance.
+- **SolverLevel** – value object (HouseGambit, BestBucket, TieBreaker): FromInt/FromValue (Dictionary), TryParse with aliases, ToString(aliasPrefix), implicit int conversion, Equals/GetHashCode. Alias table in Core.
+- **IPasswordSolver.Level** and **ISolverConfiguration** (SolverLevel). **SolverLevelTests**, **SolverFactoryTests**, **GameRandomTests**.
+
+### Changed
+- **Solver registration**: All three solvers registered in DI; **SolverFactory** receives **IEnumerable<IPasswordSolver>** and **ISolverConfiguration** (no hard-coded solver list). **SolverByIntelligence** and **RandomExtensions** removed.
+- **PasswordSolverBase**: **ArgumentNullException.ThrowIfNull** without paramName (Sonar).
 
 ## [1.1.0] - 2026-02-14
 

@@ -3,9 +3,11 @@
 **[English]** | Magyar
 
 [![Verzió (SPARROW)][version-badge]][releases]
-[![Coverage][coverage-badge]][coverage-url]
 [![License-MIT-badge]][License-MIT]
-[![.NET-badge]][Dotnet]
+[![.NET-badge]][Dotnet]   
+[![Quality Gate Status][quality-gate-status]][quality-gate-status-url]
+[![Coverage][coverage-badge]][coverage-url]   
+
 
 Többplatformos Fallout terminál feltörő asszisztens – a SPARROW prototípustól az ECHELON bevezetésig.
 
@@ -100,9 +102,28 @@ MIT License – részletek: [LICENSE].
 
 ## 🎯 Köszönet
 
-- Bethesda Game Studios a Fallout franchise-ért
-- A Fallout közösség az inspirációért
-- RobCo Industries (fiktív) az UOS-ért, amit feltörünk
+- [Bethesda Game Studios][Bethesda] a Fallout franchise-ért
+- A [Fallout közösség][Fallout Wiki] az inspirációért
+- A [RobCo Industries][RobCo] (fiktív) az UOS-ért, amit feltörünk
+- A [Hackinal][hackinal] és a [Jetholt Hacking][jetholt-hacking] a böngészős minijátékokért, ahol kipróbálható az algoritmus
+
+## A fejlesztő
+
+**Gwergilius (Tóth Gergely)**  
+Többplatformos .NET fejlesztő, Fallout lore és szoftverarchitektúra rajongója.
+
+A projekt bemutatja:
+- Többplatformos fejlesztést (Console, Blazor, MAUI)
+- MVVM architektúrát
+- Lore-alapú tervezést (a fikció a funkciót követi)
+- A PHOSPHOR absztrakció réteget (fiktív technológia ihlette)
+
+*„Dr. Krane jegyzeteit egy Vault-Tec raktárban találtam. Kiderült, a PHOSPHOR nem csak fikció volt – jó szoftverarchitektúra. Úgyhogy megépítettem.”*
+
+## Kapcsolat
+
+- GitHub: [@gwergilius][Gwergilius-Github]
+- LinkedIn: [Gwergilius][Gwergilius-LinkedIn]
 
 ---
 
@@ -117,9 +138,22 @@ MIT License – részletek: [LICENSE].
 [LICENSE]: ./LICENSE
 [License-MIT]: https://opensource.org/licenses/MIT
 [Dotnet]: https://dotnet.microsoft.com/
+[Bethesda]: https://bethesdagamestudios.com
+[Fallout Wiki]: https://fallout.fandom.com
+[RobCo]: https://fallout.fandom.com/wiki/RobCo_Industries
+[hackinal]: https://hackinal.com/
+[jetholt-hacking]: https://jetholt.com/hacking/
+[Gwergilius-Github]: https://github.com/Gwergilius/
+[Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
+
 [version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
-[coverage-badge]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/Gwergilius/Enclave-Terminal-Breach
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4
+
+[quality-gate-status]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=alert_status
+[quality-gate-status-url]: https://sonarcloud.io/summary/new_code?id=Gwergilius_Enclave-Terminal-Breach
+
+[coverage-badge]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=coverage
+[coverage-url]: https://sonarcloud.io/summary/new_code?id=Gwergilius_Enclave-Terminal-Breach
+

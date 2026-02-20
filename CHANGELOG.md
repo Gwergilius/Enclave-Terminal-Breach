@@ -6,8 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-16
+
+### Added
+- **SPARROW refactor (Core)**: **IRandom** and **GameRandom**; **ISolverFactory** / **SolverFactory** (DI-based solver selection from registered **IPasswordSolver** set); **SolverLevel** value object (aliases, ToString(prefix), FromInt/FromValue, TryParse); **IPasswordSolver.Level**; **ISolverConfiguration** (SparrowOptions). Solver and SolverLevel unit tests; CD workflow uses GitVersion and creates tag/release on main push.
+
 ### Changed
 - **Source layout**: .NET solution and projects moved under **src/dotnet/**; **src/excel-prototype/** unchanged. Prepares for future **src/python/** and **src/typescript/** implementations. Added **src/README.md** and **src/README.hu.md**; updated root README, **src/dotnet/** READMEs, CI/CD workflows, and coverage docs/paths to use **src/dotnet/**.
+- **CI**: Sonar OpenCover report path and format (coverage no longer 0%); CD release workflow uses GitVersion for version, creates and pushes tag when missing, then builds and publishes GitHub Release.
+
+### Fixed
+- Remaining Sonar issues (e.g. PasswordSolverBase argument null); version generation in CD workflow.
 
 ## [1.1.2] - 2026-02-16
 
@@ -40,7 +49,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 See [Documentation Changelog](docs/CHANGELOG.md) for detailed documentation changes.
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.2...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.0...HEAD
+[1.2.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.2...sparrow-v1.2.0
 [1.1.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.1...sparrow-v1.1.2
 [1.1.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.0...sparrow-v1.1.1
 [1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/sparrow-v1.1.0
