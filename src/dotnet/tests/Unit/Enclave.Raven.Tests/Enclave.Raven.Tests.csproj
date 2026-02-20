@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>Enclave.Sparrow.Tests</RootNamespace>
-    <AssemblyName>Enclave.Sparrow.Tests</AssemblyName>
+    <RootNamespace>Enclave.Raven.Tests</RootNamespace>
+    <AssemblyName>Enclave.Raven.Tests</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <Product>SPARROW</Product>
-    <Version>1.2.0</Version>
+    <Product>RAVEN</Product>
+    <Version>1.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Enclave.Echelon.Core.csproj" />
-    <ProjectReference Include="..\..\..\Enclave.Sparrow\Enclave.Sparrow.csproj" />
+    <ProjectReference Include="..\..\..\Enclave.Raven\Enclave.Raven.csproj" />
     <ProjectReference Include="..\..\Common.Test.Core\Common.Test.Core.csproj" />
   </ItemGroup>
 

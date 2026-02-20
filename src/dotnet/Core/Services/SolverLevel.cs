@@ -19,14 +19,14 @@ public sealed class SolverLevel
     /// <summary>Level used when configuration is missing or invalid.</summary>
     public static SolverLevel Default => BestBucket;
 
-    private static readonly Dictionary<int, SolverLevel> LevelsByValue = new()
+    private static readonly Dictionary<int, SolverLevel> _levelsByValue = new()
     {
         [0] = HouseGambit,
         [1] = BestBucket,
         [2] = TieBreaker,
     };
 
-    private static readonly Dictionary<int, string[]> AliasesByLevel = new()
+    private static readonly Dictionary<int, string[]> _aliasesByLevel = new()
     {
         [0] = ["house", "dumb", "algorithm:random", "military:baseline"],
         [1] = ["smart", "algorithm:bucket", "military:tactical"],
@@ -54,7 +54,7 @@ public sealed class SolverLevel
 
     /// <summary>Returns the level for the given value; for 0–2 returns the canonical instance, otherwise <see cref="Default"/>.</summary>
     public static SolverLevel FromValue(int value) =>
-        LevelsByValue.TryGetValue(value, out var level) ? level : Default;
+        _levelsByValue.TryGetValue(value, out var level) ? level : Default;
 
     /// <summary>Parses "0"/"1"/"2", level name, or any registered alias (case-insensitive). Suffix after ":" is matched (e.g. "baseline", "tactical").</summary>
     public static bool TryParse(string? value, out SolverLevel level)
@@ -70,7 +70,7 @@ public sealed class SolverLevel
         if (s.Equals(nameof(HouseGambit), StringComparison.OrdinalIgnoreCase)) { level = HouseGambit; return true; }
         if (s.Equals(nameof(BestBucket), StringComparison.OrdinalIgnoreCase)) { level = BestBucket; return true; }
         if (s.Equals(nameof(TieBreaker), StringComparison.OrdinalIgnoreCase)) { level = TieBreaker; return true; }
-        var (Level, alias) = AliasesByLevel
+        var (Level, alias) = _aliasesByLevel
             .SelectMany(kv => kv.Value.Select(alias => (Level: kv.Key, Alias: alias)))
             .FirstOrDefault(pair => GetAliasSuffix(pair.Alias).Equals(s, StringComparison.OrdinalIgnoreCase));
         if (alias != null)
@@ -97,7 +97,7 @@ public sealed class SolverLevel
     public string ToString(string? aliasPrefix)
     {
         var prefix = aliasPrefix ?? DefaultAliasPrefix;
-        var aliases = AliasesByLevel[_value];
+        var aliases = _aliasesByLevel[_value];
         string? match = null;
         if(prefix.Length == 0)
         { 
