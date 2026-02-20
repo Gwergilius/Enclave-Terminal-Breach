@@ -2,6 +2,7 @@
 next-version: 0.1.0
 mode: ContinuousDelivery
 commit-message-incrementing: Enabled
+tag-prefix: '(sparrow-v|v)'
 
 # Commit/PR subject → version bump (no match = build metadata only, e.g. 0.1.0+5)
 # Use Squash and merge for PRs so the PR title becomes the merge commit message.
