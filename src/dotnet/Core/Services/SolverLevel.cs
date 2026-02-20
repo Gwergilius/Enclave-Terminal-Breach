@@ -1,4 +1,4 @@
-namespace Enclave.Echelon.Core.Services;
+﻿namespace Enclave.Echelon.Core.Services;
 
 /// <summary>
 /// Solver strategy level: which <see cref="IPasswordSolver"/> implementation to use (HOUSE gambit, Best-bucket, Tie-breaker).
@@ -70,16 +70,13 @@ public sealed class SolverLevel
         if (s.Equals(nameof(HouseGambit), StringComparison.OrdinalIgnoreCase)) { level = HouseGambit; return true; }
         if (s.Equals(nameof(BestBucket), StringComparison.OrdinalIgnoreCase)) { level = BestBucket; return true; }
         if (s.Equals(nameof(TieBreaker), StringComparison.OrdinalIgnoreCase)) { level = TieBreaker; return true; }
-        foreach (var (lvl, aliases) in AliasesByLevel)
+        var (Level, alias) = AliasesByLevel
+            .SelectMany(kv => kv.Value.Select(alias => (Level: kv.Key, Alias: alias)))
+            .FirstOrDefault(pair => GetAliasSuffix(pair.Alias).Equals(s, StringComparison.OrdinalIgnoreCase));
+        if (alias != null)
         {
-            foreach (var alias in aliases)
-            {
-                if (GetAliasSuffix(alias).Equals(s, StringComparison.OrdinalIgnoreCase))
-                {
-                    level = FromInt(lvl);
-                    return true;
-                }
-            }
+            level = FromInt(Level);
+            return true;
         }
         return false;
     }
@@ -101,10 +98,23 @@ public sealed class SolverLevel
     {
         var prefix = aliasPrefix ?? DefaultAliasPrefix;
         var aliases = AliasesByLevel[_value];
-        var match = prefix.Length == 0
-            ? aliases.FirstOrDefault(a => a.IndexOf(':') < 0)
-            : aliases.FirstOrDefault(a => a.StartsWith(prefix + ":", StringComparison.OrdinalIgnoreCase));
-        return match != null ? (prefix.Length == 0 ? match : GetAliasSuffix(match)) : _name;
+        string? match = null;
+        if(prefix.Length == 0)
+        { 
+            // If no prefix, prefer the first alias without a colon (e.g. "house" over "algorithm:random").
+            match = aliases.FirstOrDefault(a => !a.Contains(':'));
+        }
+        else
+        {
+            // If prefix is specified, prefer the first alias with that prefix (e.g. "military:tactical" over "algorithm:tactical").
+            prefix += ":";
+            match = aliases.FirstOrDefault(a => a.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+        }
+        // If no alias matches the prefix, or if no prefix and all aliases have a prefix, fallback to the internal name (e.g. "HouseGambit").
+        // This ensures we always return an alias if any exist.
+        match ??= _name;
+        match = GetAliasSuffix(match);
+        return match;
     }
 
     private static string GetAliasSuffix(string categoryValue)

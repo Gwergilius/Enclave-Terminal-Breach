@@ -1,4 +1,4 @@
-using Enclave.Common.Test.Core;
+﻿using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -18,7 +18,7 @@ public class SolverFactoryTests
         new TieBreakerPasswordSolver(),
     ];
 
-    private static ISolverFactory CreateFactory(SolverLevel level)
+    private static SolverFactory CreateFactory(SolverLevel level)
     {
         var config = new StubSolverConfiguration(level);
         return new SolverFactory(CreateSolvers(), config);

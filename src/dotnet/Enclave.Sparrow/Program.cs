@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.Services;
 using Microsoft.Extensions.Configuration;
@@ -99,18 +99,16 @@ internal static class Program
     private static Dictionary<string, string?> ParseCommandLineArgs(string[] args)
     {
         var dict = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-        for (var i = 0; i < args.Length; i++)
-        {
-            var arg = args[i];
-            if ((arg is "-i" or "--intelligence") && i + 1 < args.Length)
+        int i = 0;
+        while( i < args.Length ) {
+            var arg = args[i++];
+            if ((arg is "-i" or "--intelligence") && i < args.Length)
             {
-                dict["Sparrow:Intelligence"] = args[i + 1];
-                i++;
+                dict["Sparrow:Intelligence"] = args[i++];
             }
-            else if ((arg is "-w" or "--words") && i + 1 < args.Length)
+            else if ((arg is "-w" or "--words") && i < args.Length)
             {
-                dict["Sparrow:WordListPath"] = args[i + 1];
-                i++;
+                dict["Sparrow:WordListPath"] = args[i++];
             }
         }
         return dict;
