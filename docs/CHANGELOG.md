@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-16
+
 ### Changed
 - **Source layout docs**: Root README and README.hu now point to **src/dotnet/** for the .NET solution and build. **src/README.md** and **src/README.hu.md** added (platform overview: dotnet, excel-prototype, planned python/typescript). **src/dotnet/** READMEs updated (excel-prototype moved to parent; paths to docs/tools/.cursor fixed). **tools/coverage/** README and script updated for **src/dotnet/**.
 

@@ -3,9 +3,10 @@
 **English** | [Magyar]
 
 [![Version (SPARROW)][version-badge]][releases]
-[![Coverage][coverage-badge]][coverage-url]
 [![License-MIT-badge]][License-MIT]
-[![.NET-badge]][Dotnet]
+[![.NET-badge]][Dotnet]   
+[![Quality Gate Status][quality-gate-status]][quality-gate-status-url]
+[![Coverage][coverage-badge]][coverage-url]   
 
 Multi-platform Fallout terminal hacking assistant - Complete evolution from SPARROW prototype to ECHELON deployment.
 
@@ -147,7 +148,12 @@ This project demonstrates:
 [Image-links]: #Image-references
 [version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
+
+[quality-gate-status]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=alert_status
+[quality-gate-status-url]: https://sonarcloud.io/summary/new_code?id=Gwergilius_Enclave-Terminal-Breach
+
 [coverage-badge]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=coverage
 [coverage-url]: https://sonarcloud.io/summary/new_code?id=Gwergilius_Enclave-Terminal-Breach
+
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4
