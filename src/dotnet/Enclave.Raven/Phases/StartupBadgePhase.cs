@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Enclave.Raven.Configuration;
-using Enclave.Raven.IO;
+using Enclave.Shared.IO;
 
 namespace Enclave.Raven.Phases;
 

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Enclave.Shared</RootNamespace>
+    <AssemblyName>Enclave.Shared</AssemblyName>
+    <Description>Shared abstractions and implementations for Enclave projects (IO, Models, UI, etc.).</Description>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentResults" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Enclave.Common.csproj" />
+    <ProjectReference Include="..\Core\Enclave.Echelon.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Enclave.Raven.Tests" />
+    <InternalsVisibleTo Include="Enclave.Shared.Tests" />
+  </ItemGroup>
+
+</Project>

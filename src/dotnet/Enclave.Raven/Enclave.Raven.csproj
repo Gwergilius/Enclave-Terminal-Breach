@@ -6,7 +6,7 @@
     <RootNamespace>Enclave.Raven</RootNamespace>
     <AssemblyName>Enclave.Raven</AssemblyName>
     <Product>RAVEN</Product>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <Description>RAVEN – DOS-style console POC for Enclave Terminal Breach (stdin/stdout).</Description>
   </PropertyGroup>
 
@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Enclave.Common.csproj" />
     <ProjectReference Include="..\Core\Enclave.Echelon.Core.csproj" />
+    <ProjectReference Include="..\Shared\Enclave.Shared.csproj" />
   </ItemGroup>
 
 </Project>

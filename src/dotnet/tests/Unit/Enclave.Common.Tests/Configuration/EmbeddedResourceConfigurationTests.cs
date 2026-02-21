@@ -1,11 +1,8 @@
-﻿using System.Reflection;
-using Enclave.Common.Configuration;
+﻿using Enclave.Common.Configuration;
 using Enclave.Common.Extensions;
 using Microsoft.Extensions.Configuration;
-using Moq;
-using Shouldly;
 
-namespace Enclave.Echelon.Common.Tests.Configuration;
+namespace Enclave.Common.Tests.Configuration;
 
 /// <summary>
 /// Unit tests for embedded resource configuration extensions and providers.

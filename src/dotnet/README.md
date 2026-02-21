@@ -10,10 +10,11 @@
 |--------|----------|
 | **Common/** | [Enclave.Common] – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
 | **Core/** | [Enclave.Echelon.Core] – core business logic: Password Solver, Password Repository, domain models. References Common. |
+| **Shared/** | [Enclave.Shared] – shared abstractions (IO, UI, etc.). Used by Raven and future apps. |
 | **Enclave.Sparrow/** | SPARROW console app (DOS-style stdin/stdout). *Code freeze – use Enclave.Raven for new work.* |
 | **Enclave.Raven/** | RAVEN console app (DOS-style stdin/stdout). Active development for 1.3.0. |
 | **tests/Common.Test.Core/** | Shared test helpers and attributes (e.g. `[UnitTest]`, `TestOf`). |
-| **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests, Enclave.Raven.Tests). |
+| **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests, Enclave.Raven.Tests, Enclave.Shared.Tests). |
 | **tests/Integration/** | *Planned.* Integration test projects. |
 | **tests/E2E/** | *Planned.* End-to-end test projects (e.g. GHOST E2E). |
 

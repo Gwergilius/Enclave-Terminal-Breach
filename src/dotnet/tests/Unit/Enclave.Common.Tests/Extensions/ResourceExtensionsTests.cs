@@ -2,7 +2,7 @@
 using Enclave.Common.Extensions;
 
 
-namespace Enclave.Echelon.Common.Tests.Extensions;
+namespace Enclave.Common.Tests.Extensions;
 
 /// <summary>
 /// Unit tests for the <see cref="ResourceExtensions"/> class.

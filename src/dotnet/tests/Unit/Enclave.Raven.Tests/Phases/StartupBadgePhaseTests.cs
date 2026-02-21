@@ -1,6 +1,6 @@
 using Enclave.Common.Test.Core;
 using Enclave.Raven.Configuration;
-using Enclave.Raven.IO;
+using Enclave.Shared.IO;
 using Enclave.Raven.Phases;
 
 namespace Enclave.Raven.Tests.Phases;

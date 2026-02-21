@@ -1,4 +1,4 @@
-using Enclave.Raven.Models;
+using Enclave.Shared.Models;
 
 namespace Enclave.Raven.Phases;
 

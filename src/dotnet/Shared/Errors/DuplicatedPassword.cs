@@ -1,6 +1,6 @@
 using FluentResults;
 
-namespace Enclave.Raven.Errors;
+namespace Enclave.Shared.Errors;
 
 /// <summary>
 /// Error indicating that a password candidate is already in the candidate list.

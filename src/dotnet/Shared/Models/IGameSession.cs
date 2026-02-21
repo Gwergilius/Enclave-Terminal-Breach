@@ -1,12 +1,12 @@
 using Enclave.Echelon.Core.Models;
 
-namespace Enclave.Raven.Models;
+namespace Enclave.Shared.Models;
 
 /// <summary>
 /// Shared game state between the data-input phase and the hacking loop.
 /// Both phases depend on this; the data-input phase fills candidates, the hacking phase reads and narrows them.
 /// </summary>
-public interface IGameSession: IList<Password>
+public interface IGameSession : IList<Password>
 {
     /// <summary>
     /// Required word length (set when the first word is accepted in data-input). Null until then, or when the list is cleared (e.g. last candidate removed).

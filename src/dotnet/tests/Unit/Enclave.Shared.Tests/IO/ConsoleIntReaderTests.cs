@@ -1,6 +1,6 @@
-using Enclave.Raven.IO;
+using Enclave.Shared.IO;
 
-namespace Enclave.Raven.Tests.IO;
+namespace Enclave.Shared.Tests.IO;
 
 /// <summary>
 /// Unit tests for <see cref="ConsoleIntReader"/> (via <see cref="TestConsoleIO"/>).

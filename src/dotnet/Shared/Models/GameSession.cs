@@ -1,11 +1,12 @@
 using System.Collections;
+using System.Globalization;
 using Enclave.Common.Errors;
 using Enclave.Echelon.Core.Errors;
 using Enclave.Echelon.Core.Models;
-using Enclave.Raven.Errors;
+using Enclave.Shared.Errors;
 using FluentResults;
 
-namespace Enclave.Raven.Models;
+namespace Enclave.Shared.Models;
 
 /// <summary>
 /// Default implementation of <see cref="IGameSession"/>. Holds the mutable candidate list and word length for one console run.

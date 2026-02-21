@@ -2,9 +2,8 @@
 using Enclave.Common.Services;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using Shouldly;
 
-namespace Enclave.Echelon.Common.Tests.Configuration;
+namespace Enclave.Common.Tests.Configuration;
 
 /// <summary>
 /// Unit tests for storage configuration extensions and providers.

@@ -1,4 +1,4 @@
-namespace Enclave.Echelon.Core.Services;
+﻿namespace Enclave.Echelon.Core.Services;
 
 /// <summary>
 /// Selects the <see cref="IPasswordSolver"/> from the configured collection by matching <see cref="ISolverConfiguration.Level"/>.
@@ -22,7 +22,7 @@ public sealed class SolverFactory(IEnumerable<IPasswordSolver> solvers, ISolverC
 
         var requested = SolverLevel.IsDefined(_config.Level) ? _config.Level : DefaultLevel;
         _cached = _solvers.FirstOrDefault(s => s.Level == requested)
-            ?? _solvers.FirstOrDefault(s => s.Level == DefaultLevel);
+            ?? _solvers.FirstOrDefault(s => s.Level == DefaultLevel);        
         if (_cached == null)
             throw new InvalidOperationException($"No IPasswordSolver registered for level {requested} or default {DefaultLevel}.");
         return _cached;

@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Enclave.Raven.IO;
+namespace Enclave.Shared.IO;
 
 /// <summary>
 /// Standard console implementation: <see cref="Console"/> stdin/stdout.

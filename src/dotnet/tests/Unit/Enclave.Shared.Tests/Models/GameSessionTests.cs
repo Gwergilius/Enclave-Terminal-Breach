@@ -1,8 +1,10 @@
 using Enclave.Common.Errors;
 using Enclave.Echelon.Core.Errors;
-using Enclave.Raven.Errors;
+using Enclave.Echelon.Core.Models;
+using Enclave.Shared.Errors;
+using Enclave.Shared.Models;
 
-namespace Enclave.Raven.Tests.Models;
+namespace Enclave.Shared.Tests.Models;
 
 /// <summary>
 /// Unit tests for <see cref="GameSession"/>. Tests public API; private logic (AddCandidate, RemoveCandidate) is exercised through Add/Remove.

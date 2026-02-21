@@ -1,6 +1,6 @@
-using Enclave.Raven.IO;
+using Enclave.Shared.IO;
 
-namespace Enclave.Raven.Tests.IO;
+namespace Enclave.Shared.Tests.IO;
 
 /// <summary>
 /// Test double for IConsoleIO that returns configurable ReadLine values.

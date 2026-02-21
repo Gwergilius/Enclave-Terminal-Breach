@@ -1,4 +1,6 @@
-namespace Enclave.Raven.IO;
+using System.Globalization;
+
+namespace Enclave.Shared.IO;
 
 /// <summary>
 /// Helper for reading a validated integer from console I/O. Extracted for testability.

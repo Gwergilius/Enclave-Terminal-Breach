@@ -1,7 +1,7 @@
-namespace Enclave.Raven.IO;
+namespace Enclave.Shared.IO;
 
 /// <summary>
-/// Abstraction for sequential console input and output (stdin/stdout). Enables testability and aligns with RAVEN's no-cursor, no-colour constraint.
+/// Abstraction for sequential console input and output (stdin/stdout). Enables testability and aligns with PHOSPHOR/RAVEN no-cursor, no-colour constraint.
 /// </summary>
 public interface IConsoleIO
 {
