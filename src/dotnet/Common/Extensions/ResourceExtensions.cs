@@ -23,7 +23,7 @@ public static class ResourceExtensions
     /// <param name="assembly"></param>
     /// <param name="resourcePath"></param>
     /// <returns></returns>
-    public static Result<IEnumerable<T>> GetJsonResource<T>(this Assembly assembly, string resourcePath)
+    public static Result<IEnumerable<T>> GetJsonResource<T>(this System.Reflection.Assembly assembly, string resourcePath)
     {
         var jsonData = assembly.GetResourceString(resourcePath)!;
         if (!jsonData.IsSuccess)
@@ -37,7 +37,7 @@ public static class ResourceExtensions
     public static Result<string> GetResourceString(this Type referenceType, string resourcePath)
         => referenceType.Assembly.GetResourceString(resourcePath);
 
-    public static Result<string> GetResourceString(this Assembly assembly, string resourcePath)
+    public static Result<string> GetResourceString(this System.Reflection.Assembly assembly, string resourcePath)
     {
         var result = assembly.GetResourceStream(resourcePath);
         if (!result.IsSuccess)
@@ -54,7 +54,7 @@ public static class ResourceExtensions
     public static Result<Stream> GetResourceStream(this Type referenceType, string resourcePath)
         => referenceType.Assembly.GetResourceStream(resourcePath);
 
-    public static Result<Stream> GetResourceStream(this Assembly assembly, string resourcePath)
+    public static Result<Stream> GetResourceStream(this System.Reflection.Assembly assembly, string resourcePath)
     {
         if (string.IsNullOrWhiteSpace(resourcePath))
         {
@@ -79,7 +79,7 @@ public static class ResourceExtensions
         return Result.Ok(stream!);
     }
 
-    private static Result ResourceNotFound(string resourcePath, Assembly assembly)
+    private static Result ResourceNotFound(string resourcePath, System.Reflection.Assembly assembly)
     {
         var messages = new List<string>
         {

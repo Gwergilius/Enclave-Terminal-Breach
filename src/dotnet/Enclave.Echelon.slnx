@@ -11,10 +11,12 @@
     <Project Path="tests/Unit/Enclave.Sparrow.Tests/Enclave.Sparrow.Tests.csproj" />
     <Project Path="tests/Unit/Enclave.Raven.Tests/Enclave.Raven.Tests.csproj" />
     <Project Path="tests/Unit/Enclave.Shared.Tests/Enclave.Shared.Tests.csproj" />
+    <Project Path="tests/Unit/Enclave.Phosphor.Tests/Enclave.Phosphor.Tests.csproj" />
   </Folder>
   <Project Path="Common\Enclave.Common.csproj" />
   <Project Path="Core\Enclave.Echelon.Core.csproj" />
   <Project Path="Shared\Enclave.Shared.csproj" />
   <Project Path="Enclave.Sparrow/Enclave.Sparrow.csproj" />
   <Project Path="Enclave.Raven/Enclave.Raven.csproj" />
+  <Project Path="Phosphor/Enclave.Phosphor.csproj" />
 </Solution>

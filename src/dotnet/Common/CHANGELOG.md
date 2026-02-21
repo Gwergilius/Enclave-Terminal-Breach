@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **ColorValue** – Platform-agnostic immutable colour record (R, G, B, A) with `FromHex`, `ToHex`, `ToCssRgba`, `ToCssRgb` for cross-platform use (MAUI, Blazor, console).
+
 ## [1.1.0] - 2026-02-14
 
 ### Added

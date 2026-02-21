@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+- **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** delegates to `Console`; **TestConsoleIO** uses configurable `Dimensions`.
+
 ### Added
 - **Phases/** – `IPhase` (common contract for all phases; moved from Enclave.Raven and Enclave.Sparrow).
 - **Services/** – `IPhaseRunner`, `PhaseRunner` (orchestrates phases in order; moved from Enclave.Raven and Enclave.Sparrow).

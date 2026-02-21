@@ -14,7 +14,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithNullResourcePath_ThrowsArgumentNullException()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act & Assert
         Should.Throw<ArgumentNullException>(() => 
@@ -27,7 +27,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithNonExistentResource_ReturnsFailure()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetResourceStream("non-existent-resource.txt");
@@ -41,7 +41,7 @@ public class ResourceExtensionsTests
     public void GetResourceString_WithNonExistentResource_ReturnsFailure()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetResourceString("non-existent-resource.txt");
@@ -83,7 +83,7 @@ public class ResourceExtensionsTests
     public void GetJsonResource_WithNonExistentResource_ReturnsFailure()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetJsonResource<TestData>("non-existent-resource.json");
@@ -111,7 +111,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithExistingResource_ReturnsStream()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - ResourceExtensions converts - to _, so we use test_text.txt
         // The actual resource is: Enclave.Common.Test.TestResources.test_text.txt
@@ -129,7 +129,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithExistingResourceUsingSlashes_ReturnsStream()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - ResourceExtensions converts / to . and - to _
         var result = assembly.GetResourceStream("TestResources/test_text.txt");
@@ -143,7 +143,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithExistingResourceUsingBackslashes_ReturnsStream()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - ResourceExtensions converts \ to . and - to _
         var result = assembly.GetResourceStream("TestResources\\test_text.txt");
@@ -157,7 +157,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithResourceContainingDashes_ConvertsDashesToUnderscores()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - ResourceExtensions converts - to _ for matching
         // The actual resource is: Enclave.Common.Test.TestResources.test_resource_with_dashes.json
@@ -174,7 +174,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithCaseInsensitiveSearch_FindsResource()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - Case insensitive search (converts - to _)
         var result = assembly.GetResourceStream("TEST_TEXT.TXT");
@@ -188,7 +188,7 @@ public class ResourceExtensionsTests
     public void GetResourceString_WithExistingResource_ReturnsContent()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetResourceString("test-text.txt");
@@ -204,7 +204,7 @@ public class ResourceExtensionsTests
     public void GetResourceString_WithEmptyFile_ReturnsEmptyString()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetResourceString("empty_file.txt");
@@ -233,7 +233,7 @@ public class ResourceExtensionsTests
     public void GetJsonResource_WithExistingValidJson_ReturnsDeserializedData()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - ResourceExtensions converts - to _ for matching
         var result = assembly.GetJsonResource<TestData>("test_data.json");
@@ -269,7 +269,7 @@ public class ResourceExtensionsTests
     public void GetJsonResource_WithEmptyFile_ThrowsJsonException()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         
         // Act & Assert - Empty file should throw JsonException during deserialization
         // Note: The current implementation doesn't catch JsonException, so it propagates
@@ -281,7 +281,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithPartialMatch_FindsResourceBySuffix()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - Using just the filename, should find by suffix match (converts - to _)
         var result = assembly.GetResourceStream("test_text.txt");
@@ -295,7 +295,7 @@ public class ResourceExtensionsTests
     public void GetResourceStream_WithFullResourceName_FindsResource()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         // Get the actual resource name
         var resourceNames = assembly.GetManifestResourceNames();
         var testResource = resourceNames.FirstOrDefault(n => n.Contains("test_text"));
@@ -311,7 +311,7 @@ public class ResourceExtensionsTests
     public void GetResourceString_WithResourceContainingSpecialCharacters_ReadsCorrectly()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = assembly.GetResourceString("test-text.txt");
@@ -328,7 +328,7 @@ public class ResourceExtensionsTests
     public void GetJsonResource_WithResourceContainingDashes_ConvertsAndLoads()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act - The resource name has dashes in the path, which get converted to underscores
         // We can test this by using the converted name

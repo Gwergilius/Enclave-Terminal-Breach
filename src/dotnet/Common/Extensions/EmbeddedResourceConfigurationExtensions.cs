@@ -25,7 +25,7 @@ public static class EmbeddedResourceConfigurationExtensions
     /// </example>
     public static IConfigurationBuilder AddEmbeddedJsonFile(
         this IConfigurationBuilder builder,
-        Assembly assembly,
+        System.Reflection.Assembly assembly,
         string resourcePath,
         bool optional = false)
     {
@@ -61,7 +61,7 @@ public static class EmbeddedResourceConfigurationExtensions
         bool optional = false)
     {
         // Get calling assembly (the assembly that called this method)
-        var assembly = Assembly.GetCallingAssembly();
+        var assembly = System.Reflection.Assembly.GetCallingAssembly();
         return builder.AddEmbeddedJsonFile(assembly, resourcePath, optional);
     }
 }

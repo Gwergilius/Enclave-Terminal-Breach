@@ -1,5 +1,7 @@
 using System.Reflection;
 using Enclave.Raven;
+using Enclave.Common.Assembly;
+using Moq;
 
 namespace Enclave.Raven.Tests;
 
@@ -30,27 +32,62 @@ public class ProductInfoTests
     }
 
     [Fact]
-    public void GetFromAssembly_WhenProductAttributeMissing_UsesFallback()
+    public void GetFromProvider_WhenProductNull_UsesFallback()
     {
-        var coreLibAssembly = typeof(object).Assembly;
-        var productAttr = coreLibAssembly.GetCustomAttribute<AssemblyProductAttribute>();
-        if (productAttr is not null)
-            return;
+        var provider = Mock.Of<IAssemblyProvider>(p =>
+            p.Product == null &&
+            p.Version == "2.0.0");
 
-        var info = ProductInfo.GetFromAssembly(coreLibAssembly);
+        var info = ProductInfo.GetFromProvider(provider);
+
         info.Name.ShouldBe("RAVEN");
+        info.Version.ShouldBe("2.0.0");
     }
 
     [Fact]
-    public void GetFromAssembly_WhenVersionNull_UsesFallback()
+    public void GetFromProvider_WhenVersionNull_UsesFallback()
     {
-        var coreLibAssembly = typeof(object).Assembly;
-        var version = coreLibAssembly.GetName().Version;
-        if (version is not null)
-            return;
+        var provider = Mock.Of<IAssemblyProvider>(p =>
+            p.Product == "MyProduct" &&
+            p.Version == null);
 
-        var info = ProductInfo.GetFromAssembly(coreLibAssembly);
+        var info = ProductInfo.GetFromProvider(provider);
+
+        info.Name.ShouldBe("MyProduct");
         info.Version.ShouldBe("0.0.0");
+    }
+
+    [Fact]
+    public void GetFromProvider_WhenBothNull_UsesBothFallbacks()
+    {
+        var provider = Mock.Of<IAssemblyProvider>(p =>
+            p.Product == null &&
+            p.Version == null);
+
+        var info = ProductInfo.GetFromProvider(provider);
+
+        info.Name.ShouldBe("RAVEN");
+        info.Version.ShouldBe("0.0.0");
+    }
+
+    [Fact]
+    public void GetFromProvider_WithNonNullProvider_ReturnsProviderValues()
+    {
+        var provider = Mock.Of<IAssemblyProvider>(p =>
+            p.Product == "CustomProduct" &&
+            p.Version == "9.9.9");
+
+        var info = ProductInfo.GetFromProvider(provider);
+
+        info.Name.ShouldBe("CustomProduct");
+        info.Version.ShouldBe("9.9.9");
+    }
+
+    [Fact]
+    public void GetFromProvider_WithNullProvider_ThrowsArgumentNullException()
+    {
+        Should.Throw<ArgumentNullException>(() => ProductInfo.GetFromProvider(null!))
+            .ParamName.ShouldBe("provider");
     }
 
     [Fact]

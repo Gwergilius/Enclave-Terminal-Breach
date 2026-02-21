@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **PHOSPHOR 1.0** – Console UI abstraction layer: full-screen canvas, colour themes (green, amber, white, blue), sequential `IPhosphorWriter`, keyboard input loop. Test doubles: `TestPhosphorWriter`, `TestPhosphorInputLoop`. **ColorValue** in Enclave.Common for platform-agnostic R/G/B/A colours.
+
+### Changed
+- **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** and **TestConsoleIO** implement new members. **AnsiPhosphorCanvas** uses `IConsoleIO` instead of `System.Console` for full unit testability. Phosphor references Enclave.Shared.
+
 ## [1.2.0] - 2026-02-16
 
 ### Added

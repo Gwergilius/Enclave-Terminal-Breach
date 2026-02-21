@@ -15,7 +15,7 @@ public class EmbeddedResourceConfigurationTests
     {
         // Arrange
         var builder = new ConfigurationBuilder();
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act
         var result = builder.AddEmbeddedJsonFile(assembly, "test.json", optional: true);
@@ -42,7 +42,7 @@ public class EmbeddedResourceConfigurationTests
     {
         // Arrange
         IConfigurationBuilder? builder = null;
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act & Assert
         Should.Throw<ArgumentNullException>(() => 
@@ -54,7 +54,7 @@ public class EmbeddedResourceConfigurationTests
     {
         // Arrange
         var builder = new ConfigurationBuilder();
-        Assembly? assembly = null;
+        System.Reflection.Assembly? assembly = null;
 
         // Act & Assert
         Should.Throw<ArgumentNullException>(() => 
@@ -66,7 +66,7 @@ public class EmbeddedResourceConfigurationTests
     {
         // Arrange
         var builder = new ConfigurationBuilder();
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         // Act & Assert
         Should.Throw<ArgumentException>(() => 
@@ -81,7 +81,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationSource_Properties_SetCorrectly()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -99,7 +99,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationSource_Build_ReturnsProvider()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -119,7 +119,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationProvider_Load_WithExistingResource_LoadsConfiguration()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         // ResourceExtensions converts / to . and - to _, and searches by suffix
         // The actual resource name is: Enclave.Common.Test.TestResources.test-config.json
         // We can use just the filename or the path with slashes
@@ -147,7 +147,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationProvider_Load_WithNonExistentResourceAndOptionalTrue_InitializesEmptyData()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -169,7 +169,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationProvider_Load_WithNonExistentResourceAndOptionalFalse_ThrowsFileNotFoundException()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -190,7 +190,7 @@ public class EmbeddedResourceConfigurationTests
         // Arrange - Create a test resource with invalid JSON
         // Note: This test assumes we have an invalid JSON resource
         // For now, we'll test with a non-existent resource that would fail parsing if it existed
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -209,7 +209,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationProvider_Load_WithEmptyResourceAndOptionalTrue_InitializesEmptyData()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var source = new EmbeddedResourceConfigurationSource
         {
             Assembly = assembly,
@@ -230,7 +230,7 @@ public class EmbeddedResourceConfigurationTests
     public void EmbeddedResourceConfigurationProvider_Load_WithValidResource_CanAccessNestedValues()
     {
         // Arrange
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         // ResourceExtensions converts / to . and - to _, and searches by suffix
         var source = new EmbeddedResourceConfigurationSource
         {

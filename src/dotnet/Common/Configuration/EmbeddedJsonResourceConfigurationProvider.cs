@@ -1,5 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
 using Enclave.Common.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -8,13 +9,13 @@ namespace Enclave.Common.Configuration;
 
 /// <summary>
 /// Configuration provider that loads JSON configuration from an embedded resource.
-/// Uses ResourceExtensions.GetResourceStream() for accessing embedded resources.
+/// Uses <see cref="ResourceExtensions.GetResourceString"/> for accessing embedded resources.
 /// </summary>
 /// <remarks>
 /// Initializes a new instance of the EmbeddedJsonResourceConfigurationProvider.
 /// </remarks>
 /// <param name="source">The configuration source</param>
-public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourceConfigurationSource source) 
+public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourceConfigurationSource source)
     : JsonConfigurationProvider(new JsonConfigurationSource())
 {
     private readonly EmbeddedResourceConfigurationSource _source = source;
@@ -24,13 +25,13 @@ public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourc
     /// </summary>
     public override void Load()
     {
-        var streamResult = _source.Assembly.GetResourceStream(_source.ResourcePath);
+        var stringResult = _source.Assembly.GetResourceString(_source.ResourcePath);
 
-        if (streamResult.IsSuccess)
+        if (stringResult.IsSuccess)
         {
-            using var stream = streamResult.Value;
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringResult.Value));
             Load(stream);
-        } 
+        }
         else if (_source.Optional)
         {
             // Optional resource not found - just return without loading
@@ -39,7 +40,7 @@ public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourc
         else
         {
             // Required resource not found - throw exception
-            var errorMessages = string.Join(Environment.NewLine, streamResult.Errors.Select(e => e.Message));
+            var errorMessages = string.Join(Environment.NewLine, stringResult.Errors.Select(e => e.Message));
             throw new FileNotFoundException(
                 $"Embedded resource '{_source.ResourcePath}' not found in assembly '{_source.Assembly.GetName().Name}'.{Environment.NewLine}{errorMessages}");
         }
@@ -48,14 +49,14 @@ public class EmbeddedJsonResourceConfigurationProvider([NotNull] EmbeddedResourc
 
 /// <summary>
 /// Configuration source for loading configuration from an embedded resource.
-/// Uses ResourceExtensions.GetResourceStream() for accessing embedded resources.
+/// The provider uses <see cref="ResourceExtensions.GetResourceString"/> for accessing embedded resources.
 /// </summary>
 public class EmbeddedResourceConfigurationSource : IConfigurationSource
 {
     /// <summary>
     /// The assembly containing the embedded resource.
     /// </summary>
-    public Assembly Assembly { get; set; } = default!;
+    public System.Reflection.Assembly Assembly { get; set; } = default!;
 
     /// <summary>
     /// The resource path (e.g., "appsettings.json").
