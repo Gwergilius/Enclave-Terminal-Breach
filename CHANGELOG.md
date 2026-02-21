@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 - **PHOSPHOR 1.0** – Console UI abstraction layer: full-screen canvas, colour themes (green, amber, white, blue), sequential `IPhosphorWriter`, keyboard input loop. Test doubles: `TestPhosphorWriter`, `TestPhosphorInputLoop`. **ColorValue** in Enclave.Common for platform-agnostic R/G/B/A colours.
+- **RAVEN 1.3.2** – PHOSPHOR 1.0 integrated: Raven uses `IPhosphorCanvas`, `IPhosphorWriter`, `IPhosphorReader`; replay loop (DataInput → HackingLoop → “Press any key” → clear → repeat); Ctrl+C handled for normal exit (exit code 0).
 
 ### Changed
 - **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** and **TestConsoleIO** implement new members. **AnsiPhosphorCanvas** uses `IConsoleIO` instead of `System.Console` for full unit testability. Phosphor references Enclave.Shared.

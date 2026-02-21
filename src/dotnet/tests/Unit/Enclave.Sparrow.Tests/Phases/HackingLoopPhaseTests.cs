@@ -48,15 +48,14 @@ public class HackingLoopPhaseTests
         session.Add("TERMS").IsSuccess.ShouldBeTrue();
 
         var console = Mock.Of<IConsoleIO>();
+        console.AsMock().Setup(c => c.ReadLine()).Returns("5"); // ReadInt extension uses ReadLine
+        console.AsMock().Setup(c => c.Write(It.IsAny<string>()));
+
         var solver = Mock.Of<IPasswordSolver>();
         var terms = new Password("TERMS");
         solver.AsMock()
             .Setup(s => s.GetBestGuess(It.IsAny<IGameSession>()))
             .Returns(terms);
-
-        console.AsMock()
-            .Setup(c => c.ReadInt(0, 5, 5, It.IsAny<string>(), null))
-            .Returns(5); // full match, exit
 
         var writtenLines = new List<string>();
         console.AsMock()
@@ -109,6 +108,12 @@ public class HackingLoopPhaseTests
         session.Add("TANKS").IsSuccess.ShouldBeTrue();
 
         var console = Mock.Of<IConsoleIO>();
+        var readLineCalls = 0;
+        console.AsMock()
+            .Setup(c => c.ReadLine())
+            .Returns(() => readLineCalls++ == 0 ? "3" : "5"); // ReadInt extension uses ReadLine: first 3, then 5 (correct)
+        console.AsMock().Setup(c => c.Write(It.IsAny<string>()));
+
         var solver = Mock.Of<IPasswordSolver>();
         var terms = new Password("TERMS");
         var texas = new Password("TEXAS");
@@ -124,11 +129,6 @@ public class HackingLoopPhaseTests
                 var list = sess.ToList();
                 return list.Where(p => p.GetMatchCount(terms) == 3).ToList();
             });
-
-        var readIntCalls = 0;
-        console.AsMock()
-            .Setup(c => c.ReadInt(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), null))
-            .Returns(() => readIntCalls++ == 0 ? 3 : 5); // first guess: 3, second: 5 (correct)
 
         var phase = new HackingLoopPhase(session, console, CreateSolverFactory(solver));
 

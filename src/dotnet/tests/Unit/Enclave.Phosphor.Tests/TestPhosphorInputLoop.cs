@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace Enclave.Phosphor.Tests;
 
@@ -8,10 +8,10 @@ namespace Enclave.Phosphor.Tests;
 public sealed class TestPhosphorInputLoop : IPhosphorInputLoop
 {
     private readonly BlockingCollection<ConsoleKeyInfo?> _keyQueue = new();
-    private readonly List<IPhosphorKeyboardHandler> _handlers = new();
+    private readonly List<IPhosphorReader> _handlers = new();
 
     /// <inheritdoc />
-    public void Register(IPhosphorKeyboardHandler handler)
+    public void Register(IPhosphorReader handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _handlers.Add(handler);

@@ -1,6 +1,6 @@
 using Enclave.Common.Test.Core;
+using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
-using Enclave.Shared.IO;
 using Enclave.Raven.Phases;
 
 namespace Enclave.Raven.Tests.Phases;
@@ -15,13 +15,13 @@ public class StartupBadgePhaseTests
     public void Run_WritesProductNameAndVersion()
     {
         var writtenLines = new List<string>();
-        var console = Mock.Of<IConsoleIO>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        var writer = Mock.Of<IPhosphorWriter>();
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions();
-        var phase = new StartupBadgePhase(console, options);
+        var phase = new StartupBadgePhase(writer, options);
 
         phase.Run();
 
@@ -38,13 +38,13 @@ public class StartupBadgePhaseTests
     public void Run_WritesBannerLoadTimeConfigAndBlankLine()
     {
         var writtenLines = new List<string>();
-        var console = Mock.Of<IConsoleIO>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        var writer = Mock.Of<IPhosphorWriter>();
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions();
-        var phase = new StartupBadgePhase(console, options);
+        var phase = new StartupBadgePhase(writer, options);
 
         phase.Run();
 
@@ -56,13 +56,13 @@ public class StartupBadgePhaseTests
     public void Run_WithIntelligenceTie_WritesOptimalAndLevel2()
     {
         var writtenLines = new List<string>();
-        var console = Mock.Of<IConsoleIO>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        var writer = Mock.Of<IPhosphorWriter>();
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions { Intelligence = "tie" };
-        var phase = new StartupBadgePhase(console, options);
+        var phase = new StartupBadgePhase(writer, options);
 
         phase.Run();
 

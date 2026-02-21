@@ -33,11 +33,23 @@ public sealed class ConsoleIO : IConsoleIO
     public void WriteLine(string? value = null) => Console.WriteLine(value);
 
     /// <inheritdoc />
-    public string? ReadLine() => Console.ReadLine();
+    public string? ReadLine()
+    {
+        ShowCursor();
+        try
+        {
+            return Console.ReadLine();
+        }
+        finally
+        {
+            HideCursor();
+        }
+    }
 
     /// <inheritdoc />
     public ConsoleKeyInfo? ReadKey()
     {
+        ShowCursor();
         try
         {
             return Console.ReadKey(intercept: true);
@@ -45,6 +57,10 @@ public sealed class ConsoleIO : IConsoleIO
         catch (InvalidOperationException)
         {
             return null;
+        }
+        finally
+        {
+            HideCursor();
         }
     }
 
@@ -81,8 +97,4 @@ public sealed class ConsoleIO : IConsoleIO
 
     /// <inheritdoc />
     public void ResetStyle() => WriteAnsi("\x1b[0m");
-
-    /// <inheritdoc />
-    public int ReadInt(int min, int max, int defaultValue, string prompt = "Enter value: ", string? errorMessage = null)
-        => ConsoleIntReader.Read(this, min, max, defaultValue, prompt, errorMessage);
 }

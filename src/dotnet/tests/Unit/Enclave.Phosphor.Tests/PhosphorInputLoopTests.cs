@@ -77,10 +77,14 @@ public sealed class PhosphorInputLoopTests
         completed.ShouldBeTrue();
     }
 
-    private sealed class RecordingKeyboardHandler : IPhosphorKeyboardHandler
+    private sealed class RecordingKeyboardHandler : IPhosphorReader
     {
         private readonly List<ConsoleKeyInfo> _keys = new();
         public IReadOnlyList<ConsoleKeyInfo> ReceivedKeys => _keys;
+
+        public string? ReadLine() => null;
+
+        public ConsoleKeyInfo? ReadKey() => null;
 
         public bool OnKeyPressed(ConsoleKeyInfo key)
         {
@@ -89,10 +93,14 @@ public sealed class PhosphorInputLoopTests
         }
     }
 
-    private sealed class ConsumingKeyboardHandler : IPhosphorKeyboardHandler
+    private sealed class ConsumingKeyboardHandler : IPhosphorReader
     {
         private readonly List<ConsoleKeyInfo> _keys = new();
         public IReadOnlyList<ConsoleKeyInfo> ReceivedKeys => _keys;
+
+        public string? ReadLine() => null;
+
+        public ConsoleKeyInfo? ReadKey() => null;
 
         public bool OnKeyPressed(ConsoleKeyInfo key)
         {

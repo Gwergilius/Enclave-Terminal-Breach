@@ -3,11 +3,11 @@ using Enclave.Shared.IO;
 namespace Enclave.Shared.Tests.IO;
 
 /// <summary>
-/// Unit tests for <see cref="ConsoleIntReader"/> (via <see cref="TestConsoleIO"/>).
+/// Unit tests for <see cref="ConsoleReaderExtensions.ReadInt"/> (via <see cref="TestConsoleIO"/>).
 /// Tests edge cases: line == null, invalid input, out of range.
 /// </summary>
-[UnitTest, TestOf(nameof(ConsoleIntReader))]
-public class ConsoleIntReaderTests
+[UnitTest, TestOf(nameof(ConsoleReaderExtensions))]
+public class ConsoleReaderExtensionsTests
 {
     [Fact]
     public void Read_WhenReadLineReturnsNull_ReturnsDefaultValue()
@@ -29,6 +29,28 @@ public class ConsoleIntReaderTests
         console.ReadInt(0, 5, 3);
 
         console.WrittenLines.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Read_WhenReadLineReturnsEmpty_ReturnsDefaultValue()
+    {
+        var console = new TestConsoleIO();
+        console.AddReadLineResponse("");
+
+        var result = console.ReadInt(0, 5, 3, "Enter: ");
+
+        result.ShouldBe(3);
+    }
+
+    [Fact]
+    public void Read_WhenReadLineReturnsWhitespace_ReturnsDefaultValue()
+    {
+        var console = new TestConsoleIO();
+        console.AddReadLineResponse("   ");
+
+        var result = console.ReadInt(0, 5, 2, "Enter: ");
+
+        result.ShouldBe(2);
     }
 
     [Fact]

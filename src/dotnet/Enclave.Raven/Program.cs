@@ -1,12 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
-using Enclave.Shared.Services;
+using Enclave.Phosphor;
+using Enclave.Raven.Phases;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Enclave.Raven;
 
 [ExcludeFromCodeCoverage(Justification = "Straightforward composition root; test by review.")]
 internal static class Program
 {
+    private static volatile bool s_exitRequested;
+
     private static int Main(string[] args)
     {
         if (TryHandleHelpOrVersion(args, out var exitCode))
@@ -17,8 +21,55 @@ internal static class Program
         Startup.ConfigureServices(services, configuration);
         var provider = services.BuildServiceProvider();
 
-        var runner = provider.GetRequiredService<IPhaseRunner>();
-        runner.Run();
+        var canvas = provider.GetRequiredService<IPhosphorCanvas>();
+        var title = $"{ProductInfo.GetCurrent().Name} {ProductInfo.GetCurrent().Version} – ENCLAVE SIGINT";
+        canvas.Initialize(title);
+
+        Console.CancelKeyPress += (_, e) =>
+        {
+            e.Cancel = true;
+            s_exitRequested = true;
+        };
+
+        try
+        {
+            var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+            var writer = provider.GetRequiredService<IPhosphorWriter>();
+            var reader = provider.GetRequiredService<IPhosphorReader>();
+
+            // Run startup badge once.
+            using (var badgeScope = scopeFactory.CreateScope())
+            {
+                var badge = badgeScope.ServiceProvider.GetRequiredService<IStartupBadgePhase>();
+                badge.Run();
+            }
+
+            // Replay loop: DataInput → HackingLoop → wait key → clear → repeat. Exit via Ctrl+C (normal exit).
+            while (!s_exitRequested)
+            {
+                using (var scope = scopeFactory.CreateScope())
+                {
+                    var dataInput = scope.ServiceProvider.GetRequiredService<IDataInputPhase>();
+                    var hackingLoop = scope.ServiceProvider.GetRequiredService<IHackingLoopPhase>();
+                    dataInput.Run();
+                    hackingLoop.Run();
+                }
+
+                if (s_exitRequested)
+                    break;
+
+                writer.WriteLine();
+                writer.WriteLine("Press any key to play again...");
+                reader.ReadKey();
+                if (s_exitRequested)
+                    break;
+                canvas.ClearScreen();
+            }
+        }
+        finally
+        {
+            canvas.Dispose();
+        }
 
         return 0;
     }

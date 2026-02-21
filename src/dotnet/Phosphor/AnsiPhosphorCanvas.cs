@@ -1,4 +1,4 @@
-﻿using Enclave.Shared.IO;
+using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
 
@@ -67,6 +67,17 @@ public sealed class AnsiPhosphorCanvas : IPhosphorCanvas
 
         _initialized = true;
         return this;
+    }
+
+    /// <inheritdoc />
+    public void ClearScreen()
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        if (!_initialized)
+            throw new InvalidOperationException("Canvas must be initialized before clearing.");
+        var bg = _theme.Palette[CharStyle.Background];
+        _console.SetBackgroundColor(bg);
+        _console.ClearScreen();
     }
 
     /// <inheritdoc />

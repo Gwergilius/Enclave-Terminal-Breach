@@ -1,4 +1,5 @@
-using Enclave.Echelon.Core.Services;
+﻿using Enclave.Echelon.Core.Services;
+using Enclave.Phosphor;
 using Enclave.Shared.IO;
 using Enclave.Shared.Models;
 using Enclave.Raven.Phases;
@@ -89,6 +90,33 @@ public class StartupTests
         var b = provider.GetRequiredService<IConsoleIO>();
 
         a.ShouldBeSameAs(b);
+    }
+
+    [Fact]
+    public void ConfigureServices_ResolvesIPhosphorCanvasAndIPhosphorWriter()
+    {
+        var services = new ServiceCollection();
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
+        var provider = services.BuildServiceProvider();
+
+        var canvas = provider.GetRequiredService<IPhosphorCanvas>();
+        var writer = provider.GetRequiredService<IPhosphorWriter>();
+
+        canvas.ShouldNotBeNull();
+        writer.ShouldNotBeNull();
+        canvas.ShouldBeSameAs(writer);
+    }
+
+    [Fact]
+    public void ConfigureServices_ResolvesIPhosphorKeyboardHandler()
+    {
+        var services = new ServiceCollection();
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
+        var provider = services.BuildServiceProvider();
+
+        var handler = provider.GetRequiredService<IPhosphorReader>();
+
+        handler.ShouldNotBeNull();
     }
 
     [Fact]

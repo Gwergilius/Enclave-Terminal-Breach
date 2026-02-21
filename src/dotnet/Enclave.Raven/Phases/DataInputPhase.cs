@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
-using Enclave.Shared.IO;
 using Enclave.Shared.Models;
 
 namespace Enclave.Raven.Phases;
@@ -10,11 +10,13 @@ namespace Enclave.Raven.Phases;
 /// </summary>
 public sealed class DataInputPhase(
     [NotNull] IGameSession session,
-    [NotNull] IConsoleIO console,
+    [NotNull] IPhosphorWriter writer,
+    [NotNull] IPhosphorReader reader,
     [NotNull] RavenOptions options) : IDataInputPhase
 {
     private readonly IGameSession _session = session;
-    private readonly IConsoleIO _console = console;
+    private readonly IPhosphorWriter _writer = writer;
+    private readonly IPhosphorReader _reader = reader;
     private readonly RavenOptions _options = options;
 
     private static class Prompts
@@ -33,8 +35,8 @@ public sealed class DataInputPhase(
             return;
         }
 
-        _console.WriteLine(Prompts.Initial);
-        var line = _console.ReadLine();
+        _writer.WriteLine(Prompts.Initial);
+        var line = _reader.ReadLine();
 
         while (line != null && !string.IsNullOrWhiteSpace(line))
         {
@@ -42,8 +44,8 @@ public sealed class DataInputPhase(
 
             WriteCandidateCountAndList();
 
-            _console.WriteLine(Prompts.More);
-            line = _console.ReadLine();
+            _writer.WriteLine(Prompts.More);
+            line = _reader.ReadLine();
         }
     }
 
@@ -51,7 +53,7 @@ public sealed class DataInputPhase(
     {
         if (!File.Exists(path))
         {
-            _console.WriteLine($"Word list file not found: {path}");
+            _writer.WriteLine($"Word list file not found: {path}");
             return;
         }
 
@@ -61,7 +63,7 @@ public sealed class DataInputPhase(
             {
                 var result = _session.Add(token);
                 if (result.IsFailed)
-                    _console.WriteLine(result.Errors[0].Message);
+                    _writer.WriteLine(result.Errors[0].Message);
             }
         }
     }
@@ -76,13 +78,13 @@ public sealed class DataInputPhase(
             {
                 var result = _session.Remove(token[1..].Trim());
                 if (result.IsFailed)
-                    _console.WriteLine(result.Errors[0].Message);
+                    _writer.WriteLine(result.Errors[0].Message);
             }
             else
             {
                 var result = _session.Add(token);
                 if (result.IsFailed)
-                    _console.WriteLine(result.Errors[0].Message);
+                    _writer.WriteLine(result.Errors[0].Message);
             }
         }
     }
@@ -98,10 +100,10 @@ public sealed class DataInputPhase(
     {
         var n = _session.Count;
         var len = _session.WordLength ?? 0;
-        _console.WriteLine();
-        _console.WriteLine($"{n} candidate(s):");
+        _writer.WriteLine();
+        _writer.WriteLine($"{n} candidate(s):");
         if (n > 0 && len > 0)
-            _console.WriteLine(CandidateListFormatter.Format(_session, len));
-        _console.WriteLine();
+            _writer.WriteLine(CandidateListFormatter.Format(_session, len));
+        _writer.WriteLine();
     }
 }

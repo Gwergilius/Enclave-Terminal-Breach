@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Enclave.Echelon.Core.Services;
-using Enclave.Shared.IO;
+using Enclave.Phosphor;
 using Enclave.Shared.Models;
 
 namespace Enclave.Raven.Phases;
@@ -8,10 +8,15 @@ namespace Enclave.Raven.Phases;
 /// <summary>
 /// Hacking loop: suggest guess, read match count, narrow candidates until win (RAVEN-Requirements §3).
 /// </summary>
-public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] IConsoleIO console, [NotNull] ISolverFactory solverFactory) : IHackingLoopPhase
+public sealed class HackingLoopPhase(
+    [NotNull] IGameSession session,
+    [NotNull] IPhosphorWriter writer,
+    [NotNull] IPhosphorReader reader,
+    [NotNull] ISolverFactory solverFactory) : IHackingLoopPhase
 {
     private readonly IGameSession _session = session;
-    private readonly IConsoleIO _console = console;
+    private readonly IPhosphorWriter _writer = writer;
+    private readonly IPhosphorReader _reader = reader;
     private readonly IPasswordSolver _solver = solverFactory.GetSolver();
 
     /// <inheritdoc />
@@ -20,7 +25,7 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
         var wordLength = _session.WordLength ?? 0;
         if (wordLength <= 0 || _session.Count == 0)
         {
-            _console.WriteLine("No candidates. Exiting.");
+            _writer.WriteLine("No candidates. Exiting.");
             return;
         }
 
@@ -29,7 +34,7 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
             var guess = _solver.GetBestGuess(_session);
             if (guess == null)
             {
-                _console.WriteLine("No candidates left. Exiting.");
+                _writer.WriteLine("No candidates left. Exiting.");
                 return;
             }
 
@@ -37,8 +42,8 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
 
             if (matchCount == wordLength)
             {
-                _console.WriteLine();
-                _console.WriteLine("Correct. Terminal cracked.");
+                _writer.WriteLine();
+                _writer.WriteLine("Correct. Terminal cracked.");
                 return;
             }
 
@@ -49,9 +54,9 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
 
     private void WriteCandidates(int wordLength)
     {
-        _console.WriteLine();
-        _console.WriteLine($"{_session.Count} candidate(s):");
-        _console.WriteLine(CandidateListFormatter.Format(_session, wordLength));
+        _writer.WriteLine();
+        _writer.WriteLine($"{_session.Count} candidate(s):");
+        _writer.WriteLine(CandidateListFormatter.Format(_session, wordLength));
     }
 
     private void NarrowCandidates(Echelon.Core.Models.Password guess, int matchCount)
@@ -65,8 +70,8 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
     private int ReadMatchCount(Echelon.Core.Models.Password guess)
     {
         var wordLength = guess.Word.Length;
-        _console.WriteLine();
-        _console.WriteLine($"Suggested guess: `{guess.Word}`");
-        return _console.ReadInt(0, wordLength, wordLength, "Match count? ");
+        _writer.WriteLine();
+        _writer.WriteLine($"Suggested guess: `{guess.Word}`");
+        return _reader.ReadInt(_writer, 0, wordLength, wordLength, "Match count? ");
     }
 }

@@ -300,7 +300,21 @@ The full-screen layout follows the mockup defined in [ConsoleUI.md][ConsoleUI]:
 
 ## Application Flow
 
-### Phase Execution Order
+### RAVEN 1.3.x (current)
+
+RAVEN 1.3.2 uses PHOSPHOR 1.0 with the legacy phase flow and a **replay loop**:
+
+1. **Startup badge** – Run once at startup (product name, version, load time, intelligence, dictionary source).
+2. **Replay loop** (exit only via Ctrl+C or Alt+F4):
+   - **DataInputPhase** – Load or enter password candidates.
+   - **HackingLoopPhase** – Suggest guesses, read match count, narrow candidates until “Correct. Terminal cracked.” or “No candidates” / “No candidates left.”
+   - **“Press any key to play again…”** – Wait for any key.
+   - **Clear screen** – Theme-aware clear via `IPhosphorCanvas.ClearScreen()`.
+   - Loop back to DataInputPhase (new scope, fresh `IGameSession`).
+
+**Ctrl+C** is handled at the top level: the event is cancelled so the process is not terminated with an error; a flag stops the loop, the canvas is disposed, and the process exits with code 0.
+
+### Phase Execution Order (RAVEN 2.x planned)
 
 ```
 PhaseRunner:

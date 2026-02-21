@@ -26,4 +26,9 @@ public interface IPhosphorCanvas : IPhosphorWriter, IDisposable
     /// <param name="title">Console title (e.g. "RAVEN v{version} – ENCLAVE SIGINT").</param>
     /// <returns>This canvas instance for fluent chaining.</returns>
     IPhosphorCanvas Initialize(string title);
+
+    /// <summary>
+    /// Clears the screen and re-applies the theme background. Use between rounds (e.g. after "Press any key").
+    /// </summary>
+    void ClearScreen();
 }

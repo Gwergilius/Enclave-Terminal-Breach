@@ -1,4 +1,4 @@
-using Enclave.Shared.IO;
+﻿using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
 
@@ -8,7 +8,7 @@ namespace Enclave.Phosphor;
 public sealed class PhosphorInputLoop : IPhosphorInputLoop
 {
     private readonly IConsoleIO _console;
-    private readonly List<IPhosphorKeyboardHandler> _handlers = new();
+    private readonly List<IPhosphorReader> _handlers = new();
     private volatile bool _stopRequested;
 
     /// <summary>
@@ -22,7 +22,7 @@ public sealed class PhosphorInputLoop : IPhosphorInputLoop
     }
 
     /// <inheritdoc />
-    public void Register(IPhosphorKeyboardHandler handler)
+    public void Register(IPhosphorReader handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         lock (_handlers)
@@ -43,7 +43,7 @@ public sealed class PhosphorInputLoop : IPhosphorInputLoop
 
             if (cancellationToken.IsCancellationRequested) break;
 
-            IReadOnlyList<IPhosphorKeyboardHandler> snapshot;
+            IReadOnlyList<IPhosphorReader> snapshot;
             lock (_handlers)
             {
                 snapshot = _handlers.ToList();

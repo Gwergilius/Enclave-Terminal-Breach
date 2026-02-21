@@ -6,7 +6,7 @@ namespace Enclave.Shared.Tests.IO;
 
 /// <summary>
 /// Test double for IConsoleIO that returns configurable ReadLine values and dimensions.
-/// ReadInt delegates to ConsoleIntReader for real behavior testing.
+/// ReadInt is provided by <see cref="ConsoleReaderExtensions.ReadInt"/>.
 /// </summary>
 internal sealed class TestConsoleIO : IConsoleIO
 {
@@ -72,7 +72,4 @@ internal sealed class TestConsoleIO : IConsoleIO
 
     /// <inheritdoc />
     public void ResetStyle() { }
-
-    public int ReadInt(int min, int max, int defaultValue, string prompt = "Enter value: ", string? errorMessage = null)
-        => ConsoleIntReader.Read(this, min, max, defaultValue, prompt, errorMessage);
 }

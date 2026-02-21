@@ -1,4 +1,4 @@
-﻿namespace Enclave.Phosphor.Tests;
+namespace Enclave.Phosphor.Tests;
 
 /// <summary>
 /// Unit tests for <see cref="AnsiPhosphorCanvas"/> (production implementation).
@@ -201,6 +201,37 @@ public sealed class AnsiPhosphorCanvasTests
         // Assert
         console.SemanticCalls.ShouldContain("ResetStyle");
         console.SemanticCalls.ShouldContain("ShowCursor");
+    }
+
+    [Fact]
+    public void ClearScreen_WhenInitialized_CallsSetBackgroundColorAndClearScreenOnConsole()
+    {
+        // Arrange
+        var theme = PhosphorThemeFactory.Create("green");
+        var console = new TestableConsoleIO();
+        var canvas = CreateCanvas(theme, console);
+        canvas.Initialize("test");
+        var callsBefore = console.SemanticCalls.Count;
+
+        // Act
+        canvas.ClearScreen();
+
+        // Assert - re-applies theme background then clears
+        console.SemanticCalls.ShouldContain("SetBackgroundColor:#0C190C");
+        console.SemanticCalls.ShouldContain("ClearScreen");
+        console.SemanticCalls.Count.ShouldBe(callsBefore + 2);
+        console.SemanticCalls[^2].ShouldBe("SetBackgroundColor:#0C190C");
+        console.SemanticCalls[^1].ShouldBe("ClearScreen");
+    }
+
+    [Fact]
+    public void ClearScreen_WhenNotInitialized_ThrowsInvalidOperationException()
+    {
+        var theme = PhosphorThemeFactory.Create("green");
+        var console = new TestableConsoleIO();
+        var canvas = CreateCanvas(theme, console);
+
+        Should.Throw<InvalidOperationException>(() => canvas.ClearScreen());
     }
 
 }

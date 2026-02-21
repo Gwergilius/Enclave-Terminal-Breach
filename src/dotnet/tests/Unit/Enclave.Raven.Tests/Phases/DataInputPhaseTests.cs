@@ -1,6 +1,6 @@
 using Enclave.Common.Test.Core;
+using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
-using Enclave.Shared.IO;
 using Enclave.Shared.Models;
 using Enclave.Raven.Phases;
 
@@ -8,7 +8,7 @@ namespace Enclave.Raven.Tests.Phases;
 
 /// <summary>
 /// Unit tests for <see cref="DataInputPhase"/>. Private methods (ProcessInputLine, GetTokens, WriteCandidateCountAndList)
-/// are exercised through Run() with mocked IConsoleIO.
+/// are exercised through Run() with mocked IPhosphorWriter and IPhosphorReader.
 /// </summary>
 [UnitTest, TestOf(nameof(DataInputPhase))]
 public class DataInputPhaseTests
@@ -16,15 +16,16 @@ public class DataInputPhaseTests
     [Fact]
     public void Run_WithValidWords_AddsToSession()
     {
-        var console = Mock.Of<IConsoleIO>();
+        var writer = Mock.Of<IPhosphorWriter>();
+        var reader = Mock.Of<IPhosphorReader>();
         var readLineCalls = 0;
-        console.AsMock()
-            .Setup(c => c.ReadLine())
+        reader.AsMock()
+            .Setup(r => r.ReadLine())
             .Returns(() => readLineCalls++ == 0 ? "TERMS TEXAS" : "");
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -37,10 +38,11 @@ public class DataInputPhaseTests
     [Fact]
     public void Run_WithMinusToken_RemovesFromSession()
     {
-        var console = Mock.Of<IConsoleIO>();
+        var writer = Mock.Of<IPhosphorWriter>();
+        var reader = Mock.Of<IPhosphorReader>();
         var readLineCalls = 0;
-        console.AsMock()
-            .Setup(c => c.ReadLine())
+        reader.AsMock()
+            .Setup(r => r.ReadLine())
             .Returns(() =>
             {
                 readLineCalls++;
@@ -54,7 +56,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -65,19 +67,20 @@ public class DataInputPhaseTests
     [Fact]
     public void Run_WithInvalidWord_WritesErrorAndSkips()
     {
-        var console = Mock.Of<IConsoleIO>();
+        var writer = Mock.Of<IPhosphorWriter>();
         var writtenLines = new List<string>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
+        var reader = Mock.Of<IPhosphorReader>();
         var readLineCalls = 0;
-        console.AsMock()
-            .Setup(c => c.ReadLine())
+        reader.AsMock()
+            .Setup(r => r.ReadLine())
             .Returns(() => readLineCalls++ == 0 ? "TERMS TERM1" : "");
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -88,14 +91,15 @@ public class DataInputPhaseTests
     [Fact]
     public void Run_WithMinusToken_WhenWordNotInList_WritesErrorAndKeepsList()
     {
-        var console = Mock.Of<IConsoleIO>();
+        var writer = Mock.Of<IPhosphorWriter>();
         var writtenLines = new List<string>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
+        var reader = Mock.Of<IPhosphorReader>();
         var readLineCalls = 0;
-        console.AsMock()
-            .Setup(c => c.ReadLine())
+        reader.AsMock()
+            .Setup(r => r.ReadLine())
             .Returns(() =>
             {
                 readLineCalls++;
@@ -109,7 +113,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -121,12 +125,13 @@ public class DataInputPhaseTests
     [Fact]
     public void Run_WithEmptyFirstLine_ExitsWithoutAdding()
     {
-        var console = Mock.Of<IConsoleIO>();
-        console.AsMock().Setup(c => c.ReadLine()).Returns("");
+        var writer = Mock.Of<IPhosphorWriter>();
+        var reader = Mock.Of<IPhosphorReader>();
+        reader.AsMock().Setup(r => r.ReadLine()).Returns("");
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -142,14 +147,15 @@ public class DataInputPhaseTests
             File.WriteAllText(tempFile, "TERMS TEXAS\nTIRES\n");
 
             var writtenLines = new List<string>();
-            var console = Mock.Of<IConsoleIO>();
-            console.AsMock()
-                .Setup(c => c.WriteLine(It.IsAny<string?>()))
+            var writer = Mock.Of<IPhosphorWriter>();
+            writer.AsMock()
+                .Setup(w => w.WriteLine(It.IsAny<string?>()))
                 .Callback<string?>(s => writtenLines.Add(s ?? ""));
+            var reader = Mock.Of<IPhosphorReader>();
 
             var session = new GameSession();
             var options = new RavenOptions { WordListPath = tempFile };
-            var phase = new DataInputPhase(session, console, options);
+            var phase = new DataInputPhase(session, writer, reader, options);
 
             phase.Run();
 
@@ -173,14 +179,15 @@ public class DataInputPhaseTests
     {
         var nonExistentPath = Path.Combine(Path.GetTempPath(), $"raven-test-{Guid.NewGuid():N}.txt");
         var writtenLines = new List<string>();
-        var console = Mock.Of<IConsoleIO>();
-        console.AsMock()
-            .Setup(c => c.WriteLine(It.IsAny<string?>()))
+        var writer = Mock.Of<IPhosphorWriter>();
+        writer.AsMock()
+            .Setup(w => w.WriteLine(It.IsAny<string?>()))
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
+        var reader = Mock.Of<IPhosphorReader>();
 
         var session = new GameSession();
         var options = new RavenOptions { WordListPath = nonExistentPath };
-        var phase = new DataInputPhase(session, console, options);
+        var phase = new DataInputPhase(session, writer, reader, options);
 
         phase.Run();
 
@@ -196,13 +203,12 @@ public class DataInputPhaseTests
         {
             File.WriteAllText(tempFile, "TERMS TEXAS\n-TEXAS\n");
 
-            var console = Mock.Of<IConsoleIO>();
-            console.AsMock()
-                .Setup(c => c.WriteLine(It.IsAny<string?>()));
+            var writer = Mock.Of<IPhosphorWriter>();
+            var reader = Mock.Of<IPhosphorReader>();
 
             var session = new GameSession();
             var options = new RavenOptions { WordListPath = tempFile };
-            var phase = new DataInputPhase(session, console, options);
+            var phase = new DataInputPhase(session, writer, reader, options);
 
             phase.Run();
 

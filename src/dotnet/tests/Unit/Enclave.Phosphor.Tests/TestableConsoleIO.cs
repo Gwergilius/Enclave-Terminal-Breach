@@ -72,8 +72,4 @@ internal sealed class TestableConsoleIO : IConsoleIO
 
     /// <inheritdoc />
     public void ResetStyle() => _semanticCalls.Add("ResetStyle");
-
-    /// <inheritdoc />
-    public int ReadInt(int min, int max, int defaultValue, string prompt = "Enter value: ", string? errorMessage = null)
-        => defaultValue;
 }

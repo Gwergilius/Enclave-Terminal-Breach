@@ -1,4 +1,4 @@
-namespace Enclave.Phosphor;
+﻿namespace Enclave.Phosphor;
 
 /// <summary>
 /// Polling-based keyboard input loop. Registers handlers and dispatches key events.
@@ -7,7 +7,7 @@ public interface IPhosphorInputLoop
 {
     /// <summary>Registers a keyboard handler. Handlers are called in registration order.</summary>
     /// <param name="handler">Handler to register.</param>
-    void Register(IPhosphorKeyboardHandler handler);
+    void Register(IPhosphorReader handler);
 
     /// <summary>
     /// Starts the blocking input loop. Returns when <see cref="Stop"/> is called.
