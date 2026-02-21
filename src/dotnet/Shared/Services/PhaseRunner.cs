@@ -1,6 +1,7 @@
-using Enclave.Raven.Phases;
+using Enclave.Shared.Phases;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Enclave.Raven.Services;
+namespace Enclave.Shared.Services;
 
 /// <summary>
 /// Executes phases in order, each within a shared service scope.

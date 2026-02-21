@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Enclave.Shared.IO;
 using Enclave.Sparrow.Configuration;
-using Enclave.Sparrow.IO;
 
 namespace Enclave.Sparrow.Phases;
 

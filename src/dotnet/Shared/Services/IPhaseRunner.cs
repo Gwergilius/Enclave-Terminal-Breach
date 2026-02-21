@@ -1,4 +1,4 @@
-namespace Enclave.Sparrow.Services;
+namespace Enclave.Shared.Services;
 
 /// <summary>
 /// Runs the configured phases in order within a service scope.

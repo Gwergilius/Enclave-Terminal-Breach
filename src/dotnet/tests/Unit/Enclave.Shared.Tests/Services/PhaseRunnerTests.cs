@@ -1,9 +1,10 @@
 using Enclave.Common.Test.Core;
-using Enclave.Raven.Phases;
-using Enclave.Raven.Services;
+using Enclave.Shared.Phases;
+using Enclave.Shared.Services;
+using Moq;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Enclave.Raven.Tests.Services;
+namespace Enclave.Shared.Tests.Services;
 
 /// <summary>
 /// Unit tests for <see cref="PhaseRunner"/>.

@@ -1,7 +1,7 @@
 using Enclave.Echelon.Core.Services;
-using Enclave.Sparrow.IO;
+using Enclave.Shared.IO;
 using Enclave.Sparrow.Phases;
-using Enclave.Sparrow.Services;
+using Enclave.Shared.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

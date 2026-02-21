@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Enclave.Echelon.Core.csproj" />
     <ProjectReference Include="..\..\..\Enclave.Sparrow\Enclave.Sparrow.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Enclave.Shared.csproj" />
     <ProjectReference Include="..\..\Common.Test.Core\Common.Test.Core.csproj" />
   </ItemGroup>
 
