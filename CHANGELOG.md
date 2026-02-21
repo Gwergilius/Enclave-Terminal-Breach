@@ -1,8 +1,12 @@
 # Changelog
 
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html
+[Documentation Changelog]: docs/CHANGELOG.md
+
 All notable changes to the Enclave Terminal Breach project.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog], and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
@@ -47,7 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Core – Solver renames (Lore-aligned)**: `PasswordSolver` → `TieBreakerPasswordSolver`, `BestScoreOnlySolver` → `BestBucketPasswordSolver`, `RandomGuessSolver` → `HouseGambitPasswordSolver`. Abstract `PasswordSolverBase` with virtual GetBestGuess, CalculateInformationScore, NarrowCandidates; optional Random in HouseGambit/BestBucket.
 - **Lore (Project-History)**: SPARROW/RAVEN/GHOST/ECHELON solver evolution (HOUSE gambit → best-bucket → DIVERGENCE → tie-breaker), version renumbering 1.x / 2.x / 3.x, NX-12 and Dr. Krane quotes.
 
-See [Documentation Changelog](docs/CHANGELOG.md) for detailed documentation changes.
+See [Documentation Changelog] for detailed documentation changes.
 
 [Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.0...HEAD
 [1.2.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.2...sparrow-v1.2.0
