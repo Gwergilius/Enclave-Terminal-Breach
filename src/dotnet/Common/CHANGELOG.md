@@ -9,8 +9,13 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-02-21
+
 ### Added
 - **ColorValue** – Platform-agnostic immutable colour record (R, G, B, A) with `FromHex`, `ToHex`, `ToCssRgba`, `ToCssRgb` for cross-platform use (MAUI, Blazor, console).
+- **Configuration** – `EmbeddedResourceConfigurationExtensions.AddEmbeddedJsonFile()` for loading JSON config from embedded resources; `StorageConfigurationExtensions.AddStorageConfiguration()` and `StorageConfigurationProvider` for loading config from `IStorageService` with key prefix.
+- **Assembly** – `IAssemblyProvider` and `AssemblyProvider` for product name and version from assembly attributes (testable/mockable).
+- **IStorageService** – Interface for key-value string storage (used by storage-based configuration).
 
 ## [1.1.0] - 2026-02-14
 
