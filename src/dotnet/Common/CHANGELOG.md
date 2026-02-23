@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-02-23
+
+### Added
+- **Drawing** – `Point`, `Size`, `Rectangle` as readonly record structs in `Enclave.Common.Drawing`: immutable 2D geometry with operators (Point±Point, Point±Size, Size±Size, scalar multiply), `DistanceTo`/`AsSize`/`AsPoint`, direction constants (`ToUp`, `ToDown`, `ToLeft`, `ToRight`). Rectangle: `Contains`, `Intersect`, `Union`, `Offset`, `Inflate`, `IntersectsWith`; `Dimension` property; negative width/height clamped to zero. Unit tests: `PointTests`, `SizeTests`, `RectangleTests`.
+
 ## [1.2.0] - 2026-02-21
 
 ### Added

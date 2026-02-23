@@ -19,7 +19,7 @@ Project-independent utilities and extensions shared across Enclave Terminal Brea
 - **ResourceExtensions** – Load embedded resources from an assembly or type: `GetResourceStream`, `GetResourceString`, `GetJsonResource<T>`. Paths are normalized (e.g. `/` and `-` handled for manifest names).
 - **NotFoundError** – FluentResults error for “resource not found”; carries optional messages (e.g. available manifest names).
 - **ColorValue** – Platform-agnostic immutable colour (R, G, B, A) with `FromHex`, `ToHex`, `ToCssRgba`, `ToCssRgb`.
-- **Point**, **Size**, **Rectangle** – Immutable 2D types in `Enclave.Common.Drawing`; rectangle supports `Contains`, `Intersect`, `Union`, `Offset`, `Inflate`.
+- **Point**, **Size**, **Rectangle** – Readonly record structs in `Enclave.Common.Drawing`; operators (Point±Point, Point±Size, Size±Size, scalar multiply); rectangle supports `Contains`, `Intersect`, `Union`, `Offset`, `Inflate`, `IntersectsWith`; `Dimension` for size.
 - **EmbeddedResourceConfigurationExtensions** – `AddEmbeddedJsonFile()` to load JSON configuration from embedded resources.
 - **StorageConfigurationExtensions** – `AddStorageConfiguration()` to load configuration from `IStorageService` with a key prefix.
 - **IAssemblyProvider** / **AssemblyProvider** – Product and version from assembly; mockable for tests.
@@ -32,7 +32,7 @@ Project-independent utilities and extensions shared across Enclave Terminal Brea
 
 ## Tests
 
-Unit tests: **Enclave.Common.Tests** (under `src/dotnet/tests/Unit/`), including `ResourceExtensionsTests`, `ColorValueTests`, `AssemblyProviderTests`, `EmbeddedResourceConfigurationTests`, `StorageConfigurationTests`.
+Unit tests: **Enclave.Common.Tests** (under `src/dotnet/tests/Unit/`), including `ResourceExtensionsTests`, `ColorValueTests`, `AssemblyProviderTests`, `EmbeddedResourceConfigurationTests`, `StorageConfigurationTests`, `PointTests`, `SizeTests`, `RectangleTests`.
 
 ## See also
 
