@@ -10,9 +10,11 @@
 |--------|----------|
 | **Common/** | [Enclave.Common] – project-independent utilities and extensions (e.g. `ResourceExtensions`, `StringExtensions`, `TimeSpanExtensions`). |
 | **Core/** | [Enclave.Echelon.Core] – core business logic: Password Solver, Password Repository, domain models. References Common. |
-| **Enclave.Sparrow/** | SPARROW console app (DOS-style stdin/stdout). |
+| **Shared/** | [Enclave.Shared] – shared abstractions (IO, UI, etc.). Used by Raven and future apps. |
+| **Enclave.Sparrow/** | [SPARROW][Enclave.Sparrow] console app (DOS-style stdin/stdout). *Code freeze – use Enclave.Raven for new work.* |
+| **Enclave.Raven/** | [RAVEN][Enclave.Raven] console app (DOS-style stdin/stdout). Typewriter effect (Phosphor 1.1.0). Active development for 1.4.x / 2.0.x. |
 | **tests/Common.Test.Core/** | Shared test helpers and attributes (e.g. `[UnitTest]`, `TestOf`). |
-| **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests). |
+| **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests, Enclave.Raven.Tests, Enclave.Shared.Tests). |
 | **tests/Integration/** | *Planned.* Integration test projects. |
 | **tests/E2E/** | *Planned.* End-to-end test projects (e.g. GHOST E2E). |
 
@@ -47,6 +49,10 @@ These files in **src/dotnet/** apply to every project in this folder:
 [Magyar]: ./README.hu.md
 [Enclave.Common]: ./Common/README.md
 [Enclave.Echelon.Core]: ./Core/README.md
+[Enclave.Shared]: ./Shared/README.md
+[Enclave.Sparrow]: ./Enclave.Sparrow/README.md
+[Enclave.Raven]: ./Enclave.Raven/README.md
+
 [Architecture]: ../../docs/Architecture/README.md
 [Coding standards]: ../../.cursor/rules/README.md
 [Coverage report]: ../../tools/coverage/README.md "Code coverage script and usage"

@@ -4,10 +4,12 @@
 /// Provides random number generation for non-security purposes (e.g. game suggestions ). 
 /// 
 /// </summary>
+#pragma warning disable IDE0079 // Remove unnecessary suppression -- It is necessary to suppress the security warning for using System.Random, which is intentional and appropriate for this non-security use case.
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Security",
     "S2245:Using pseudorandom number generators is security-sensitive",
     Justification = "Non-security use: game suggestion randomization only.")]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 public sealed class GameRandom : IRandom
 {
     private readonly Random _random;

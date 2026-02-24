@@ -1,7 +1,8 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Enclave.Shared.IO;
 using Enclave.Sparrow.Configuration;
-using Enclave.Sparrow.IO;
+using FluentResults;
 
 namespace Enclave.Sparrow.Phases;
 
@@ -16,7 +17,10 @@ public sealed class StartupBadgePhase(
     private readonly SparrowOptions _options = options;
 
     /// <inheritdoc />
-    public void Run()
+    public string Name => "StartupBadge";
+
+    /// <inheritdoc />
+    public Result Run(params object[] args)
     {
         var sw = Stopwatch.StartNew();
 
@@ -41,5 +45,6 @@ public sealed class StartupBadgePhase(
 
             _console.WriteLine();
         }
+        return Result.Ok();
     }
 }

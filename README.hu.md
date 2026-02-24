@@ -2,7 +2,7 @@
 
 **[English]** | Magyar
 
-[![Verzió (SPARROW)][version-badge]][releases]
+[![Verzió (RAVEN)][version-badge]][releases]
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]   
 [![Quality Gate Status][quality-gate-status]][quality-gate-status-url]
@@ -146,7 +146,7 @@ A projekt bemutatja:
 [Gwergilius-Github]: https://github.com/Gwergilius/
 [Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
 
-[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
+[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=Version
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4

@@ -1,7 +1,7 @@
 using Enclave.Common.Test.Core;
 using Enclave.Sparrow.Configuration;
-using Enclave.Sparrow.IO;
-using Enclave.Sparrow.Models;
+using Enclave.Shared.IO;
+using Enclave.Shared.Models;
 using Enclave.Sparrow.Phases;
 
 namespace Enclave.Sparrow.Tests.Phases;

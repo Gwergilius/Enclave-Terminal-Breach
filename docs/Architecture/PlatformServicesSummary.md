@@ -12,36 +12,36 @@ The platform layer is defined by a single interface in Core: **`IPlatformInfoSer
 
 The snippets below describe the intended contract/implementation, to be built.
 
-#### Target: Console POC - RAVEN v0.3.1
+#### Target: Console POC - RAVEN v2.3.1
 **Target File:** `App/Console/Services/ConsolePlatformInfoService.cs`
 
 ```csharp
 ProjectCodename: "RAVEN"
-Version: "v0.3.1"
+Version: "v2.3.1"
 PlatformName: "SIGINT Console (POC)"
 Description: "Proof of Concept - First successful UOS breach implementation"
 ```
 
 **Lore Context:** April-August 2076, dedicated SIGINT console (180 lbs, not portable), 47-minute breach time, 34% success rate.
 
-#### Target: Blazor Web - GHOST v1.2.4
+#### Target: Blazor Web - GHOST v3.2.4
 **Target File:** `App/Web/Services/BlazorPlatformInfoService.cs`
 
 ```csharp
 ProjectCodename: "GHOST"
-Version: "v1.2.4"
+Version: "v3.2.4"
 PlatformName: "Web Browser (SIGNET Access)"
 Description: "Field Prototype - Ghost Revised (Neural pattern recognition)"
 ```
 
 **Lore Context:** September 2076-January 2077, deployed on SIGNET network, 81% success rate, 8-minute breach time, web-based training and facility operations.
 
-#### Target: MAUI - ECHELON v2.1.7
+#### Target: MAUI - ECHELON v4.1.7
 **Target File:** `App/Maui/Services/MauiPlatformInfoService.cs`
 
 ```csharp
 ProjectCodename: "ECHELON"
-Version: "v2.1.7"
+Version: "v4.1.7"
 PlatformName: "Pip-Boy 3000 Mark IV"
 Description: "Operational Deployment - Final pre-war version (October 2077)"
 ```
@@ -62,8 +62,8 @@ Description: "Operational Deployment - Final pre-war version (October 2077)"
 - **Post-War Status:** Still operational in surviving Enclave facilities (2287)
 
 **Updated GHOST Version Descriptions:**
-- v1.0.0: Added "Dual Deployment" note (Pip-Boy + SIGNET)
-- v1.2.4: Added "SIGNET Standard" designation, platform clarification
+- v3.0.0: Added "Dual Deployment" note (Pip-Boy + SIGNET)
+- v3.2.4: Added "SIGNET Standard" designation, platform clarification
 - New quote from Dr. Krane about SIGNET deployment assessment
 
 ### 3. Architecture Summary
@@ -76,18 +76,18 @@ Target platform flow (to be implemented).
 ### 4. Lore timeline – version consistency
 
 ```
-April-August 2076:  RAVEN v0.3.1 (Console POC)
+April-August 2076:  RAVEN v2.3.1 (Console POC)
                     ↓
-Sept 2076:         GHOST v1.0.0 (Pip-Boy + SIGNET web)
+Sept 2076:         GHOST v3.0.0 (Pip-Boy + SIGNET web)
                     ↓
-November 2076:     GHOST v1.2.4 "Ghost Revised" (SIGNET standard)
+November 2076:     GHOST v3.2.4 "Ghost Revised" (SIGNET standard)
                     ↓
-Feb-October 2077:  ECHELON v2.0.0 → v2.1.7 (Pip-Boy field deployment)
+Feb-October 2077:  ECHELON v4.0.0 → v4.1.7 (Pip-Boy field deployment)
                     ↓
 October 23, 2077:  [THE GREAT WAR]
                     ↓
-2287:              ECHELON v2.1.7 still standard
-                   GHOST v1.2.4 still on SIGNET
+2287:              ECHELON v4.1.7 still standard
+                   GHOST v3.2.4 still on SIGNET
 ```
 
 ### 5. Implementation steps – platform integration
@@ -144,7 +144,7 @@ services.AddTransient<IGameSession>(sp => new GameSession(
 
 ---
 
-**Date:** 2026-01-09  
+**Date:** 2026-02-20  
 **Status:** Planning / Design  
 **Ready for:** Next: Implement Core services and first platform (Console POC)
 

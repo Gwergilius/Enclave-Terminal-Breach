@@ -2,7 +2,7 @@
 
 **English** | [Magyar]
 
-[![Version (SPARROW)][version-badge]][releases]
+[![Version (RAVEN)][version-badge]][releases]
 [![License-MIT-badge]][License-MIT]
 [![.NET-badge]][Dotnet]   
 [![Quality Gate Status][quality-gate-status]][quality-gate-status-url]
@@ -146,7 +146,7 @@ This project demonstrates:
 [jetholt-hacking]: https://jetholt.com/hacking/
 
 [Image-links]: #Image-references
-[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=SPARROW
+[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=Version
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
 
 [quality-gate-status]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=alert_status

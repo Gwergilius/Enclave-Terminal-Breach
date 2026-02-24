@@ -4,15 +4,30 @@
 
 Technical architecture, design decisions, and system specifications.
 
+## Solution Architecture
+
+- [Project Structure] - Layer definitions, dependency rules, and reference matrix for all projects
+
 ## Core Documents
 
 - [Algorithm] - Password elimination algorithm specification
-- [State Machine] - Application state management design
+- [Solver Comparison] - Comparison of solver strategies
+- [State Machine] - Application state management design (MAUI/Blazor)
+- [Phase Navigation State Machine] - Console phase navigation, Result pattern, and DI scope handling (RAVEN/SPARROW)
 - [Future Architecture] - Planned optimizations and patterns
 
 ## Platform Requirements
 
-- [SPARROW Requirements] - Business and technical requirements for the SPARROW (DOS console) release
+- [SPARROW Requirements] - Business and technical requirements for the SPARROW (console POC) release
+- [RAVEN Requirements] - Business and technical requirements for the RAVEN (enhanced console) release
+
+## Release Specifications
+
+- [RAVEN 2.0.0 Specification] - Detailed implementation spec for the RAVEN 2.0.0 release
+
+## Subsystem Requirements
+
+- [PHOSPHOR Requirements] - PHOSPHOR console UI abstraction layer (versions 1.0–1.2)
 
 ## Platform Services
 
@@ -31,10 +46,16 @@ These documents provide:
 - Design rationale and trade-offs
 - Cross-platform compatibility strategies
 
+[Project Structure]: ./ProjectStructure.md
 [Algorithm]: ./Algorithm.md
+[Solver Comparison]: ./SolverComparison.md
 [State Machine]: ./StateMachine.md
+[Phase Navigation State Machine]: ./Phase-Navigation-State-Machine.md
 [Future Architecture]: ./FutureArchitecture.md
 [SPARROW Requirements]: ./SPARROW-Requirements.md
+[RAVEN Requirements]: ./RAVEN-Requirements.md
+[RAVEN 2.0.0 Specification]: ./RAVEN-2.0.0-Specification.md
+[PHOSPHOR Requirements]: ./PHOSPHOR-Requirements.md
 [Platform Services Summary]: ./PlatformServicesSummary.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.md
 [ColorValue Design]: ./ColorValue-Design-Decision.md

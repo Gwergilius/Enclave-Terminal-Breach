@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Enclave.Phosphor</RootNamespace>
+    <AssemblyName>Enclave.Phosphor</AssemblyName>
+    <Description>PHOSPHOR – console UI abstraction layer for the ECHELON Terminal Breach System (full-screen canvas, colour themes, keyboard input).</Description>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Enclave.Common.csproj" />
+    <ProjectReference Include="..\Shared\Enclave.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Test.Core;
+using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Services;
 
 namespace Enclave.Echelon.Core.Tests.Services;
@@ -82,5 +82,23 @@ public class SolverFactoryTests
         var b = factory.GetSolver();
 
         a.ShouldBeSameAs(b);
+    }
+
+    [Fact]
+    public void DefaultLevel_EqualsSolverLevelDefault()
+    {
+        SolverFactory.DefaultLevel.ShouldBe(SolverLevel.Default);
+    }
+
+    [Fact]
+    public void GetSolver_WhenNoMatchingSolver_ThrowsInvalidOperationException()
+    {
+        var config = new StubSolverConfiguration(SolverLevel.TieBreaker);
+        var factory = new SolverFactory([], config);
+
+        var ex = Should.Throw<InvalidOperationException>(() => factory.GetSolver());
+
+        ex.Message.ShouldContain("No IPasswordSolver registered");
+        ex.Message.ShouldContain("default");
     }
 }

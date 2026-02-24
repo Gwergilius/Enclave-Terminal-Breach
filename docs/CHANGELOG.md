@@ -1,11 +1,24 @@
 # Documentation Changelog
 
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html
+
 All notable documentation changes to the Enclave Terminal Breach project.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog], and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
+
+### Added
+- **Enclave.Shared 1.0.0 compatibility** – Documented that RAVEN and SPARROW require Enclave.Shared ≥ 1.0.0 (breaking change). Shared README and CHANGELOG; Raven and Sparrow README Dependencies; Project Structure reference matrix note with links.
+- **RAVEN 1.4.0 / PHOSPHOR 1.1.0** – Raven README: Configuration (System, Platform:Timing), Startup (PhosphorTypewriter, TimingOptions), Dependencies (Phosphor ≥ 1.1.0, ITimingOptions), Tests (TimingOptions, PhosphorTypewriter, Waiter). Root CHANGELOG and src/dotnet README updated for typewriter and 1.4.x.
+
+### Changed
+- **Enclave.Raven CHANGELOG** – Released [1.4.0] (2026-02-24): typewriter effect, Platform.Timing, System config, IConsoleWriter null no-op. Version links unchanged (Unreleased, 1.4.0).
+- **Enclave.Phosphor CHANGELOG** – Released [1.1.0]: PhosphorTypewriter, ITimingOptions, Waiter, Write(null) no-op.
+- **Enclave.Raven CHANGELOG** – Released [1.3.3] (2026-02-24): refactor for Shared 1.0.0 compatibility, no new features or breaking changes. Version links updated (Unreleased, 1.3.3).
+- **Phase Navigation State Machine** (EN + HU): Runner loop now describes resolution via `IPhaseRegistry.GetPhase(nextPhase)` returning `Result<IPhase>` (and handling failed Result). Registration section updated: PhaseRegistry is scoped and receives `IEnumerable<IPhase>` from DI; no name→Type map; phases registered as IPhase for collection.
+- **Enclave.Raven README**: Contents table updated for current layout (Services, IO, Application, Startup, ProductInfo); dependencies include Phosphor; tests list includes CurrentScopeHolder, ExitRequest, NavigationService, PhaseRegistry, ApplicationExit, Rectangle, AnsiPhosphorCanvas. Link to Phase Navigation doc added.
 
 ## [1.2.0] - 2026-02-16
 

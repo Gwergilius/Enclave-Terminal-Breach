@@ -85,19 +85,6 @@ jobs:
           fi
         continue-on-error: ${{ github.event_name == 'push' }}
 
-      - name: Convert Cobertura to OpenCover (for SonarCloud)
-        if: steps.test.outcome == 'success'
-        run: |
-          mkdir -p TestResults/sonar
-          reportgenerator -reports:TestResults/coverage.xml -reporttypes:OpenCover -targetdir:TestResults/sonar
-          # SonarCloud expects path given at begin; ensure file exists at that path
-          XML=$(find TestResults/sonar -name "*.xml" -type f | head -1)
-          if [ -n "$XML" ] && [ "$(basename "$XML")" != "coverage.opencover.xml" ]; then
-            cp "$XML" TestResults/sonar/coverage.opencover.xml
-          fi
-          ls -la TestResults/sonar/
-        continue-on-error: ${{ github.event_name == 'push' }}
-
       - name: SonarScanner end
         if: always() && (steps.build.outcome == 'success' || steps.build.outcome == 'failure')
         env:

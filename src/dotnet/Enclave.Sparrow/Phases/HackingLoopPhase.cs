@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Enclave.Echelon.Core.Services;
-using Enclave.Sparrow.IO;
-using Enclave.Sparrow.Models;
+using Enclave.Shared.IO;
+using Enclave.Shared.Models;
+using FluentResults;
 
 namespace Enclave.Sparrow.Phases;
 
@@ -15,13 +16,16 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
     private readonly IPasswordSolver _solver = solverFactory.GetSolver();
 
     /// <inheritdoc />
-    public void Run()
+    public string Name => "HackingLoop";
+
+    /// <inheritdoc />
+    public Result Run(params object[] args)
     {
         var wordLength = _session.WordLength ?? 0;
         if (wordLength <= 0 || _session.Count == 0)
         {
             _console.WriteLine("No candidates. Exiting.");
-            return;
+            return Result.Ok();
         }
 
         while (true)
@@ -30,7 +34,7 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
             if (guess == null)
             {
                 _console.WriteLine("No candidates left. Exiting.");
-                return;
+                return Result.Ok();
             }
 
             int matchCount = ReadMatchCount(guess);
@@ -39,7 +43,7 @@ public sealed class HackingLoopPhase([NotNull] IGameSession session, [NotNull] I
             {
                 _console.WriteLine();
                 _console.WriteLine("Correct. Terminal cracked.");
-                return;
+                return Result.Ok();
             }
 
             NarrowCandidates(guess, matchCount);

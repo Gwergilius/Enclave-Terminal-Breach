@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Enclave.Sparrow.Configuration;
-using Enclave.Sparrow.Services;
+using Enclave.Shared.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace Enclave.Sparrow;

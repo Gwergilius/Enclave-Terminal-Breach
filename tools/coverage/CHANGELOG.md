@@ -1,8 +1,10 @@
 # Coverage tools Changelog
 
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+
 All notable changes to the coverage scripts under `tools/coverage/`.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). These tools do not use semantic versioning.
+The format is based on [Keep a Changelog]. These tools do not use semantic versioning.
 
 ## [Unreleased]
 

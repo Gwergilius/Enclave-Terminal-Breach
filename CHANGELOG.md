@@ -1,10 +1,25 @@
 # Changelog
 
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html
+[Documentation Changelog]: docs/CHANGELOG.md
+
 All notable changes to the Enclave Terminal Breach project.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog], and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
+
+### Added
+- **RAVEN 1.4.0** – Typewriter effect: output through PhosphorTypewriter (Enclave.Phosphor 1.1.0) with configurable CharDelay/LineDelay from `Platform:Timing`. System config from `"System"` section; TimingOptions/ITimingOptions from `Platform:Timing`. Application disposes typewriter on exit. IConsoleWriter.Write(null) no-op everywhere.
+- **PHOSPHOR 1.1.0** – PhosphorTypewriter (IPhosphorWriter decorator), ITimingOptions; Waiter for testable delays. AnsiPhosphorCanvas.Write(null) no-op.
+- **RAVEN 1.3.3** – Refactor for Enclave.Shared 1.0.0 compatibility and internal cleanup (PhaseRegistry scoped with IEnumerable<IPhase>, IProductInfo DI, Result pattern for GetPhase, AnsiPhosphorCanvas Style setter validation, extended unit tests). No new features or breaking changes from RAVEN’s perspective.
+- **RAVEN architecture and tests** – Phase navigation docs updated (PhaseRegistry scoped, GetPhase returns Result<IPhase>, IEnumerable<IPhase> from DI). RAVEN README and CHANGELOG reflect current structure (Services, IProductInfo, PhaseRegistry) and test coverage (CurrentScopeHolder, ExitRequest, NavigationService, PhaseRegistry, ApplicationExit, Rectangle operator, AnsiPhosphorCanvas Style).
+- **PHOSPHOR 1.0** – Console UI abstraction layer: full-screen canvas, colour themes (green, amber, white, blue), sequential `IPhosphorWriter`, keyboard input loop. Test doubles: `TestPhosphorWriter`, `TestPhosphorInputLoop`. **ColorValue** in Enclave.Common for platform-agnostic R/G/B/A colours.
+- **RAVEN 1.3.2** – PHOSPHOR 1.0 integrated: Raven uses `IPhosphorCanvas`, `IPhosphorWriter`, `IPhosphorReader`; replay loop (DataInput → HackingLoop → “Press any key” → clear → repeat); Ctrl+C handled for normal exit (exit code 0).
+
+### Changed
+- **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** and **TestConsoleIO** implement new members. **AnsiPhosphorCanvas** uses `IConsoleIO` instead of `System.Console` for full unit testability. Phosphor references Enclave.Shared.
 
 ## [1.2.0] - 2026-02-16
 
@@ -47,7 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Core – Solver renames (Lore-aligned)**: `PasswordSolver` → `TieBreakerPasswordSolver`, `BestScoreOnlySolver` → `BestBucketPasswordSolver`, `RandomGuessSolver` → `HouseGambitPasswordSolver`. Abstract `PasswordSolverBase` with virtual GetBestGuess, CalculateInformationScore, NarrowCandidates; optional Random in HouseGambit/BestBucket.
 - **Lore (Project-History)**: SPARROW/RAVEN/GHOST/ECHELON solver evolution (HOUSE gambit → best-bucket → DIVERGENCE → tie-breaker), version renumbering 1.x / 2.x / 3.x, NX-12 and Dr. Krane quotes.
 
-See [Documentation Changelog](docs/CHANGELOG.md) for detailed documentation changes.
+See [Documentation Changelog] for detailed documentation changes.
 
 [Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.0...HEAD
 [1.2.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.1.2...sparrow-v1.2.0
