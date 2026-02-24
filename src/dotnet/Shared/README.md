@@ -2,6 +2,10 @@
 
 Shared abstractions and implementations for Enclave projects: IO, Models, Errors, and future UI types. Used by SPARROW and RAVEN console apps.
 
+## Version compatibility
+
+**Enclave.Raven** and **Enclave.Sparrow** require **Enclave.Shared 1.0.0 or later**. This was a breaking change at 1.0.0; see [CHANGELOG](CHANGELOG.md#100---2026-02-24).
+
 ## Contents
 
 | Folder / area | Description |

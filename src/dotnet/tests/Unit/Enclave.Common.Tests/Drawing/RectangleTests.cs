@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Drawing;
+using Enclave.Common.Drawing;
 using Enclave.Common.Test.Core;
 
 namespace Enclave.Common.Tests.Drawing;
@@ -128,6 +128,23 @@ public sealed class RectangleTests
 
         // Act
         var result = r + p;
+
+        // Assert
+        result.X.ShouldBe(loc.X + p.X);
+        result.Y.ShouldBe(loc.Y + p.Y);
+        result.Width.ShouldBe(size.Width);
+        result.Height.ShouldBe(size.Height);
+    }
+
+    [Theory, MemberData(nameof(RectangleTestData))]
+    public void OperatorPlus_PointAndRectangle_ReturnsOffsetRectangle(Point loc, Size size)
+    {
+        // Arrange: p + r uses the same semantics as r.Offset(p), so result equals r + p
+        var r = new Rectangle(loc, size);
+        var p = new Point(5, 5);
+
+        // Act
+        var result = p + r;
 
         // Assert
         result.X.ShouldBe(loc.X + p.X);

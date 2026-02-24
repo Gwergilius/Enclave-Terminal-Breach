@@ -1,3 +1,4 @@
+﻿using Enclave.Common.Models;
 using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
@@ -13,9 +14,14 @@ public sealed class AnsiPhosphorCanvas : IPhosphorCanvas
     private readonly IScreenOptions _screenOptions;
     private bool _disposed;
     private bool _initialized;
+    private CharStyle _style = CharStyle.Normal;
 
     /// <inheritdoc />
-    public CharStyle Style { get; set; } = CharStyle.Normal;
+    public CharStyle Style
+    {
+        get => _style;
+        set => _style = Enum.IsDefined<CharStyle>(value) ? value : CharStyle.Normal;
+    }
 
     /// <inheritdoc />
     public int Width { get; private set; }
@@ -87,7 +93,7 @@ public sealed class AnsiPhosphorCanvas : IPhosphorCanvas
         ArgumentNullException.ThrowIfNull(text);
         if (!_initialized)
             throw new InvalidOperationException("Canvas must be initialized before writing.");
-        var color = _theme.Palette.TryGetValue(Style, out var c) ? c : _theme.Palette[CharStyle.Normal];
+        var color = _theme.Palette[Style];
         _console.SetForegroundColor(color);
         _console.Write(text);
     }

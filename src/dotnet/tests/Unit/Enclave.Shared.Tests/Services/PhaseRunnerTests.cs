@@ -1,8 +1,9 @@
 using Enclave.Common.Test.Core;
 using Enclave.Shared.Phases;
 using Enclave.Shared.Services;
-using Moq;
+using FluentResults;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 
 namespace Enclave.Shared.Tests.Services;
 
@@ -17,7 +18,8 @@ public class PhaseRunnerTests
     {
         var executed = new List<string>();
         var phase = Mock.Of<IPhase>();
-        phase.AsMock().Setup(p => p.Run()).Callback(() => executed.Add("phase"));
+        phase.AsMock().Setup(p => p.Name).Returns("TestPhase");
+        phase.AsMock().Setup(p => p.Run(It.IsAny<object[]>())).Callback(() => executed.Add("phase")).Returns(Result.Ok());
 
         var services = new ServiceCollection();
         services.AddSingleton(phase);

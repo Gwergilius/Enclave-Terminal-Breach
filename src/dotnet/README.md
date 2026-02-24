@@ -12,7 +12,7 @@
 | **Core/** | [Enclave.Echelon.Core] – core business logic: Password Solver, Password Repository, domain models. References Common. |
 | **Shared/** | [Enclave.Shared] – shared abstractions (IO, UI, etc.). Used by Raven and future apps. |
 | **Enclave.Sparrow/** | [SPARROW][Enclave.Sparrow] console app (DOS-style stdin/stdout). *Code freeze – use Enclave.Raven for new work.* |
-| **Enclave.Raven/** | [RAVEN][Enclave.Raven] console app (DOS-style stdin/stdout). Active development for 1.3.0. |
+| **Enclave.Raven/** | [RAVEN][Enclave.Raven] console app (DOS-style stdin/stdout). Active development for 1.3.x / 2.0.x. |
 | **tests/Common.Test.Core/** | Shared test helpers and attributes (e.g. `[UnitTest]`, `TestOf`). |
 | **tests/Unit/** | Unit test projects (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests, Enclave.Raven.Tests, Enclave.Shared.Tests). |
 | **tests/Integration/** | *Planned.* Integration test projects. |

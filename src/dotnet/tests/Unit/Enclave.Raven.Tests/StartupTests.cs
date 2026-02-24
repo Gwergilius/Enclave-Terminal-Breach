@@ -1,4 +1,4 @@
-﻿using Enclave.Echelon.Core.Services;
+using Enclave.Echelon.Core.Services;
 using Enclave.Phosphor;
 using Enclave.Shared.IO;
 using Enclave.Shared.Models;
@@ -63,8 +63,10 @@ public class StartupTests
         using var scope = services.BuildServiceProvider().CreateScope();
 
         scope.ServiceProvider.GetRequiredService<IStartupBadgePhase>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<IResetScopePhase>().ShouldNotBeNull();
         scope.ServiceProvider.GetRequiredService<IDataInputPhase>().ShouldNotBeNull();
         scope.ServiceProvider.GetRequiredService<IHackingLoopPhase>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<IPlayAgainPhase>().ShouldNotBeNull();
     }
 
     [Fact]

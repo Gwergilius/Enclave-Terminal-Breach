@@ -1,8 +1,10 @@
 using Enclave.Common.Test.Core;
 using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
-using Enclave.Shared.Models;
 using Enclave.Raven.Phases;
+using Enclave.Shared.Models;
+using Enclave.Shared.Phases;
+using Moq;
 
 namespace Enclave.Raven.Tests.Phases;
 
@@ -13,6 +15,13 @@ namespace Enclave.Raven.Tests.Phases;
 [UnitTest, TestOf(nameof(DataInputPhase))]
 public class DataInputPhaseTests
 {
+    private static INavigationService CreateNavigationReturnsOk()
+    {
+        var nav = Mock.Of<INavigationService>();
+        nav.AsMock().Setup(n => n.NavigateTo(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Result.Ok());
+        return nav;
+    }
+
     [Fact]
     public void Run_WithValidWords_AddsToSession()
     {
@@ -25,7 +34,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -56,7 +65,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -80,7 +89,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -113,7 +122,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -131,7 +140,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions();
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -155,7 +164,7 @@ public class DataInputPhaseTests
 
             var session = new GameSession();
             var options = new RavenOptions { WordListPath = tempFile };
-            var phase = new DataInputPhase(session, writer, reader, options);
+            var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
             phase.Run();
 
@@ -187,7 +196,7 @@ public class DataInputPhaseTests
 
         var session = new GameSession();
         var options = new RavenOptions { WordListPath = nonExistentPath };
-        var phase = new DataInputPhase(session, writer, reader, options);
+        var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -208,7 +217,7 @@ public class DataInputPhaseTests
 
             var session = new GameSession();
             var options = new RavenOptions { WordListPath = tempFile };
-            var phase = new DataInputPhase(session, writer, reader, options);
+            var phase = new DataInputPhase(session, writer, reader, options, CreateNavigationReturnsOk());
 
             phase.Run();
 

@@ -36,6 +36,18 @@ public sealed class AnsiPhosphorCanvasTests
     }
 
     [Fact]
+    public void Style_WhenSetToInvalidEnumValue_CoercesToNormal()
+    {
+        var theme = PhosphorThemeFactory.Create("green");
+        var console = new TestableConsoleIO();
+        var canvas = CreateCanvas(theme, console);
+
+        canvas.Style = (CharStyle)99;
+
+        canvas.Style.ShouldBe(CharStyle.Normal);
+    }
+
+    [Fact]
     public void Initialize_SmallTerminal_WritesErrorAndThrowsInvalidOperationException()
     {
         // Arrange

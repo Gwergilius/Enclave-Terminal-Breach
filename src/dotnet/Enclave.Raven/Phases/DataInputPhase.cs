@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
 using Enclave.Shared.Models;
+using Enclave.Shared.Phases;
+using FluentResults;
 
 namespace Enclave.Raven.Phases;
 
@@ -12,12 +14,17 @@ public sealed class DataInputPhase(
     [NotNull] IGameSession session,
     [NotNull] IPhosphorWriter writer,
     [NotNull] IPhosphorReader reader,
-    [NotNull] RavenOptions options) : IDataInputPhase
+    [NotNull] RavenOptions options,
+    [NotNull] INavigationService navigation) : IDataInputPhase
 {
     private readonly IGameSession _session = session;
     private readonly IPhosphorWriter _writer = writer;
     private readonly IPhosphorReader _reader = reader;
     private readonly RavenOptions _options = options;
+    private readonly INavigationService _navigation = navigation;
+
+    /// <inheritdoc />
+    public string Name => "DataInput";
 
     private static class Prompts
     {
@@ -26,13 +33,13 @@ public sealed class DataInputPhase(
     }
 
     /// <inheritdoc />
-    public void Run()
+    public Result Run(params object[] args)
     {
         if (!string.IsNullOrWhiteSpace(_options.WordListPath))
         {
             LoadCandidatesFromFile(_options.WordListPath!);
             WriteCandidateCountAndList();
-            return;
+            return _navigation.NavigateTo("HackingLoop");
         }
 
         _writer.WriteLine(Prompts.Initial);
@@ -47,6 +54,8 @@ public sealed class DataInputPhase(
             _writer.WriteLine(Prompts.More);
             line = _reader.ReadLine();
         }
+
+        return _navigation.NavigateTo("HackingLoop");
     }
 
     private void LoadCandidatesFromFile(string path)

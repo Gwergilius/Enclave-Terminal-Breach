@@ -12,7 +12,8 @@ Technical architecture, design decisions, and system specifications.
 
 - [Algorithm] - Password elimination algorithm specification
 - [Solver Comparison] - Comparison of solver strategies
-- [State Machine] - Application state management design
+- [State Machine] - Application state management design (MAUI/Blazor)
+- [Phase Navigation State Machine] - Console phase navigation, Result pattern, and DI scope handling (RAVEN/SPARROW)
 - [Future Architecture] - Planned optimizations and patterns
 
 ## Platform Requirements
@@ -49,6 +50,7 @@ These documents provide:
 [Algorithm]: ./Algorithm.md
 [Solver Comparison]: ./SolverComparison.md
 [State Machine]: ./StateMachine.md
+[Phase Navigation State Machine]: ./Phase-Navigation-State-Machine.md
 [Future Architecture]: ./FutureArchitecture.md
 [SPARROW Requirements]: ./SPARROW-Requirements.md
 [RAVEN Requirements]: ./RAVEN-Requirements.md

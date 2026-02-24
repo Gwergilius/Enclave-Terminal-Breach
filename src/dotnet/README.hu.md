@@ -12,7 +12,7 @@ Az Enclave Terminal Breach .NET implementációja. Ebben a mappában (**src/dotn
 | **Core/** | [Enclave.Echelon.Core] – core üzleti logika: Password Solver, Password Repository, domain modellek. A Commonra hivatkozik. |
 | **Shared/** | [Enclave.Shared] – közös absztrakciók (IO, UI, stb.). A Raven és a jövőbeli alkalmazások használják. |
 | **Enclave.Sparrow/** | SPARROW konzol alkalmazás (DOS-stílusú stdin/stdout). *Kód befagyasztva – az új fejlesztés az Enclave.Raven.* |
-| **Enclave.Raven/** | RAVEN konzol alkalmazás (DOS-stílusú stdin/stdout). Aktív fejlesztés az 1.3.0 felé. |
+| **Enclave.Raven/** | RAVEN konzol alkalmazás (DOS-stílusú stdin/stdout). Aktív fejlesztés az 1.3.x / 2.0.x felé. |
 | **tests/Common.Test.Core/** | Közös teszt segédletek és attribútumok (pl. `[UnitTest]`, `TestOf`). |
 | **tests/Unit/** | Unit teszt projektek (Enclave.Echelon.Core.Tests, Enclave.Echelon.Common.Tests, Enclave.Sparrow.Tests, Enclave.Raven.Tests, Enclave.Shared.Tests). |
 | **tests/Integration/** | *Tervezett.* Integrációs teszt projektek. |

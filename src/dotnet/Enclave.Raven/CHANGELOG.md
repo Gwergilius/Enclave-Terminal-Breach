@@ -9,7 +9,19 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
-(No changes yet.)
+## [1.3.3] - 2026-02-24
+
+Refactor for **Enclave.Shared 1.0.0** compatibility and internal cleanup. No new features or breaking changes from RAVEN’s perspective; RAVEN requires Shared ≥ 1.0.0.
+
+### Added
+- **IProductInfo + DI** – Product name and version via `IProductInfo`; `ProductInfo.GetCurrent()` registered as singleton; Application and StartupBadgePhase receive it via constructor.
+- **PhaseRegistry scoped with IEnumerable<IPhase>** – PhaseRegistry and IPhaseRegistry are scoped; PhaseRegistry constructor receives `IEnumerable<IPhase>` from DI (all phases in scope). `GetPhase(phaseName)` returns `Result<IPhase>` (NotFoundError if not found). No phase name→Type map; Application resolves IPhaseRegistry from current scope and uses GetPhase(nextPhase).
+- **Unit test coverage** – CurrentScopeHolder (lazy scope, ResetScope, Dispose); ExitRequest (IsExitRequested, RequestExit); NavigationService (NextPhase/NextPhaseArgs, NavigateTo normal/Exit, null args, case-insensitive Exit); PhaseRegistry (GetPhase found/not found, case-insensitive, null phases, duplicate names); ApplicationExit (default and custom message); Rectangle operator Point+Rectangle; AnsiPhosphorCanvas Style setter (invalid enum value coerced to Normal). NavigationService null-args branch covered.
+
+### Changed
+- **IPhaseRegistry** – Returns `Result<IPhase>` from `GetPhase(phaseName)` instead of throwing; uses Result pattern and NotFoundError (code standards).
+- **Application** – Resolves IPhaseRegistry from `currentScope.CurrentScope.ServiceProvider` each loop iteration; uses `phaseRegistry.GetPhase(nextPhase)` and handles failed Result (break with that result).
+- **AnsiPhosphorCanvas** – Style setter validates with `Enum.IsDefined<CharStyle>(value)` and coerces invalid values to CharStyle.Normal; foreground/background use `_theme.Palette[style]` directly (no GetColorForStyle). Style getter always returns the value the canvas will use.
 
 ## [1.3.2] - 2026-02-21
 
@@ -37,6 +49,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ---
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.2...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.3...HEAD
+[1.3.3]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.2...raven-v1.3.3
 [1.3.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.1...raven-v1.3.2
 [1.3.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.0...raven-v1.3.1

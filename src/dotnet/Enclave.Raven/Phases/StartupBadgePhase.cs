@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
+using Enclave.Shared.Phases;
+using FluentResults;
 
 namespace Enclave.Raven.Phases;
 
@@ -10,20 +12,26 @@ namespace Enclave.Raven.Phases;
 /// </summary>
 public sealed class StartupBadgePhase(
     [NotNull] IPhosphorWriter writer,
-    [NotNull] RavenOptions options) : IStartupBadgePhase
+    [NotNull] RavenOptions options,
+    [NotNull] INavigationService navigation,
+    [NotNull] IProductInfo productInfo) : IStartupBadgePhase
 {
     private readonly IPhosphorWriter _writer = writer;
     private readonly RavenOptions _options = options;
+    private readonly INavigationService _navigation = navigation;
+    private readonly IProductInfo _productInfo = productInfo;
 
     /// <inheritdoc />
-    public void Run()
+    public string Name => "StartupBadge";
+
+    /// <inheritdoc />
+    public Result Run(params object[] args)
     {
         var sw = Stopwatch.StartNew();
 
         if (_options.Startup.ShowBanner)
         {
-            var info = ProductInfo.GetCurrent();
-            _writer.WriteLine($"{info.Name} {info.Version}");
+            _writer.WriteLine($"{_productInfo.Name} {_productInfo.Version}");
         }
 
         sw.Stop();
@@ -41,5 +49,7 @@ public sealed class StartupBadgePhase(
 
             _writer.WriteLine();
         }
+
+        return _navigation.NavigateTo("ResetScope", "DataInput");
     }
 }

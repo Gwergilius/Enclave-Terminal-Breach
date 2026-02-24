@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Enclave.Sparrow.Configuration;
 using Enclave.Shared.IO;
 using Enclave.Shared.Models;
+using FluentResults;
 
 namespace Enclave.Sparrow.Phases;
 
@@ -17,6 +18,9 @@ public sealed class DataInputPhase(
     private readonly IConsoleIO _console = console;
     private readonly SparrowOptions _options = options;
 
+    /// <inheritdoc />
+    public string Name => "DataInput";
+
     private static class Prompts
     {
         public const string Initial = "Enter password candidates:";
@@ -24,13 +28,13 @@ public sealed class DataInputPhase(
     }
 
     /// <inheritdoc />
-    public void Run()
+    public Result Run(params object[] args)
     {
         if (!string.IsNullOrWhiteSpace(_options.WordListPath))
         {
             LoadCandidatesFromFile(_options.WordListPath!);
             WriteCandidateCountAndList();
-            return;
+            return Result.Ok();
         }
 
         _console.WriteLine(Prompts.Initial);
@@ -45,6 +49,7 @@ public sealed class DataInputPhase(
             _console.WriteLine(Prompts.More);
             line = _console.ReadLine();
         }
+        return Result.Ok();
     }
 
     private void LoadCandidatesFromFile(string path)

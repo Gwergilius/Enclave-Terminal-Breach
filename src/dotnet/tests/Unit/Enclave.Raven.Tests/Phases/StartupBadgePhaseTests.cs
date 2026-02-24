@@ -2,6 +2,9 @@ using Enclave.Common.Test.Core;
 using Enclave.Phosphor;
 using Enclave.Raven.Configuration;
 using Enclave.Raven.Phases;
+using Enclave.Shared.Phases;
+using Moq;
+using Enclave.Raven;
 
 namespace Enclave.Raven.Tests.Phases;
 
@@ -11,6 +14,21 @@ namespace Enclave.Raven.Tests.Phases;
 [UnitTest, TestOf(nameof(StartupBadgePhase))]
 public class StartupBadgePhaseTests
 {
+    private static INavigationService CreateNavigationReturnsOk()
+    {
+        var nav = Mock.Of<INavigationService>();
+        nav.AsMock().Setup(n => n.NavigateTo(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Result.Ok());
+        return nav;
+    }
+
+    private static IProductInfo CreateProductInfo(string name = "RAVEN", string version = "1.0.0")
+    {
+        var info = Mock.Of<IProductInfo>();
+        info.AsMock().Setup(p => p.Name).Returns(name);
+        info.AsMock().Setup(p => p.Version).Returns(version);
+        return info;
+    }
+
     [Fact]
     public void Run_WritesProductNameAndVersion()
     {
@@ -21,7 +39,7 @@ public class StartupBadgePhaseTests
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions();
-        var phase = new StartupBadgePhase(writer, options);
+        var phase = new StartupBadgePhase(writer, options, CreateNavigationReturnsOk(), CreateProductInfo());
 
         phase.Run();
 
@@ -44,7 +62,7 @@ public class StartupBadgePhaseTests
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions();
-        var phase = new StartupBadgePhase(writer, options);
+        var phase = new StartupBadgePhase(writer, options, CreateNavigationReturnsOk(), CreateProductInfo());
 
         phase.Run();
 
@@ -62,7 +80,7 @@ public class StartupBadgePhaseTests
             .Callback<string?>(s => writtenLines.Add(s ?? ""));
 
         var options = new RavenOptions { Intelligence = "tie" };
-        var phase = new StartupBadgePhase(writer, options);
+        var phase = new StartupBadgePhase(writer, options, CreateNavigationReturnsOk(), CreateProductInfo());
 
         phase.Run();
 

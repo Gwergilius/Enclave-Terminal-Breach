@@ -13,7 +13,7 @@ SPARROW – DOS-style console proof-of-concept for Enclave Terminal Breach. Sequ
 
 - **Enclave.Common** – FluentResults, configuration.
 - **Enclave.Echelon.Core** – Password solver, domain models.
-- **Enclave.Shared** – `IConsoleIO`, `ConsoleIO`, `ConsoleIntReader`; `IGameSession`, `GameSession`; `DuplicatedPassword`, `IPhaseRunner`, `PhaseRunner`.
+- **Enclave.Shared** (≥ 1.0.0) – `IConsoleIO`, `ConsoleIO`, `ConsoleIntReader`; `IGameSession`, `GameSession`; `DuplicatedPassword`, `IPhaseRunner`, `PhaseRunner`. SPARROW requires Shared 1.0.0 or later.
 
 ## Tests
 

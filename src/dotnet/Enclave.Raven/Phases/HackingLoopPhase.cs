@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Enclave.Echelon.Core.Services;
 using Enclave.Phosphor;
 using Enclave.Shared.Models;
+using Enclave.Shared.Phases;
+using FluentResults;
 
 namespace Enclave.Raven.Phases;
 
@@ -12,21 +14,26 @@ public sealed class HackingLoopPhase(
     [NotNull] IGameSession session,
     [NotNull] IPhosphorWriter writer,
     [NotNull] IPhosphorReader reader,
-    [NotNull] ISolverFactory solverFactory) : IHackingLoopPhase
+    [NotNull] ISolverFactory solverFactory,
+    [NotNull] INavigationService navigation) : IHackingLoopPhase
 {
     private readonly IGameSession _session = session;
     private readonly IPhosphorWriter _writer = writer;
     private readonly IPhosphorReader _reader = reader;
     private readonly IPasswordSolver _solver = solverFactory.GetSolver();
+    private readonly INavigationService _navigation = navigation;
 
     /// <inheritdoc />
-    public void Run()
+    public string Name => "HackingLoop";
+
+    /// <inheritdoc />
+    public Result Run(params object[] args)
     {
         var wordLength = _session.WordLength ?? 0;
         if (wordLength <= 0 || _session.Count == 0)
         {
             _writer.WriteLine("No candidates. Exiting.");
-            return;
+            return _navigation.NavigateTo("PlayAgain");
         }
 
         while (true)
@@ -35,7 +42,7 @@ public sealed class HackingLoopPhase(
             if (guess == null)
             {
                 _writer.WriteLine("No candidates left. Exiting.");
-                return;
+                return _navigation.NavigateTo("PlayAgain");
             }
 
             int matchCount = ReadMatchCount(guess);
@@ -44,7 +51,7 @@ public sealed class HackingLoopPhase(
             {
                 _writer.WriteLine();
                 _writer.WriteLine("Correct. Terminal cracked.");
-                return;
+                return _navigation.NavigateTo("PlayAgain");
             }
 
             NarrowCandidates(guess, matchCount);

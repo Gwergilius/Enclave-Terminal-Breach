@@ -1,12 +1,14 @@
-﻿using Enclave.Echelon.Core.Services;
+using Enclave.Echelon.Core.Services;
 using Enclave.Raven.Configuration;
 using Enclave.Raven.IO;
 using Enclave.Shared.IO;
 using Enclave.Shared.Models;
+using Enclave.Shared.Phases;
 using Enclave.Shared.Services;
 using Enclave.Raven.Phases;
 using Enclave.Phosphor;
 using Microsoft.Extensions.Configuration;
+using Enclave.Raven.Services;
 
 namespace Enclave.Raven;
 
@@ -28,6 +30,7 @@ public static class Startup
 
         services.AddSingleton(options);
         services.AddSingleton<IConfiguration>(configuration);
+        services.AddSingleton<IProductInfo>(_ => ProductInfo.GetCurrent());
 
         // Session: shared state between data-input and hacking phases (one scope per run).
         services.AddScoped<IGameSession, GameSession>();
@@ -57,15 +60,34 @@ public static class Startup
         services.AddSingleton<ISolverConfiguration>(sp => sp.GetRequiredService<RavenOptions>());
         services.AddSingleton<ISolverFactory, SolverFactory>();
 
-        // Phases: each phase is a separate component; order of execution is driven from Program.
-        services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();
-        services.AddScoped<IDataInputPhase, DataInputPhase>();
-        services.AddScoped<IHackingLoopPhase, HackingLoopPhase>();
+        // Navigation and scope: phase names and current scope for resolution.
+        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<ICurrentScope, CurrentScopeHolder>();
+        services.AddScoped<PhaseRegistry>();
+        services.AddScoped<IPhaseRegistry>(sp => sp.GetRequiredService<PhaseRegistry>());
 
-        // Phase runner: executes phases in order.
+        // Phases: each phase is a separate component; PhaseRegistry receives them via IEnumerable<IPhase>.
+        services.AddScoped<IStartupBadgePhase, StartupBadgePhase>();
+        services.AddScoped<IPhase>(sp => sp.GetRequiredService<IStartupBadgePhase>());
+        services.AddScoped<IResetScopePhase, ResetScopePhase>();
+        services.AddScoped<IPhase>(sp => sp.GetRequiredService<IResetScopePhase>());
+        services.AddScoped<IDataInputPhase, DataInputPhase>();
+        services.AddScoped<IPhase>(sp => sp.GetRequiredService<IDataInputPhase>());
+        services.AddScoped<IHackingLoopPhase, HackingLoopPhase>();
+        services.AddScoped<IPhase>(sp => sp.GetRequiredService<IHackingLoopPhase>());
+        services.AddScoped<IPlayAgainPhase, PlayAgainPhase>();
+        services.AddScoped<IPhase>(sp => sp.GetRequiredService<IPlayAgainPhase>());
+
+        // Phase runner: executes phases in order (legacy; used by tests or Sparrow).
         services.AddSingleton<IPhaseRunner>(sp => new PhaseRunner(
             sp.GetRequiredService<IServiceScopeFactory>(),
             [typeof(IStartupBadgePhase), typeof(IDataInputPhase), typeof(IHackingLoopPhase)]));
+
+        // Exit signal (e.g. Ctrl+C); shared between Program and Application.
+        services.AddSingleton<IExitRequest, ExitRequest>();
+
+        // Main application phase: resolve and call Run() to execute the navigation loop.
+        services.AddSingleton<Application>();
 
         return services;
     }

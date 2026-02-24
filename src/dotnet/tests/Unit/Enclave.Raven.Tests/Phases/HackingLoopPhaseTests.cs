@@ -1,8 +1,10 @@
 using Enclave.Common.Test.Core;
 using Enclave.Echelon.Core.Services;
 using Enclave.Phosphor;
-using Enclave.Shared.Models;
 using Enclave.Raven.Phases;
+using Enclave.Shared.Models;
+using Enclave.Shared.Phases;
+using Moq;
 
 namespace Enclave.Raven.Tests.Phases;
 
@@ -13,6 +15,13 @@ namespace Enclave.Raven.Tests.Phases;
 [UnitTest, TestOf(nameof(HackingLoopPhase))]
 public class HackingLoopPhaseTests
 {
+    private static INavigationService CreateNavigationReturnsOk()
+    {
+        var nav = Mock.Of<INavigationService>();
+        nav.AsMock().Setup(n => n.NavigateTo(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Result.Ok());
+        return nav;
+    }
+
     private static ISolverFactory CreateSolverFactory(IPasswordSolver solver)
     {
         var factory = Mock.Of<ISolverFactory>();
@@ -31,7 +40,7 @@ public class HackingLoopPhaseTests
         var reader = Mock.Of<IPhosphorReader>();
         var session = new GameSession();
         var solver = Mock.Of<IPasswordSolver>();
-        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver));
+        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver), CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -59,7 +68,7 @@ public class HackingLoopPhaseTests
             .Setup(s => s.GetBestGuess(It.IsAny<IGameSession>()))
             .Returns(terms);
 
-        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver));
+        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver), CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -83,7 +92,7 @@ public class HackingLoopPhaseTests
             .Setup(s => s.GetBestGuess(It.IsAny<IGameSession>()))
             .Returns((Password?)null);
 
-        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver));
+        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver), CreateNavigationReturnsOk());
 
         phase.Run();
 
@@ -122,7 +131,7 @@ public class HackingLoopPhaseTests
                 return list.Where(p => p.GetMatchCount(terms) == 3).ToList();
             });
 
-        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver));
+        var phase = new HackingLoopPhase(session, writer, reader, CreateSolverFactory(solver), CreateNavigationReturnsOk());
 
         phase.Run();
 

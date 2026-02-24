@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-02-24
+
+### Changed
+- **Enclave.Shared 1.0.0 compatibility** – Refactor to align with Enclave.Shared 1.0.0. No new features or breaking changes from SPARROW’s perspective; dependency and usage updated so SPARROW requires Shared ≥ 1.0.0.
+
 ## [1.2.1] - 2026-02-21
 
 ### Changed
@@ -18,3 +23,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 - **ProjectReference** to `Enclave.Shared` for `IConsoleIO`, `ConsoleIO`, `ConsoleIntReader`, `IGameSession`, `GameSession`, `DuplicatedPassword`.
+
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.2...HEAD
+[1.2.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.1...sparrow-v1.2.2
+[1.2.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.0...sparrow-v1.2.1

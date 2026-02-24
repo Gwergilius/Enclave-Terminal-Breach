@@ -209,6 +209,8 @@ After migration, both `Enclave.Sparrow.csproj` and `Enclave.Raven.csproj` add a 
 | `Enclave.Ghost` *(future)* | ✓ | ✓ | ✓ | — |
 | `Enclave.MAUI` *(future)* | ✓ | ✓ | ✓ | — |
 
+**Shared version:** Enclave.Sparrow and Enclave.Raven require **Enclave.Shared 1.0.0 or later** (breaking change at Shared 1.0.0). See [Enclave.Shared README](../../src/dotnet/Shared/README.md#version-compatibility) and [Shared CHANGELOG](../../src/dotnet/Shared/CHANGELOG.md).
+
 ---
 
 ## Decision log

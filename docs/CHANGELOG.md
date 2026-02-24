@@ -9,6 +9,14 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **Enclave.Shared 1.0.0 compatibility** – Documented that RAVEN and SPARROW require Enclave.Shared ≥ 1.0.0 (breaking change). Shared README and CHANGELOG; Raven and Sparrow README Dependencies; Project Structure reference matrix note with links.
+
+### Changed
+- **Enclave.Raven CHANGELOG** – Released [1.3.3] (2026-02-24): refactor for Shared 1.0.0 compatibility, no new features or breaking changes. Version links updated (Unreleased, 1.3.3).
+- **Phase Navigation State Machine** (EN + HU): Runner loop now describes resolution via `IPhaseRegistry.GetPhase(nextPhase)` returning `Result<IPhase>` (and handling failed Result). Registration section updated: PhaseRegistry is scoped and receives `IEnumerable<IPhase>` from DI; no name→Type map; phases registered as IPhase for collection.
+- **Enclave.Raven README**: Contents table updated for current layout (Services, IO, Application, Startup, ProductInfo); dependencies include Phosphor; tests list includes CurrentScopeHolder, ExitRequest, NavigationService, PhaseRegistry, ApplicationExit, Rectangle, AnsiPhosphorCanvas. Link to Phase Navigation doc added.
+
 ## [1.2.0] - 2026-02-16
 
 ### Changed

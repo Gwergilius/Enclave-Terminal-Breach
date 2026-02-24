@@ -7,7 +7,8 @@ Technikai architektúra, tervezési döntések és rendszer specifikációk.
 ## Alap dokumentumok
 
 - [Algorithm][Algorithm] – Jelszó eliminációs algoritmus specifikáció
-- [State Machine][State Machine] – Alkalmazás állapotkezelés
+- [State Machine][State Machine] – Alkalmazás állapotkezelés (MAUI/Blazor)
+- [Phase Navigation State Machine][Phase Navigation State Machine] – Konzol fázisnavigáció, Result minta és DI scope kezelés (RAVEN/SPARROW)
 - [Future Architecture][Future Architecture] – Tervezett optimalizációk és minták
 
 ## Platform követelmények
@@ -34,6 +35,7 @@ Ezek a dokumentumok biztosítják:
 [English]: ./README.md
 [Algorithm]: ./Algorithm.hu.md
 [State Machine]: ./StateMachine.hu.md
+[Phase Navigation State Machine]: ./Phase-Navigation-State-Machine.hu.md
 [Future Architecture]: ./FutureArchitecture.hu.md
 [SPARROW Requirements]: ./SPARROW-Requirements.hu.md
 [Platform Services Summary]: ./PlatformServicesSummary.hu.md

@@ -9,7 +9,7 @@ namespace Enclave.Raven;
 /// <remarks>
 /// Initializes a new instance of <see cref="ProductInfo"/>.
 /// </remarks>
-public sealed class ProductInfo(string name, string version)
+public sealed class ProductInfo(string name, string version) : IProductInfo
 {
     private const string DefaultProduct = "RAVEN";
     private const string DefaultVersion = "0.0.0";

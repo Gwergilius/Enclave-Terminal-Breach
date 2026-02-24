@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-02-24
+
+### Compatibility (breaking)
+
+- **RAVEN and SPARROW** – From this version onward, **Enclave.Raven** and **Enclave.Sparrow** require **Enclave.Shared 1.0.0 or later**. Do not use an older Shared version with current RAVEN or SPARROW builds.
+
 ### Changed
 - **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** delegates to `Console`; **TestConsoleIO** uses configurable `Dimensions`.
 
