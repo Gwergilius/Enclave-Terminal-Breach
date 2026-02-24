@@ -8,8 +8,8 @@ namespace Enclave.Common.Drawing;
 /// </summary>
 /// <param name="x">The left-coordinate of the upper-left corner of the rectangle.</param>
 /// <param name="y">The top-coordinate of the upper-left corner of the rectangle.</param>
-/// <param name="width">The width of the rectangle.</param>
-/// <param name="height">The height of the rectangle.</param>
+/// <param name="width">The w of the rectangle.</param>
+/// <param name="height">The h of the rectangle.</param>
 public readonly record struct Rectangle(int x, int y, int width, int height)
 {
     /// <summary>
@@ -21,7 +21,7 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// Initializes a new instance of the <see cref="Enclave.Common.Drawing.Rectangle"/> class with the specified location and size.
     /// </summary>
     /// <param name="location">A <see cref="Enclave.Common.Drawing.Point"/> that specifies the coordinates of the upper-left corner of the rectangle.</param>
-    /// <param name="size">A <see cref="Enclave.Common.Drawing.Size"/> that specifies the width and height of the rectangle.</param>
+    /// <param name="size">A <see cref="Enclave.Common.Drawing.Size"/> that specifies the w and h of the rectangle.</param>
     public Rectangle(Point location, Size size)
         : this(location.X, location.Y, size.Width, size.Height)
     {
@@ -30,7 +30,7 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// <summary>
     /// Initializes a new instance of the <see cref="Enclave.Common.Drawing.Rectangle "/> class using the specified top-left and bottom-right <see cref="Enclave.Common.Drawing.Point"/>s.
     /// </summary>
-    /// <remarks>The rectangle includes both the top-left and bottom-right points. The width and height are
+    /// <remarks>The rectangle includes both the top-left and bottom-right points. The w and h are
     /// calculated as the difference between the corresponding coordinates, plus one.</remarks>
     /// <param name="topLeft">The coordinates of the top-left corner of the rectangle.</param>
     /// <param name="bottomRight">The coordinates of the bottom-right corner of the rectangle.</param>
@@ -66,7 +66,7 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// </summary>
     /// <param name="x">The amount to offset the rectangle horizontally.</param>
     /// <param name="y">The amount to offset the rectangle vertically.</param>
-    /// <returns>A new Rectangle that is offset by the specified amounts. The width and height remain unchanged.</returns>
+    /// <returns>A new Rectangle that is offset by the specified amounts. The w and h remain unchanged.</returns>
     public readonly Rectangle Offset(int x, int y)
         => new(Location.Add(x, y), Dimension);
 
@@ -92,20 +92,20 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// structure. The copy is enlarged by the specified amount. The original <see cref="Enclave.Common.Drawing.Rectangle"/>
     /// structure remains unmodified.
     /// </summary>
-    /// <param name="x">The amount, in units, to increase the width of the rectangle. Can be negative to shrink the rectangle
+    /// <param name="x">The amount, in units, to increase the w of the rectangle. Can be negative to shrink the rectangle
     /// horizontally.</param>
-    /// <param name="y">The amount, in units, to increase the height of the rectangle. Can be negative to shrink the rectangle
+    /// <param name="y">The amount, in units, to increase the h of the rectangle. Can be negative to shrink the rectangle
     /// vertically.</param>
     /// <returns>A new Rectangle instance representing the enlarged (or shrunken) rectangle.</returns>
     public readonly Rectangle Inflate(int x, int y)
         => new (Location, Dimension.Add(x,y));
 
     /// <summary>
-    /// Returns a new <see cref="Enclave.Common.Drawing.Rectangle"/> that is inflated by the specified width and height values.
+    /// Returns a new <see cref="Enclave.Common.Drawing.Rectangle"/> that is inflated by the specified w and h values.
     /// </summary>
     /// <param name="size">A <see cref="Enclave.Common.Drawing.Size"/> structure that specifies the amount to inflate the rectangle horizontally and
     /// vertically.</param>
-    /// <returns>A <see cref="Enclave.Common.Drawing.Rectangle"/> that represents the inflated rectangle. The width and height are increased by the
+    /// <returns>A <see cref="Enclave.Common.Drawing.Rectangle"/> that represents the inflated rectangle. The w and h are increased by the
     /// corresponding values in <paramref name="size"/>.
     /// </returns>
     public readonly Rectangle Inflate(Size size)
@@ -122,11 +122,11 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     {
         int left = Max(X, other.X);
         int top = Max(Y, other.Y);
-        int width = Min(Right, other.Right) - left + 1;
-        int height = Min(Bottom, other.Bottom) - top + 1;
+        int w = Min(Right, other.Right) - left + 1;
+        int h = Min(Bottom, other.Bottom) - top + 1;
 
-        return width > 0 && height > 0 
-            ? new Rectangle(left, top, width, height) 
+        return w > 0 && h > 0 
+            ? new Rectangle(left, top, w, h) 
             : Empty;
     }
 
@@ -159,17 +159,17 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// When true, allows returning a rectangle with zero/negative dimensions. When false (default), returns <see cref="Enclave.Common.Drawing.Rectangle.Empty"/> instead.
     /// </param>
     /// <returns>A <see cref="Enclave.Common.Drawing.Rectangle"/> that bounds both the current rectangle and the specified rectangle. If the resulting union has zero
-    /// or negative width or height, and invalid recangle cannot be returned, then an empty rectangle is returned.
+    /// or negative w or h, and invalid recangle cannot be returned, then an empty rectangle is returned.
     /// </returns>
     public readonly Rectangle Union(Rectangle other, bool canBeInvalid = false)
     {
         int left = Min(X, other.X);
         int top = Min(Y, other.Y);
-        int width = Max(Right, other.Right) - left + 1;
-        int height = Max(Bottom, other.Bottom) - top + 1;
+        int w = Max(Right, other.Right) - left + 1;
+        int h = Max(Bottom, other.Bottom) - top + 1;
 
-        return canBeInvalid || (width > 0 && height > 0) 
-            ? new Rectangle(left, top, width, height)
+        return canBeInvalid || (w > 0 && h > 0) 
+            ? new Rectangle(left, top, w, h)
             : Empty;
     }
 
@@ -183,9 +183,9 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     /// <summary>
     /// Determines whether the specified point is contained within this rectangle.
     /// </summary>
-    /// <param name="x">The x-coordinate of the point to test for containment.</param>
-    /// <param name="y">The y-coordinate of the point to test for containment.</param>
-    /// <returns>true if the point defined by x and y is within the bounds of this rectangle; otherwise, false.</returns>
+    /// <param name="x">The left-coordinate of the point to test for containment.</param>
+    /// <param name="y">The top-coordinate of the point to test for containment.</param>
+    /// <returns>true if the point defined by left and top is within the bounds of this rectangle; otherwise, false.</returns>
     public readonly bool Contains(int x, int y)
         => X <= x && x <= Right && Y <= y && y <= Bottom;
 
@@ -204,8 +204,8 @@ public readonly record struct Rectangle(int x, int y, int width, int height)
     //     string.
     //
     // Returns:
-    //     A string that contains the position, width, and height of this Enclave.Rectangle
-    //     structure ¾ for example, {left=20, top=20, width=100, height=50}.
+    //     A string that contains the position, w, and h of this Enclave.Rectangle
+    //     structure ¾ for example, {left=20, top=20, w=100, h=50}.
     public override readonly string ToString() => $"({Left}, {Top}, {Width}, {Height})";
 
     public static Rectangle operator +(Rectangle r, Point p) => r.Offset(p);

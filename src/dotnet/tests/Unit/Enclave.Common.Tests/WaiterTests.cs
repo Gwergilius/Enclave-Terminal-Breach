@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Extensions;
+using Enclave.Common.Extensions;
 using Enclave.Common.Helpers;
 using Enclave.Common.Test.Core;
 
@@ -59,9 +59,10 @@ public class WaiterTests
         var cts = new CancellationTokenSource();
 
         // Act
-        await waiter.SleepAsync(100.Millisecs(), cts.Token);
+        var act = () => waiter.SleepAsync(100.Millisecs(), cts.Token);
 
-        // Assert: completes without throwing
+        // Assert: completes without rethrowing TaskCanceledException
+        await act.ShouldNotThrowAsync();
     }
 
     [Fact]
@@ -78,11 +79,15 @@ public class WaiterTests
         var sleepTask = waiter.SleepAsync(10.Seconds(), cts.Token);
 
         // Act
-        await Task.Delay(30, CancellationToken.None);
-        cts.Cancel();
-        await sleepTask;
+        var act = async () =>
+        {
+            await Task.Delay(30, CancellationToken.None);
+            cts.Cancel();
+            await sleepTask;
+        };
 
-        // Assert: task completes without throwing
+        // Assert: completes without throwing when token is cancelled
+        await act.ShouldNotThrowAsync();
     }
 
     [Theory]

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Enclave.Common.Helpers;
@@ -106,7 +106,7 @@ public static class TimeSpanExtensions
     /// <remarks>
     /// Note, that <paramref name="dateFrom"/> is represented as string. It could be useful when the method is called from a configuration section.
     /// </remarks>
-    public static int ElapsedDays(this DateTime now, string dateFrom) => now.ElapsedDays(DateTime.Parse(dateFrom));
+    public static int ElapsedDays(this DateTime now, string dateFrom) => now.ElapsedDays(DateTime.Parse(dateFrom, CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Calculate the elapsed days between two dates
@@ -118,7 +118,10 @@ public static class TimeSpanExtensions
     #endregion ElapsedDays
 
     #region ParseTimeUnit
-    private static readonly Regex _timeUnitPattern = new($@"^(?<{ValueGroup}>[0-9]*\.?[0-9]*)\s*(?<{UnitGroup}>ms|sec|s|min|m|h)$", RegexOptions.Compiled);
+    private static readonly Regex _timeUnitPattern = new(
+        $@"^(?<{ValueGroup}>[0-9]*\.?[0-9]*)\s*(?<{UnitGroup}>ms|sec|s|min|m|h)$",
+        RegexOptions.Compiled,
+        matchTimeout: 1.Seconds()); //Defense against regex DoS with untrusted input; pattern is simple and should never take more than a second to match
 
     private static readonly Dictionary<string, Func<double, TimeSpan>> _timeConverters = new()
     {
