@@ -335,5 +335,5 @@ ASALocalRun/
 
 # Project: Logs folder and COMMIT_MSG.txt suggestions are never under version control (Logs or logs, any path)
 [Ll]ogs/
-COMMIT_MSG.txt
+COMMIT_MSG*.txt
 PR_DESCRIPTION.md

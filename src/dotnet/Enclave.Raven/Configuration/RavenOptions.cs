@@ -3,7 +3,7 @@ using Enclave.Echelon.Core.Services;
 namespace Enclave.Raven.Configuration;
 
 /// <summary>
-/// Configuration options for the RAVEN application (maps to "Raven" section in appsettings.json).
+/// Configuration options for the RAVEN application (maps to "System" section in appsettings.json).
 /// Also implements <see cref="ISolverConfiguration"/> so the solver factory can resolve the intelligence level from DI.
 /// </summary>
 /// <remarks>See docs/Architecture/RAVEN-Requirements.md for property descriptions and defaults.</remarks>

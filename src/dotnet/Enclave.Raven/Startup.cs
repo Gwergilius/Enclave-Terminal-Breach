@@ -24,11 +24,17 @@ public static class Startup
     /// <param name="configuration">Application configuration (command-line overrides + appsettings.json + defaults).</param>
     public static IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        var ravenSection = configuration.GetSection("Raven");
+        var systemSection = configuration.GetSection("System");
         var options = new RavenOptions();
-        ravenSection.Bind(options);
+        systemSection.Bind(options);
+
+        var timingSection = configuration.GetSection("Platform:Timing");
+        var timingOptions = new TimingOptions();
+        timingSection.Bind(timingOptions);
 
         services.AddSingleton(options);
+        services.AddSingleton(timingOptions);
+        services.AddSingleton<ITimingOptions>(sp => sp.GetRequiredService<TimingOptions>());
         services.AddSingleton<IConfiguration>(configuration);
         services.AddSingleton<IProductInfo>(_ => ProductInfo.GetCurrent());
 
@@ -43,7 +49,9 @@ public static class Startup
         services.AddSingleton(_ => PhosphorThemeFactory.Create("green"));
         services.AddSingleton<AnsiPhosphorCanvas>();
         services.AddSingleton<IPhosphorCanvas>(sp => sp.GetRequiredService<AnsiPhosphorCanvas>());
-        services.AddSingleton<IPhosphorWriter>(sp => sp.GetRequiredService<AnsiPhosphorCanvas>());
+        services.AddSingleton<IPhosphorWriter>(sp => new PhosphorTypewriter(
+            sp.GetRequiredService<AnsiPhosphorCanvas>(),
+            sp.GetRequiredService<ITimingOptions>()));
 
         // Keyboard: default handler delegates to IConsoleIO (ReadKey, ReadLine).
         services.AddSingleton<IPhosphorReader, ConsoleKeyboardHandler>();

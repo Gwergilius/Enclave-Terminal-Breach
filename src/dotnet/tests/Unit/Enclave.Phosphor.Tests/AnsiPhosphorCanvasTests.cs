@@ -175,15 +175,19 @@ public sealed class AnsiPhosphorCanvasTests
     }
 
     [Fact]
-    public void Write_NullText_ThrowsArgumentNullException()
+    public void Write_Null_DoesNothing()
     {
         // Arrange
         var theme = PhosphorThemeFactory.Create("green");
         var console = new TestableConsoleIO();
         var canvas = CreateCanvas(theme, console);
+        canvas.Initialize("Test");
 
-        // Act & Assert
-        Should.Throw<ArgumentNullException>(() => canvas.Write(null!));
+        // Act
+        canvas.Write(null!);
+
+        // Assert: no throw, no output
+        console.Written.ShouldBeEmpty();
     }
 
     [Fact]

@@ -32,7 +32,12 @@ internal sealed class TestableConsoleIO : IConsoleIO
     public Encoding OutputEncoding { get; set; } = Encoding.UTF8;
 
     /// <inheritdoc />
-    public void Write(string? value) => _written.Add(value ?? string.Empty);
+    public void Write(string? value)
+    {
+        if (value is null)
+            return;
+        _written.Add(value);
+    }
 
     /// <inheritdoc />
     public void WriteLine(string? value = null) => _written.Add(value ?? string.Empty);

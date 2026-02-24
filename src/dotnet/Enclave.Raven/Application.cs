@@ -15,6 +15,7 @@ namespace Enclave.Raven;
 [ExcludeFromCodeCoverage(Justification = "Orchestration only; phases and I/O are tested separately.")]
 public sealed class Application(
     IPhosphorCanvas canvas,
+    IPhosphorWriter writer,
     ICurrentScope currentScope,
     INavigationService navigation,
     IProductInfo productInfo) : IPhase
@@ -61,6 +62,8 @@ public sealed class Application(
         }
         finally
         {
+            if (writer is IDisposable writerDisposable)
+                writerDisposable.Dispose();
             canvas.Dispose();
         }
     }

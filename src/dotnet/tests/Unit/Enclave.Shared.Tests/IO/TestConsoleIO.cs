@@ -41,7 +41,9 @@ internal sealed class TestConsoleIO : IConsoleIO
 
     public void Write(string? value)
     {
-        _written.Add(value ?? "");
+        if (value is null)
+            return;
+        _written.Add(value);
     }
 
     public void WriteLine(string? value = null)

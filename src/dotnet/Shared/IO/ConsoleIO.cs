@@ -27,7 +27,12 @@ public sealed class ConsoleIO : IConsoleIO
     }
 
     /// <inheritdoc />
-    public void Write(string? value) => Console.Write(value);
+    public void Write(string? value)
+    {
+        if (value is null)
+            return;
+        Console.Write(value);
+    }
 
     /// <inheritdoc />
     public void WriteLine(string? value = null) => Console.WriteLine(value);

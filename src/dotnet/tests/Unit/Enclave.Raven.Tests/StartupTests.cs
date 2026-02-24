@@ -106,7 +106,8 @@ public class StartupTests
 
         canvas.ShouldNotBeNull();
         writer.ShouldNotBeNull();
-        canvas.ShouldBeSameAs(writer);
+        canvas.ShouldBeOfType<AnsiPhosphorCanvas>();
+        writer.ShouldBeOfType<PhosphorTypewriter>();
     }
 
     [Fact]

@@ -9,6 +9,18 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-02-24
+
+### Added
+- **Typewriter effect** – Output goes through **PhosphorTypewriter** (Enclave.Phosphor 1.1.0): character-by-character delay with configurable **CharDelay** and **LineDelay** from `Platform:Timing`. StartupBadge and all phases use the typewriter for terminal output.
+- **Platform.Timing configuration** – **TimingOptions** (implements **ITimingOptions**) bound from `Platform:Timing` in appsettings.json; delays parsed via **TimeSpanExtensions.ParseTimeUnit** (e.g. `"10 ms"`, `"150 ms"`). Registered as singleton for DI.
+- **Application shutdown** – **Application** disposes **IPhosphorWriter** when it implements **IDisposable** (PhosphorTypewriter), then disposes the canvas, so the typewriter background loop is stopped cleanly.
+
+### Changed
+- **Configuration** – System options (intelligence, startup) now bind from the `"System"` section in appsettings.json instead of `"Raven"`. RavenOptions and RavenStartupOptions documentation updated accordingly.
+- **IPhosphorWriter registration** – Resolves to **PhosphorTypewriter** wrapping **AnsiPhosphorCanvas**; **IPhosphorCanvas** still resolves to the canvas. StartupTests updated (canvas and writer are different types).
+- **IConsoleWriter.Write(string?)** – All implementations treat `null` as no-op (no exception, no output): AnsiPhosphorCanvas, PhosphorTypewriter, ConsoleIO, and test doubles. Aligns with nullable parameter intent.
+
 ## [1.3.3] - 2026-02-24
 
 Refactor for **Enclave.Shared 1.0.0** compatibility and internal cleanup. No new features or breaking changes from RAVEN’s perspective; RAVEN requires Shared ≥ 1.0.0.
@@ -49,7 +61,8 @@ Refactor for **Enclave.Shared 1.0.0** compatibility and internal cleanup. No new
 
 ---
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.3...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.0...HEAD
+[1.4.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.3...raven-v1.4.0
 [1.3.3]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.2...raven-v1.3.3
 [1.3.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.1...raven-v1.3.2
 [1.3.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.0...raven-v1.3.1

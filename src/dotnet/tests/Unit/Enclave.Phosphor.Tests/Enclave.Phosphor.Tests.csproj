@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Enclave.Common.csproj" />
     <ProjectReference Include="..\..\..\Phosphor\Enclave.Phosphor.csproj" />
     <ProjectReference Include="..\..\Common.Test.Core\Common.Test.Core.csproj" />
   </ItemGroup>

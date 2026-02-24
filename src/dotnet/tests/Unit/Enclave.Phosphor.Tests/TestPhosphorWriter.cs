@@ -1,4 +1,4 @@
-﻿namespace Enclave.Phosphor.Tests;
+namespace Enclave.Phosphor.Tests;
 
 /// <summary>
 /// Test double for <see cref="IPhosphorWriter"/> that records all Write/WriteLine calls.
@@ -17,10 +17,11 @@ public sealed class TestPhosphorWriter : IPhosphorWriter
     public CharStyle Style { get; set; } = CharStyle.Normal;
 
     /// <inheritdoc />
-    public void Write(string text)
+    public void Write(string? value)
     {
-        ArgumentNullException.ThrowIfNull(text);
-        _recorded.Add((text, Style));
+        if (value is null)
+            return;
+        _recorded.Add((value, Style));
     }
 
     /// <inheritdoc />

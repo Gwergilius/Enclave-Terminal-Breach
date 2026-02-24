@@ -1,7 +1,7 @@
 namespace Enclave.Raven.Configuration;
 
 /// <summary>
-/// Startup display options for RAVEN (Raven:Startup section).
+/// Startup display options for RAVEN (System:Startup section).
 /// </summary>
 public sealed class RavenStartupOptions
 {

@@ -9,8 +9,14 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-24
+
+### Added
+- **PhosphorTypewriter** – **IPhosphorWriter** decorator for typewriter-style output: characters are enqueued and sent one-by-one by a background loop. Delays from **ITimingOptions** (CharDelay for normal characters, LineDelay for `\n`); waits only the remaining time since the previous character (no extra delay if the caller already paused). Uses **Enclave.Common.Waiter** for testable delays (optional constructor parameter).
+- **ITimingOptions** – Interface for timing values (CharDelay, CharDelayFast, LineDelay, SlowDelay, OkStatusDelay, ProgressUpdate, ProgressDuration, WarningPause, FinalPause). Consumed by PhosphorTypewriter; typically bound from `Platform:Timing` in the host app (e.g. RAVEN).
+
 ### Changed
-- **AnsiPhosphorCanvas** injects `IConsoleIO` instead of using `System.Console`; fully unit testable with `TestableConsoleIO`. Phosphor references Enclave.Shared.
+- **AnsiPhosphorCanvas** – Injects `IConsoleIO` instead of using `System.Console`; fully unit testable with `TestableConsoleIO`. **Write(string?)** treats `null` as no-op (no exception). Phosphor references Enclave.Shared and Enclave.Common (Waiter).
 
 ## [1.0.0] - 2026-02-21
 
@@ -26,3 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **AnsiPhosphorCanvas** – ANSI escape sequence implementation for real terminals.
 - **PhosphorInputLoop** – Console.ReadKey-based implementation.
 - **Test doubles** (Enclave.Phosphor.Tests): TestPhosphorWriter, TestPhosphorInputLoop.
+
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.1.0...HEAD
+[1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.0.0...phosphor-v1.1.0
+[1.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/phosphor-v1.0.0

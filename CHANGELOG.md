@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ## [Unreleased]
 
 ### Added
+- **RAVEN 1.4.0** – Typewriter effect: output through PhosphorTypewriter (Enclave.Phosphor 1.1.0) with configurable CharDelay/LineDelay from `Platform:Timing`. System config from `"System"` section; TimingOptions/ITimingOptions from `Platform:Timing`. Application disposes typewriter on exit. IConsoleWriter.Write(null) no-op everywhere.
+- **PHOSPHOR 1.1.0** – PhosphorTypewriter (IPhosphorWriter decorator), ITimingOptions; Waiter for testable delays. AnsiPhosphorCanvas.Write(null) no-op.
 - **RAVEN 1.3.3** – Refactor for Enclave.Shared 1.0.0 compatibility and internal cleanup (PhaseRegistry scoped with IEnumerable<IPhase>, IProductInfo DI, Result pattern for GetPhase, AnsiPhosphorCanvas Style setter validation, extended unit tests). No new features or breaking changes from RAVEN’s perspective.
 - **RAVEN architecture and tests** – Phase navigation docs updated (PhaseRegistry scoped, GetPhase returns Result<IPhase>, IEnumerable<IPhase> from DI). RAVEN README and CHANGELOG reflect current structure (Services, IProductInfo, PhaseRegistry) and test coverage (CurrentScopeHolder, ExitRequest, NavigationService, PhaseRegistry, ApplicationExit, Rectangle operator, AnsiPhosphorCanvas Style).
 - **PHOSPHOR 1.0** – Console UI abstraction layer: full-screen canvas, colour themes (green, amber, white, blue), sequential `IPhosphorWriter`, keyboard input loop. Test doubles: `TestPhosphorWriter`, `TestPhosphorInputLoop`. **ColorValue** in Enclave.Common for platform-agnostic R/G/B/A colours.

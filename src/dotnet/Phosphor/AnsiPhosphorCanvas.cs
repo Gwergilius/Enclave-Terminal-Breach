@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Models;
+using Enclave.Common.Models;
 using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
@@ -87,22 +87,23 @@ public sealed class AnsiPhosphorCanvas : IPhosphorCanvas
     }
 
     /// <inheritdoc />
-    public void Write(string text)
+    public void Write(string? value)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        ArgumentNullException.ThrowIfNull(text);
+        if (value is null)
+            return;
         if (!_initialized)
             throw new InvalidOperationException("Canvas must be initialized before writing.");
         var color = _theme.Palette[Style];
         _console.SetForegroundColor(color);
-        _console.Write(text);
+        _console.Write(value);
     }
 
     /// <inheritdoc />
-    public void WriteLine(string? text = null)
+    public void WriteLine(string? value = null)
     {
-        if (text is not null)
-            Write(text);
+        if (value is not null)
+            Write(value);
         _console.WriteLine();
     }
 
