@@ -1,9 +1,8 @@
 # CD: build downloadable artifacts for SPARROW and RAVEN.
-# - On push to main: GitVersion computes the version, creates a tag (sparrow-vX.Y.Z),
-#   builds SPARROW Windows zip and creates a GitHub Release – unless the tag already exists.
-# - On tag push sparrow-v*: same SPARROW build + release (manual override / hotfix flow).
-# - On tag push raven-v*: build RAVEN Windows zip and create GitHub Release for that tag.
-# - workflow_dispatch: same as main push (manual trigger from Actions tab).
+# - On push to main / workflow_dispatch: GitVersion computes the version, creates tag raven-vX.Y.Z,
+#   builds RAVEN Windows zip and creates a GitHub Release – unless the tag already exists.
+# - On tag push raven-v*: build RAVEN from that tag and create GitHub Release.
+# - On tag push sparrow-v*: build SPARROW and create GitHub Release (manual only).
 name: CD – Release artifacts
 
 on:
@@ -22,11 +21,11 @@ env:
   DOTNET_VERSION: "10.0.x"
 
 jobs:
-  release-sparrow:
-    name: Release SPARROW (Windows)
+  release-raven:
+    name: Release RAVEN (Windows)
     runs-on: ubuntu-latest
     if: |
-      startsWith(github.ref, 'refs/tags/sparrow-v') ||
+      startsWith(github.ref, 'refs/tags/raven-v') ||
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       github.event_name == 'workflow_dispatch'
 
@@ -57,16 +56,14 @@ jobs:
       - name: Resolve version and tag name
         id: version
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/sparrow-v* ]]; then
-            # Tag push: derive version directly from the tag
-            VER="${GITHUB_REF#refs/tags/sparrow-v}"
+          if [[ "${{ github.ref }}" == refs/tags/raven-v* ]]; then
+            VER="${GITHUB_REF#refs/tags/raven-v}"
           else
-            # Main push / manual: use GitVersion output (e.g. 1.2.0)
             VER="${{ steps.gitversion.outputs.majorMinorPatch }}"
           fi
           echo "version=$VER" >> $GITHUB_OUTPUT
-          echo "tag=sparrow-v${VER}" >> $GITHUB_OUTPUT
-          echo "Resolved version: $VER (tag: sparrow-v${VER})"
+          echo "tag=raven-v${VER}" >> $GITHUB_OUTPUT
+          echo "Resolved RAVEN version: $VER (tag: raven-v${VER})"
 
       # --- Tag creation (only on main push / manual) ---
 
@@ -95,32 +92,32 @@ jobs:
           git push origin "$TAG"
           echo "Created and pushed tag $TAG"
 
-      # --- Build & package (skip if tag already existed) ---
+      # --- Build & package ---
 
-      - name: Publish SPARROW (win-x64, self-contained)
+      - name: Publish RAVEN (win-x64, self-contained)
         if: |
-          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          startsWith(github.ref, 'refs/tags/raven-v') ||
           steps.tag_check.outputs.exists == 'false'
         run: |
-          dotnet publish src/dotnet/Enclave.Sparrow/Enclave.Sparrow.csproj \
+          dotnet publish src/dotnet/Enclave.Raven/Enclave.Raven.csproj \
             -c Release -r win-x64 --self-contained \
-            -o dist/sparrow-win-x64
+            -o dist/raven-win-x64
 
       - name: Install zip
         if: |
-          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          startsWith(github.ref, 'refs/tags/raven-v') ||
           steps.tag_check.outputs.exists == 'false'
         run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Create zip
         id: zip
         if: |
-          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          startsWith(github.ref, 'refs/tags/raven-v') ||
           steps.tag_check.outputs.exists == 'false'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          ZIP_NAME="Enclave-SPARROW-v${VERSION}-win-x64.zip"
-          cd dist && zip -r "../$ZIP_NAME" sparrow-win-x64 && cd ..
+          ZIP_NAME="Enclave-RAVEN-v${VERSION}-win-x64.zip"
+          cd dist && zip -r "../$ZIP_NAME" raven-win-x64 && cd ..
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
           echo "Created $ZIP_NAME"
 
@@ -128,22 +125,22 @@ jobs:
 
       - name: Create GitHub Release
         if: |
-          startsWith(github.ref, 'refs/tags/sparrow-v') ||
+          startsWith(github.ref, 'refs/tags/raven-v') ||
           steps.tag_check.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: SPARROW ${{ steps.version.outputs.version }}
+          name: RAVEN ${{ steps.version.outputs.version }}
           body: |
             See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           files: ${{ steps.zip.outputs.zip_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  release-raven:
-    name: Release RAVEN (Windows)
+  release-sparrow:
+    name: Release SPARROW (Windows)
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/raven-v')
+    if: startsWith(github.ref, 'refs/tags/sparrow-v')
 
     steps:
       - name: Checkout
@@ -159,16 +156,16 @@ jobs:
       - name: Resolve version from tag
         id: version
         run: |
-          VER="${GITHUB_REF#refs/tags/raven-v}"
+          VER="${GITHUB_REF#refs/tags/sparrow-v}"
           echo "version=$VER" >> $GITHUB_OUTPUT
-          echo "tag=raven-v${VER}" >> $GITHUB_OUTPUT
-          echo "Resolved RAVEN version: $VER (tag: raven-v${VER})"
+          echo "tag=sparrow-v${VER}" >> $GITHUB_OUTPUT
+          echo "Resolved SPARROW version: $VER (tag: sparrow-v${VER})"
 
-      - name: Publish RAVEN (win-x64, self-contained)
+      - name: Publish SPARROW (win-x64, self-contained)
         run: |
-          dotnet publish src/dotnet/Enclave.Raven/Enclave.Raven.csproj \
+          dotnet publish src/dotnet/Enclave.Sparrow/Enclave.Sparrow.csproj \
             -c Release -r win-x64 --self-contained \
-            -o dist/raven-win-x64
+            -o dist/sparrow-win-x64
 
       - name: Install zip
         run: sudo apt-get update && sudo apt-get install -y zip
@@ -177,8 +174,8 @@ jobs:
         id: zip
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          ZIP_NAME="Enclave-RAVEN-v${VERSION}-win-x64.zip"
-          cd dist && zip -r "../$ZIP_NAME" raven-win-x64 && cd ..
+          ZIP_NAME="Enclave-SPARROW-v${VERSION}-win-x64.zip"
+          cd dist && zip -r "../$ZIP_NAME" sparrow-win-x64 && cd ..
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
           echo "Created $ZIP_NAME"
 
@@ -186,7 +183,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: RAVEN ${{ steps.version.outputs.version }}
+          name: SPARROW ${{ steps.version.outputs.version }}
           body: |
             See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           files: ${{ steps.zip.outputs.zip_name }}

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using System.Text;
 using Enclave.Common.Models;
 
@@ -8,6 +9,7 @@ namespace Enclave.Shared.IO;
 /// Standard console implementation: <see cref="Console"/> stdin/stdout.
 /// Semantic display operations (cursor, colours, clear) are implemented via ANSI escape sequences.
 /// </summary>
+[SupportedOSPlatform("windows")]
 [ExcludeFromCodeCoverage(Justification = "Thin wrapper around Console.Write/ReadLine; testing would only verify BCL behavior.")]
 public sealed class ConsoleIO : IConsoleIO
 {
