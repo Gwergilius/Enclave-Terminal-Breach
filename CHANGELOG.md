@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ## [Unreleased]
 
 ### Added
+- **PHOSPHOR component architecture (feature groundwork)** – New architecture documentation for component-tree based terminal composition: `LayerComponent` vs `ContentComponent`, `LayerWriter` clipping model, component rendering contract, and MVVM orchestration boundaries (state/timing in ViewModel, rendering in components). This is the design baseline for upcoming PHOSPHOR feature implementation and intended minor release scope.
 - **RAVEN 1.4.0** – Typewriter effect: output through PhosphorTypewriter (Enclave.Phosphor 1.1.0) with configurable CharDelay/LineDelay from `Platform:Timing`. System config from `"System"` section; TimingOptions/ITimingOptions from `Platform:Timing`. Application disposes typewriter on exit. IConsoleWriter.Write(null) no-op everywhere.
 - **PHOSPHOR 1.1.0** – PhosphorTypewriter (IPhosphorWriter decorator), ITimingOptions; Waiter for testable delays. AnsiPhosphorCanvas.Write(null) no-op.
 - **RAVEN 1.3.3** – Refactor for Enclave.Shared 1.0.0 compatibility and internal cleanup (PhaseRegistry scoped with IEnumerable<IPhase>, IProductInfo DI, Result pattern for GetPhase, AnsiPhosphorCanvas Style setter validation, extended unit tests). No new features or breaking changes from RAVEN’s perspective.
@@ -20,6 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Changed
 - **IConsoleIO** extended for PHOSPHOR: `Title`, `OutputEncoding`, `GetDimensions()`, `Flush()`. **ConsoleIO** and **TestConsoleIO** implement new members. **AnsiPhosphorCanvas** uses `IConsoleIO` instead of `System.Console` for full unit testability. Phosphor references Enclave.Shared.
+- **Architecture indexes (EN/HU)** – Added PHOSPHOR component architecture entries to `docs/Architecture/README.md` and `docs/Architecture/README.hu.md`.
 
 ## [1.2.0] - 2026-02-16
 

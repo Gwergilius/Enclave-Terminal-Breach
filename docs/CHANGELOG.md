@@ -10,10 +10,12 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ## [Unreleased]
 
 ### Added
+- **PHOSPHOR component architecture docs (EN + HU)** – Added `docs/Architecture/PHOSPHOR-component-architecture.md` and `docs/Architecture/PHOSPHOR-component-architecture.hu.md`. The new document defines the component tree model (`LayerComponent` vs `ContentComponent`), `LayerWriter` clipping and relative coordinates, lifecycle boundaries, invalidate/render loop, MVVM responsibility matrix, and phased implementation milestones.
 - **Enclave.Shared 1.0.0 compatibility** – Documented that RAVEN and SPARROW require Enclave.Shared ≥ 1.0.0 (breaking change). Shared README and CHANGELOG; Raven and Sparrow README Dependencies; Project Structure reference matrix note with links.
 - **RAVEN 1.4.0 / PHOSPHOR 1.1.0** – Raven README: Configuration (System, Platform:Timing), Startup (PhosphorTypewriter, TimingOptions), Dependencies (Phosphor ≥ 1.1.0, ITimingOptions), Tests (TimingOptions, PhosphorTypewriter, Waiter). Root CHANGELOG and src/dotnet README updated for typewriter and 1.4.x.
 
 ### Changed
+- **Architecture index docs (EN + HU)** – Updated `docs/Architecture/README.md` and `docs/Architecture/README.hu.md` to include links for PHOSPHOR component architecture.
 - **Enclave.Raven CHANGELOG** – Released [1.4.0] (2026-02-24): typewriter effect, Platform.Timing, System config, IConsoleWriter null no-op. Version links unchanged (Unreleased, 1.4.0).
 - **Enclave.Phosphor CHANGELOG** – Released [1.1.0]: PhosphorTypewriter, ITimingOptions, Waiter, Write(null) no-op.
 - **Enclave.Raven CHANGELOG** – Released [1.3.3] (2026-02-24): refactor for Shared 1.0.0 compatibility, no new features or breaking changes. Version links updated (Unreleased, 1.3.3).

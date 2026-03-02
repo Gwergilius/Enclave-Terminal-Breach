@@ -29,6 +29,10 @@ Technical architecture, design decisions, and system specifications.
 
 - [PHOSPHOR Requirements] - PHOSPHOR console UI abstraction layer (versions 1.0–1.2)
 
+## Subsystem Architecture
+
+- [PHOSPHOR Component Architecture] - Component tree model, LayerWriter clipping, and MVVM orchestration for terminal UI composition
+
 ## Platform Services
 
 - [Platform Services Summary] - Cross-platform service abstractions
@@ -56,6 +60,7 @@ These documents provide:
 [RAVEN Requirements]: ./RAVEN-Requirements.md
 [RAVEN 2.0.0 Specification]: ./RAVEN-2.0.0-Specification.md
 [PHOSPHOR Requirements]: ./PHOSPHOR-Requirements.md
+[PHOSPHOR Component Architecture]: ./PHOSPHOR-component-architecture.md
 [Platform Services Summary]: ./PlatformServicesSummary.md
 [Configuration Infrastructure]: ./ConfigurationInfrastructureSummary.md
 [ColorValue Design]: ./ColorValue-Design-Decision.md
