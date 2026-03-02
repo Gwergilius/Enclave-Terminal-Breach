@@ -5,10 +5,10 @@
     <RootNamespace>Enclave.Echelon.Core</RootNamespace>
     <AssemblyName>Enclave.Echelon.Core</AssemblyName>
     <Description>Core business logic for Enclave Terminal Breach (Password Solver, Password Repository, etc.).</Description>
-    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" PrivateAssets="All" />
     <PackageReference Include="FluentResults" />
     <PackageReference Include="FluentValidation" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 using Enclave.Common.Extensions;
 using Enclave.Echelon.Core.Models;
 using Enclave.Echelon.Core.Services;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace Enclave.Echelon.Core.Tests.Services;
 

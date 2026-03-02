@@ -1,15 +1,12 @@
-using Xunit.Sdk;
+using Xunit.v3;
 
-#pragma warning disable IDE0130 // Namespace does not match folder structure
+#pragma warning disable IDE0130
 namespace Xunit.Categories;
 
-[TraitDiscoverer(PerformanceTestDiscoverer.DiscovererTypeName, AssemblyHelper.AssemblyName)]
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 public class PerformanceTestAttribute : Attribute, ITraitAttribute
 {
-    public PerformanceTestAttribute()
-    {
-    }
+    public PerformanceTestAttribute() { }
 
     public PerformanceTestAttribute(string identifier)
     {
@@ -22,5 +19,13 @@ public class PerformanceTestAttribute : Attribute, ITraitAttribute
     }
 
     public string? Identifier { get; }
+
+    public IReadOnlyCollection<KeyValuePair<string, string>> GetTraits()
+    {
+        var traits = new List<KeyValuePair<string, string>> { new("Category", "PerformanceTest") };
+        if (!string.IsNullOrWhiteSpace(Identifier))
+            traits.Add(new("PerformanceTest", Identifier));
+        return traits;
+    }
 }
-#pragma warning restore IDE0130 // Namespace does not match folder structure
+#pragma warning restore IDE0130

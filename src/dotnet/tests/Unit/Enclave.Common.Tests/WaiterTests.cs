@@ -1,6 +1,5 @@
-using Enclave.Common.Extensions;
+﻿using Enclave.Common.Extensions;
 using Enclave.Common.Helpers;
-using Enclave.Common.Test.Core;
 
 namespace Enclave.Common.Tests;
 

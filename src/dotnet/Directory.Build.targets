@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    GitVersion.MsBuild passes MSBuildProjectDirectory as the repository path, but Q:\ is a
+    subst drive; LibGit2Sharp cannot traverse subst mappings and cannot find .git when walking
+    up from a project subdirectory. Override RunGitVersion to resolve the real git root via the
+    git CLI, and supply the per-component GitVersion.yml configuration file.
+
+    Directory.Build.targets is imported after nuget.g.targets (see Microsoft.Common.targets
+    lines 42 and 60), so this target definition overrides the one from GitVersion.MsBuild.
+  -->
+  <Target Name="RunGitVersion" Condition="'$(DisableGitVersionTask)' == 'false'">
+    <Exec Command="git -C &quot;$(MSBuildProjectDirectory)&quot; rev-parse --show-toplevel"
+          ConsoleToMsBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitRealRoot" />
+    </Exec>
+    <PropertyGroup>
+      <_GitRealRoot>$(_GitRealRoot.Trim())</_GitRealRoot>
+      <_GitVersionConfigArg Condition="Exists('$(MSBuildProjectDirectory)GitVersion.yml')">-config &quot;$(MSBuildProjectDirectory)GitVersion.yml&quot;</_GitVersionConfigArg>
+    </PropertyGroup>
+    <Exec Command="$(GitVersionFileExe) &quot;$(_GitRealRoot)&quot; $(_GitVersionConfigArg) $(GitVersion_ToolArgments)" />
+  </Target>
+</Project>

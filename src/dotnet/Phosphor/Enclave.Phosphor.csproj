@@ -5,8 +5,11 @@
     <RootNamespace>Enclave.Phosphor</RootNamespace>
     <AssemblyName>Enclave.Phosphor</AssemblyName>
     <Description>PHOSPHOR – console UI abstraction layer for the ECHELON Terminal Breach System (full-screen canvas, colour themes, keyboard input).</Description>
-    <Version>1.1.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" PrivateAssets="All" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Enclave.Common.csproj" />
