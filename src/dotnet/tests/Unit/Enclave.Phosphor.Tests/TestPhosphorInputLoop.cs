@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 
 namespace Enclave.Phosphor.Tests;
 
@@ -15,6 +15,32 @@ public sealed class TestPhosphorInputLoop : IPhosphorInputLoop
     {
         ArgumentNullException.ThrowIfNull(handler);
         _handlers.Add(handler);
+    }
+
+    /// <inheritdoc />
+    public ConsoleKeyInfo ReadKey(CancellationToken ct)
+    {
+        ConsoleKeyInfo? key;
+        try
+        {
+            key = _keyQueue.Take(ct);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+
+        return key ?? throw new InvalidOperationException("Stop sentinel received.");
+    }
+
+    /// <inheritdoc />
+    public void Dispatch(ConsoleKeyInfo key)
+    {
+        foreach (var handler in _handlers)
+        {
+            if (handler.OnKeyPressed(key))
+                break;
+        }
     }
 
     /// <inheritdoc />
@@ -35,11 +61,7 @@ public sealed class TestPhosphorInputLoop : IPhosphorInputLoop
             if (key is null)
                 break; // Sentinel for Stop
 
-            foreach (var handler in _handlers)
-            {
-                if (handler.OnKeyPressed(key.Value))
-                    break;
-            }
+            Dispatch(key.Value);
         }
     }
 
@@ -49,17 +71,12 @@ public sealed class TestPhosphorInputLoop : IPhosphorInputLoop
         _keyQueue.Add(null);
     }
 
-    /// <summary>
-    /// Injects a key press to simulate user input. Call from tests.
-    /// </summary>
-    /// <param name="key">The key to simulate.</param>
+    /// <summary>Injects a key press to simulate user input.</summary>
     public void InjectKey(ConsoleKeyInfo key)
     {
         _keyQueue.Add(key);
     }
 
-    /// <summary>
-    /// Disposes the underlying queue. Call when done with the test.
-    /// </summary>
+    /// <summary>Disposes the underlying queue.</summary>
     public void Dispose() => _keyQueue.Dispose();
 }

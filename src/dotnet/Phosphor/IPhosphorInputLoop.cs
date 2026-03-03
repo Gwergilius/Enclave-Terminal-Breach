@@ -1,18 +1,29 @@
-﻿namespace Enclave.Phosphor;
+namespace Enclave.Phosphor;
 
 /// <summary>
-/// Polling-based keyboard input loop. Registers handlers and dispatches key events.
+/// Keyboard input loop. Registers handlers and dispatches key events.
 /// </summary>
 public interface IPhosphorInputLoop
 {
     /// <summary>Registers a keyboard handler. Handlers are called in registration order.</summary>
-    /// <param name="handler">Handler to register.</param>
     void Register(IPhosphorReader handler);
 
     /// <summary>
-    /// Starts the blocking input loop. Returns when <see cref="Stop"/> is called.
+    /// Blocks until a key is available, then returns it.
+    /// Throws <see cref="OperationCanceledException"/> if <paramref name="ct"/> is cancelled.
     /// </summary>
-    /// <param name="cancellationToken">Cancellation token for graceful shutdown (e.g. Ctrl+C).</param>
+    ConsoleKeyInfo ReadKey(CancellationToken ct);
+
+    /// <summary>
+    /// Dispatches <paramref name="key"/> to registered handlers in registration order.
+    /// Stops at the first handler that returns <c>true</c> (key consumed).
+    /// </summary>
+    void Dispatch(ConsoleKeyInfo key);
+
+    /// <summary>
+    /// Starts the blocking input loop. Returns when <see cref="Stop"/> is called or
+    /// <paramref name="cancellationToken"/> is cancelled.
+    /// </summary>
     void Run(CancellationToken cancellationToken = default);
 
     /// <summary>Signals the input loop to exit cleanly.</summary>

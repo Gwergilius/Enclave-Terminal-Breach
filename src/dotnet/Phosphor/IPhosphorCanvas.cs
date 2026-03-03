@@ -6,7 +6,9 @@ namespace Enclave.Phosphor;
 /// </summary>
 /// <remarks>
 /// The canvas instance also implements <see cref="IPhosphorWriter"/>; DI resolves both from the same singleton.
+/// This sequential-rendering API is superseded by <see cref="IVirtualScreen"/> in PHOSPHOR 2.0.
 /// </remarks>
+[Obsolete("IPhosphorCanvas uses sequential rendering and is superseded by IVirtualScreen in PHOSPHOR 2.0.", error: false)]
 public interface IPhosphorCanvas : IPhosphorWriter, IDisposable
 {
     /// <summary>

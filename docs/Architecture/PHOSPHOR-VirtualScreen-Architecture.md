@@ -457,19 +457,21 @@ The virtual screen itself (`IVirtualScreen`, `Layer`, `VirtualCell`) is in `Encl
 
 ---
 
-## Implementation Checklist (PHOSPHOR 1.1)
+## Implementation Checklist (PHOSPHOR 2.0)
 
-- [ ] `VirtualCell` record in `Enclave.Common.Drawing`
-- [ ] `Layer` class in `Enclave.Phosphor`
-- [ ] `IVirtualScreen` + `VirtualScreen` implementation
-- [ ] `DirtyRegionTracker` (internal, used by `VirtualScreen`)
-- [ ] `Compositor` with Recompose → Diff → Emit pipeline
-- [ ] `IPhosphorCursor` + `AnsiPhosphorCursor` (ANSI escape for cursor positioning)
-- [ ] `PhosphorRenderLoop` replacing the sequential render approach
-- [ ] `FakeVirtualScreen` test double in `Enclave.Phosphor.Tests`
-- [ ] Unit tests for `DirtyRegionTracker` merge logic
-- [ ] Unit tests for `Compositor` (recompose correctness, diff minimality)
-- [ ] Integration test: popup show/close restores background layer
+- [x] `VirtualCell` record in `Enclave.Common.Drawing`
+- [x] `Layer` class in `Enclave.Phosphor`
+- [x] `IVirtualScreen` + `VirtualScreen` implementation
+- [x] `DirtyRegionTracker` (internal, used by `VirtualScreen`)
+- [x] `Compositor` with Recompose → Diff → Emit pipeline
+- [x] `IPhosphorCursor` + `AnsiPhosphorCursor` (ANSI escape for cursor positioning)
+- [x] `PhosphorRenderLoop` replacing the sequential render approach
+- [x] `FakeVirtualScreen` test double in `Enclave.Phosphor.Tests`
+- [x] Unit tests for `DirtyRegionTracker` merge logic
+- [x] Unit tests for `Compositor` (recompose correctness, diff minimality)
+- [ ] Integration test: popup show/close restores background layer *(deferred to PHOSPHOR 2.1)*
+
+> For detailed implementation decisions and rationale, see [PHOSPHOR 2.0 Implementation Decisions](../Implementation/PHOSPHOR_2_VIRTUAL_SCREEN.md).
 
 ---
 

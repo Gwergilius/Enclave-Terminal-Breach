@@ -1,5 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
-using Enclave.Shared.IO;
+﻿using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
 
@@ -9,7 +8,7 @@ namespace Enclave.Phosphor;
 public sealed class PhosphorInputLoop : IPhosphorInputLoop
 {
     private readonly IConsoleIO _console;
-    private readonly List<IPhosphorReader> _handlers = new();
+    private readonly List<IPhosphorReader> _handlers = [];
 
     [SuppressMessage("SonarAnalyzer.CSharp", "S1450", Justification = "Shared between Run() and Stop() for cooperative cancellation; cannot be local.")]
     private volatile bool _stopRequested;
@@ -35,6 +34,35 @@ public sealed class PhosphorInputLoop : IPhosphorInputLoop
     }
 
     /// <inheritdoc />
+    /// <remarks>
+    /// Blocks until the underlying <see cref="IConsoleIO.ReadKey"/> returns, then checks
+    /// <paramref name="ct"/>. Full cancellation requires a keypress to unblock.
+    /// </remarks>
+    public ConsoleKeyInfo ReadKey(CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        var key = _console.ReadKey();
+        ct.ThrowIfCancellationRequested();
+        return key ?? throw new InvalidOperationException("ReadKey returned null — input stream closed.");
+    }
+
+    /// <inheritdoc />
+    public void Dispatch(ConsoleKeyInfo key)
+    {
+        IReadOnlyList<IPhosphorReader> snapshot;
+        lock (_handlers)
+        {
+            snapshot = _handlers.ToList();
+        }
+
+        foreach (var handler in snapshot)
+        {
+            if (handler.OnKeyPressed(key))
+                break;
+        }
+    }
+
+    /// <inheritdoc />
     public void Run(CancellationToken cancellationToken = default)
     {
         _stopRequested = false;
@@ -46,17 +74,7 @@ public sealed class PhosphorInputLoop : IPhosphorInputLoop
 
             if (cancellationToken.IsCancellationRequested) break;
 
-            IReadOnlyList<IPhosphorReader> snapshot;
-            lock (_handlers)
-            {
-                snapshot = _handlers.ToList();
-            }
-
-            foreach (var handler in snapshot)
-            {
-                if (handler.OnKeyPressed(key.Value))
-                    break;
-            }
+            Dispatch(key.Value);
         }
     }
 

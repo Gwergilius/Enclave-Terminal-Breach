@@ -7,6 +7,7 @@ namespace Enclave.Phosphor;
 /// Implementation of <see cref="IPhosphorCanvas"/> that uses <see cref="IConsoleIO"/> semantic operations only.
 /// No escape sequences here; the console implementation (e.g. <see cref="Enclave.Shared.IO.ConsoleIO"/>) translates to ANSI or other protocols.
 /// </summary>
+[Obsolete("AnsiPhosphorCanvas uses sequential rendering and is superseded by IVirtualScreen + Compositor in PHOSPHOR 2.0.", error: false)]
 public sealed class AnsiPhosphorCanvas : IPhosphorCanvas
 {
     private readonly PhosphorTheme _theme;

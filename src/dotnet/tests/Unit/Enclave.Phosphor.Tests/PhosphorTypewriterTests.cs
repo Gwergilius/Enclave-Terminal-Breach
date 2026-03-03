@@ -70,6 +70,54 @@ public class PhosphorTypewriterTests
         inner.Recorded[1].Style.ShouldBe(CharStyle.Bright);
     }
 
+    [Fact]
+    public void Style_GetterReturnsDefaultValue()
+    {
+        using var typewriter = new PhosphorTypewriter(new TestPhosphorWriter(), ZeroTiming(), NoWaitWaiter());
+
+        typewriter.Style.ShouldBe(CharStyle.Normal);
+    }
+
+    [Fact]
+    public void Dispose_WithNoCharactersWritten_CompletesCleanly()
+    {
+        var inner = new TestPhosphorWriter();
+        var typewriter = new PhosphorTypewriter(inner, ZeroTiming(), NoWaitWaiter());
+
+        typewriter.Dispose(); // channel is empty — await foreach loop body never runs
+
+        inner.Recorded.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task Write_WhenDelayIsPositive_SleepAsyncIsCalled()
+    {
+        // The first character is always sent immediately (lastSendTime is pre-seeded to
+        // DateTime.UtcNow - CharDelay). The second character arrives before CharDelay
+        // has elapsed, so remaining > TimeSpan.Zero and SleepAsync must be called.
+        //
+        // We wait for the TCS signal before calling Dispose() to avoid a race: Dispose()
+        // calls _cts.Cancel() which causes WaitToReadAsync to throw OCE before the
+        // second character is dequeued, masking the delay path entirely.
+        var inner = new TestPhosphorWriter();
+        // RunContinuationsAsynchronously prevents a deadlock: TrySetResult() is called on the
+        // RunAsync thread inside the SleepAsync delegate. Without this flag, the test's await
+        // continuation would run inline on that same thread, reach Dispose() → GetAwaiter().GetResult(),
+        // and deadlock because _runTask can never complete while its thread is blocked.
+        var tcs   = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var trackingWaiter = new Waiter((_, _) => { tcs.TrySetResult(); return Task.CompletedTask; });
+        using var typewriter = new PhosphorTypewriter(
+            inner, new FixedCharDelayTimingOptions(TimeSpan.FromMinutes(10)), trackingWaiter);
+
+        typewriter.Write("AB");
+
+        // Block until the background loop reaches SleepAsync, then let Dispose drain cleanly.
+        await tcs.Task.WaitAsync(TimeSpan.FromSeconds(2));
+        typewriter.Dispose();
+
+        tcs.Task.IsCompletedSuccessfully.ShouldBeTrue();
+    }
+
     private sealed class ZeroTimingOptions : ITimingOptions
     {
         public TimeSpan CharDelay => TimeSpan.Zero;
@@ -81,5 +129,18 @@ public class PhosphorTypewriterTests
         public TimeSpan ProgressDuration => TimeSpan.Zero;
         public TimeSpan WarningPause => TimeSpan.Zero;
         public TimeSpan FinalPause => TimeSpan.Zero;
+    }
+
+    private sealed class FixedCharDelayTimingOptions(TimeSpan charDelay) : ITimingOptions
+    {
+        public TimeSpan CharDelay        => charDelay;
+        public TimeSpan CharDelayFast    => charDelay;
+        public TimeSpan LineDelay        => charDelay;
+        public TimeSpan SlowDelay        => TimeSpan.Zero;
+        public TimeSpan OkStatusDelay    => TimeSpan.Zero;
+        public TimeSpan ProgressUpdate   => TimeSpan.Zero;
+        public TimeSpan ProgressDuration => TimeSpan.Zero;
+        public TimeSpan WarningPause     => TimeSpan.Zero;
+        public TimeSpan FinalPause       => TimeSpan.Zero;
     }
 }

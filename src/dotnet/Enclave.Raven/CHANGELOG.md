@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-03-03
+
+### Changed
+- **Enclave.Phosphor 2.0 / Enclave.Common 2.0** – Updated dependencies. `CharStyle` import updated to `Enclave.Common.Drawing`; `IPhosphorCanvas`/`AnsiPhosphorCanvas` usage unchanged (deprecated path). No functional changes for RAVEN.
+
 ## [1.4.0] - 2026-02-24
 
 ### Added
@@ -61,7 +66,8 @@ Refactor for **Enclave.Shared 1.0.0** compatibility and internal cleanup. No new
 
 ---
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.0...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.1...HEAD
+[1.4.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.0...raven-v1.4.1
 [1.4.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.3...raven-v1.4.0
 [1.3.3]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.2...raven-v1.3.3
 [1.3.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.1...raven-v1.3.2
