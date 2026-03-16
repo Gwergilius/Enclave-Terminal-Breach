@@ -53,7 +53,8 @@ public sealed class LayerWriter(Layer layer)
                 continue;
             }
 
-            Debug.Assert(!char.IsControl(ch),
+            // Reject C0 control chars (code < space); platform-independent vs char.IsControl.
+            Debug.Assert(ch >= ' ',
                 $"Control character U+{(int)ch:X4} in LayerWriter.Write — " +
                 "only printable characters and '\\n' are supported.");
 
