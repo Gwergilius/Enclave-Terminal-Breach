@@ -97,7 +97,7 @@ jobs:
         if: always() && (steps.build.outcome == 'success' || github.event_name == 'pull_request')
         uses: gittools/actions/gitversion/setup@v4.2.0
         with:
-          versionSpec: "6.4.x"
+          versionSpec: "6.6.x"
 
       - name: Execute GitVersion
         id: gitversion

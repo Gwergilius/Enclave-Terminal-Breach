@@ -146,7 +146,7 @@ This project demonstrates:
 [jetholt-hacking]: https://jetholt.com/hacking/
 
 [Image-links]: #Image-references
-[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=Version
+[version-badge]: https://img.shields.io/github/v/tag/Gwergilius/Enclave-Terminal-Breach?filter=raven-v*&sort=semver&label=Version
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
 
 [quality-gate-status]: https://sonarcloud.io/api/project_badges/measure?project=Gwergilius_Enclave-Terminal-Breach&metric=alert_status

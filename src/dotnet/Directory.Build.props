@@ -13,7 +13,7 @@
     <NoWarn>$(NoWarn);xUnit1042;IDE0066;CA1816</NoWarn>
 
     <!-- Product Information -->
-    <!-- Product and Version are set per-project (ECHELON 2.1.7, GHOST 1.2.4, RAVEN 0.4.0) -->
+    <!-- Product is set per-project; Version is derived automatically from git tags via GitVersion.MsBuild -->
     <Authors>Gwergilius</Authors>
     <Company>Enclave Sigint Division</Company>
     <Copyright>Classified - Enclave Eyes Only</Copyright>

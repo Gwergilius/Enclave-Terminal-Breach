@@ -1,26 +1,97 @@
-# Development Environment Rules
+# Development Environment
 
-## PowerShell Version
+## Primary Tech Stack
 
-**This project uses PowerShell 7.5.4 or later**
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Runtime | .NET | 10.0 |
+| Language | C# | 14.0 |
+| Web UI | Blazor PWA | .NET 10 |
+| Mobile UI | .NET MAUI | .NET 10 |
+| Unit Testing | xUnit + Shouldly | latest stable |
+| BDD / E2E | ReqNRoll | latest stable |
+| UI Testing | Playwright | latest stable |
 
-### Requirements
+## Future / Exploratory Platforms (not yet in scope)
 
-- All PowerShell scripts and modules must be compatible with PowerShell 7+
-- Do not use older PowerShell features or cmdlets (before 7.0 version)
-- Test all scripts on PowerShell 7.5.4 before committing
+These are planned alternatives to the Blazor and MAUI variants.
+Do not generate code for these unless explicitly requested.
 
-### Module Installation
+- **React.js** – potential browser SPA alternative to GHOST/Blazor
+- **React Native** – potential mobile alternative to ECHELON/MAUI
 
-- All module installations use `CurrentUser` scope by default (no administrator privileges required)
-- The `AzureModuleHelper.psm1` module handles module installation and management
-- Scripts automatically fall back to `CurrentUser` scope if administrator privileges are not available
+## C# Language Features
 
-### Compatibility Notes
+Always use the most idiomatic C# 14 / .NET 10 features where appropriate:
 
-- PowerShell 7.5.4 is the default version on Windows and Azure Automation Accounts
-- Use `$PSVersionTable.PSVersion` to check PowerShell version
-- Ensure all cmdlets and syntax are compatible with Windows PowerShell 7.5.4
+- Primary constructors for classes and structs
+- Collection expressions (`[1, 2, 3]`)
+- `using` aliases for any type (including tuples and pointers)
+- Inline arrays
+- `nameof` in attribute constructors
+- `params` with any collection type
+
+## PowerShell
+
+**This project uses PowerShell 7.5+ for tooling scripts only.**
+
+- Scripts are for local tooling (coverage, CI helpers) — not for application logic
+- All scripts must be compatible with PowerShell 7.5+
+- Do not use Windows PowerShell (5.x) syntax or cmdlets
+
+## Installed .NET SDKs
+
+The following SDKs are installed on the developer's machine:
+
+| SDK | Path |
+|-----|------|
+| 8.0.418 | `C:\Program Files\dotnet\sdk` |
+| 10.0.103 | `C:\Program Files\dotnet\sdk` |
+
+The project targets **.NET 10** (`10.0.103`). Do not generate code or project files targeting SDK versions not listed above.
+
+## Solution Files
+
+**This project uses the `.slnx` solution format** (new XML-based format, supported by VS2026 and .NET CLI).
+
+- Always reference `Enclave.Echelon.slnx`, never `.sln`
+- Do not suggest converting to `.sln` format
+
+## Build
+
+```powershell
+cd src/dotnet
+dotnet build Enclave.Echelon.slnx
+```
+
+## IDE Workflow
+
+| Activity | Tool |
+|----------|------|
+| Architecture decisions | VS Code + Claude Code |
+| Documentation | VS Code + Claude Code |
+| Code generation | VS Code + Claude Code |
+| Build & compilation | Visual Studio 2026 Community Edition |
+| Test execution | Visual Studio 2026 Community Edition |
+| Code analysis (Roslyn, SonarCloud) | Visual Studio 2026 Community Edition |
+
+**CRITICAL: Claude Code must NEVER auto-execute builds or tests.**
+
+- Prepare the command and explain what it does
+- The user runs it manually in VS2026 or the terminal
+- If build/test output is needed for diagnosis, the user will paste or `@terminal` reference it
+
+## Solution Structure
+
+```
+src/
+  dotnet/           # Primary .NET solution
+    Enclave.Echelon.slnx
+  excel-prototype/  # VBA macros (legacy research, read-only reference)
+tools/
+  coverage/         # Code coverage tooling (SonarCloud integration)
+docs/               # Architecture, lore, and development documentation
+```
 
 ---
 alwaysApply: true

@@ -13,6 +13,9 @@ public sealed class ConsoleKeyboardHandler([NotNull] IConsoleIO console) : IPhos
     private readonly IConsoleIO _console = console;
 
     /// <inheritdoc />
+    public bool KeyAvailable => _console.KeyAvailable;
+
+    /// <inheritdoc />
     public string? ReadLine() => _console.ReadLine();
 
     /// <inheritdoc />

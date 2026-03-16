@@ -9,6 +9,16 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.2.4] - 2026-03-16
+
+### Changed
+- **Startup and Program** – Align with shared and test infrastructure changes. No functional change.
+
+## [1.2.3] - 2026-03-03
+
+### Changed
+- **Enclave.Phosphor 2.0 / Enclave.Common 2.0** – Updated dependencies. `CharStyle` import updated to `Enclave.Common.Drawing`; `IPhosphorCanvas`/`AnsiPhosphorCanvas` usage continues via the deprecated path. No functional changes for SPARROW.
+
 ## [1.2.2] - 2026-02-24
 
 ### Changed
@@ -24,6 +34,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ### Added
 - **ProjectReference** to `Enclave.Shared` for `IConsoleIO`, `ConsoleIO`, `ConsoleIntReader`, `IGameSession`, `GameSession`, `DuplicatedPassword`.
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.2...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.4...HEAD
+[1.2.4]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.3...sparrow-v1.2.4
+[1.2.3]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.2...sparrow-v1.2.3
 [1.2.2]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.1...sparrow-v1.2.2
 [1.2.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/sparrow-v1.2.0...sparrow-v1.2.1

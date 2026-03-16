@@ -8,7 +8,7 @@ The default communication language is Hungarian
 - Use the default language in chats
 - Use of the theeing (informal) cases (te, neked, etc.)
 - Friendly and direct tone
-- Think and reason in Hungarian. All intermediate reasoning, chain-of-thought, and thinking steps must be written in Hungarian so the user can follow your thought process.
+- Communicate with the user in Hungarian, including explanations, reasoning shown in responses, and all conversational text.
 
 ### Code Documentation
 - XML documentation in English

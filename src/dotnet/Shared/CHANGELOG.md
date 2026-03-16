@@ -9,6 +9,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-03-16
+
+### Added
+- **IConsoleReader** – KeyAvailable, ReadLine, ReadKey for shared read behavior (console and keyboard handler implementations).
+
+### Changed
+- **ConsoleIO** – Implements IConsoleReader members where applicable.
+- **TestConsoleIO** – Updated for IConsoleReader contract in tests.
+
 ## [1.0.0] - 2026-02-24
 
 ### Compatibility (breaking)
@@ -31,3 +40,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **Models/** – `IGameSession`, `GameSession` (moved from Enclave.Raven).
 - **Errors/** – `DuplicatedPassword` (moved from Enclave.Raven).
 - **Enclave.Shared.Tests** – `ConsoleIntReaderTests`, `TestConsoleIO`, `GameSessionTests`.
+
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/shared-v1.1.0...HEAD
+[1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/shared-v1.0.0...shared-v1.1.0
+[1.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/shared-v0.1.0...shared-v1.0.0
+[0.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/shared-v0.1.0

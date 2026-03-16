@@ -9,6 +9,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+- **StorageConfigurationTests** – Use Common.Test.Core TestBase for test fixture.
+
+## [2.0.0] - 2026-03-03
+
+### Added
+- **CharStyle** – Enum for palette slots (Background, Dark, Normal, Bright) relocated from `Enclave.Phosphor` to `Enclave.Common.Drawing`; enables cross-layer use (VirtualCell, Compositor) without a circular dependency.
+- **VirtualCell** – Readonly record struct in `Enclave.Common.Drawing` representing a single character cell: `Character` (char), `Style` (CharStyle), `IsEmpty` (`true` if `Character == '\0'`); static `Empty` (transparent) and `Space` instances.
+
 ## [1.3.0] - 2026-02-23
 
 ### Added
@@ -27,3 +36,9 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ### Added
 - **ResourceExtensions** – `GetResourceStream`, `GetResourceString`, `GetJsonResource<T>` for loading embedded resources from `Assembly` or `Type`; path normalization for manifest names (`/`, `\`, `-`).
 - **NotFoundError** – FluentResults error type for resource-not-found failures (e.g. with list of available manifest names).
+
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/common-v2.0.0...HEAD
+[2.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/common-v1.3.0...common-v2.0.0
+[1.3.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/common-v1.2.0...common-v1.3.0
+[1.2.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/common-v1.1.0...common-v1.2.0
+[1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/common-v1.1.0

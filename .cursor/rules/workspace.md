@@ -1,19 +1,22 @@
 # Workspace Structure
 
-## Workspace Location
+## Repository Root
 
-We are using the `V:\` folder as a workspace (root folder). During the communication, the folder references starting with '~' character refers to this folder. 
+The repository root is referred to as `~` in all documentation and communication.
 
-For example, when I refers to the `~/docs` folder, that means the `V:\docs` folder.
+The actual path on the developer's machine may vary (OneDrive sync, mapped drives, etc.).
+Do not hardcode absolute paths. Always use `~`-relative references in documentation.
+
+**Example:** `~/docs/Architecture` means the `docs/Architecture` folder inside the repository root.
 
 ## Git Commit Policy
 
 **CRITICAL: NEVER commit changes automatically. All commits must be done manually by the user.**
 
-- Do NOT use git commit, git add, or any git commands that modify the repository
-- Do NOT stage files for commit unless explicitly requested
-- The user will handle all git operations manually
-- You may prepare commit messages or show git status, but never execute commits
+- Do NOT use `git commit`, `git add`, or any git commands that modify the repository state
+- Do NOT stage files for commit unless explicitly requested by the user
+- You MAY prepare commit messages, show `git status`, or explain what would be committed
+- The user handles all git operations manually
 
 ---
 alwaysApply: true

@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Enclave.Phosphor;
 using Enclave.Raven.Services;
 using Enclave.Shared.Phases;
@@ -9,61 +8,53 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Enclave.Raven;
 
 /// <summary>
-/// Main application phase: initializes the terminal canvas, then runs phases in a loop by resolving the next phase from <see cref="INavigationService"/> and <see cref="IPhaseRegistry"/> until the phase is "Exit".
-/// Phases are resolved from <see cref="ICurrentScope"/> so that scope resets (e.g. before DataInput) provide fresh scoped services.
+/// Main application runner: initializes the terminal, then executes screens in a loop by resolving the next screen
+/// from <see cref="INavigationService"/> and <see cref="IViewModelRegistry"/> until navigation reaches "Exit".
+/// Screens are resolved from <see cref="ICurrentScope"/>; scope is reset before each "DataInput" navigation
+/// so that the next round gets a fresh <see cref="Enclave.Shared.Models.IGameSession"/>.
 /// </summary>
-[ExcludeFromCodeCoverage(Justification = "Orchestration only; phases and I/O are tested separately.")]
+[ExcludeFromCodeCoverage(Justification = "Orchestration only; screens and I/O are tested separately.")]
 public sealed class Application(
-    IPhosphorCanvas canvas,
-    IPhosphorWriter writer,
+    AnsiPhosphorCanvas canvas,
     ICurrentScope currentScope,
     INavigationService navigation,
-    IProductInfo productInfo) : IPhase
+    IProductInfo productInfo)
 {
-    /// <inheritdoc />
-    public string Name => "Application";
-
-    /// <inheritdoc />
-    public Result Run(params object[] args)
+    /// <summary>Runs the application until navigation reaches "Exit" or <paramref name="ct"/> is cancelled.</summary>
+    public async Task<Result> RunAsync(CancellationToken ct = default)
     {
         var title = $"{productInfo.Name} {productInfo.Version} – ENCLAVE SIGINT";
         canvas.Initialize(title);
 
         try
         {
-            var result = navigation.NavigateTo("StartupBadge");
+            navigation.NavigateTo("BootScreen");
 
-            while (result.IsSuccess)
+            while (!ct.IsCancellationRequested)
             {
-                var nextPhase = navigation.NextPhase;
-                if (string.IsNullOrEmpty(nextPhase))
+                var nextScreen = navigation.NextPhase;
+                if (string.IsNullOrEmpty(nextScreen))
+                    break;
+                if (string.Equals(nextScreen, "Exit", StringComparison.OrdinalIgnoreCase))
                     break;
 
-                var phaseRegistry = currentScope.CurrentScope.ServiceProvider.GetRequiredService<IPhaseRegistry>();
-                var getPhaseResult = phaseRegistry.GetPhase(nextPhase);
-                if (getPhaseResult.IsFailed)
-                {
-                    result = Result.Fail(getPhaseResult.Errors);
-                    break;
-                }
+                // Scope reset before DataInput ensures a fresh IGameSession for each round.
+                if (string.Equals(nextScreen, "DataInput", StringComparison.OrdinalIgnoreCase))
+                    currentScope.ResetScope();
 
-                var phase = getPhaseResult.Value;
-                var nextArgs = navigation.NextPhaseArgs?.ToArray() ?? [];
-                result = phase.Run(nextArgs);
+                var vmRegistry = currentScope.CurrentScope.ServiceProvider
+                    .GetRequiredService<IViewModelRegistry>();
+                var getVmResult = vmRegistry.GetViewModel(nextScreen);
+                if (getVmResult.IsFailed)
+                    return Result.Fail(getVmResult.Errors);
+
+                await getVmResult.Value.RunAsync(ct);
             }
 
-            if (result.IsFailed && result.Errors.Any(e => e is not ApplicationExit))
-            {
-                foreach (var error in result.Errors)
-                    canvas.WriteLine(error.Message);
-            }
-
-            return result;
+            return Result.Fail(new ApplicationExit());
         }
         finally
         {
-            if (writer is IDisposable writerDisposable)
-                writerDisposable.Dispose();
             canvas.Dispose();
         }
     }

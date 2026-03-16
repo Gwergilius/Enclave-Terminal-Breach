@@ -1,7 +1,5 @@
 ﻿using System.Threading.Channels;
-using Enclave.Common;
 using Enclave.Common.Helpers;
-using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
 
@@ -58,10 +56,7 @@ public sealed class PhosphorTypewriter : IPhosphorWriter, IDisposable
     /// <inheritdoc />
     public void WriteLine(string? value = null)
     {
-        ObjectDisposedException.ThrowIf(_disposed, this);
-        if (value is not null)
-            foreach (var c in value)
-                _channel.Writer.TryWrite((c, _style));
+        Write(value); // WriteLine is just Write followed by a newline.
         _channel.Writer.TryWrite(('\n', _style));
     }
 

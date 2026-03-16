@@ -1,16 +1,13 @@
-using Xunit.Sdk;
+using Xunit.v3;
 
-#pragma warning disable IDE0130 // Namespace does not match folder structure
+#pragma warning disable IDE0130
 namespace Xunit.Categories;
 
-[TraitDiscoverer(UiTestDiscoverer.DiscovererTypeName, AssemblyHelper.AssemblyName)]
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 public class UiTestAttribute : Attribute, ITraitAttribute
 {
-    public UiTestAttribute()
-    {
+    public UiTestAttribute() { }
 
-    }
     public UiTestAttribute(string identifier)
     {
         Identifier = identifier;
@@ -22,12 +19,13 @@ public class UiTestAttribute : Attribute, ITraitAttribute
     }
 
     public string? Identifier { get; }
+
+    public IReadOnlyCollection<KeyValuePair<string, string>> GetTraits()
+    {
+        var traits = new List<KeyValuePair<string, string>> { new("Category", "UiTest") };
+        if (!string.IsNullOrWhiteSpace(Identifier))
+            traits.Add(new("UiTest", Identifier));
+        return traits;
+    }
 }
-#pragma warning restore IDE0130 // Namespace does not match folder structure
-
-
-
-
-
-
-
+#pragma warning restore IDE0130

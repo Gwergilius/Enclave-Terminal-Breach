@@ -1,5 +1,7 @@
 ﻿using Enclave.Common.Configuration;
+using Enclave.Common.Extensions;
 using Enclave.Common.Services;
+using Enclave.Common.Test.Core;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -9,7 +11,7 @@ namespace Enclave.Common.Tests.Configuration;
 /// Unit tests for storage configuration extensions and providers.
 /// </summary>
 [UnitTest, TestOf(nameof(StorageConfigurationExtensions))]
-public class StorageConfigurationTests
+public class StorageConfigurationTests: TestBase
 {
     [Fact]
     public void AddStorageConfiguration_WithStorageService_AddsConfigurationSource()
@@ -161,9 +163,9 @@ public class StorageConfigurationTests
         provider.Set("TestKey", "TestValue");
 
         // Assert - Wait a bit for async operation
-        await Task.Delay(100);
-        storageService.Verify(s => 
-            s.SetStringAsync("Config:TestKey", "TestValue", It.IsAny<CancellationToken>()), 
+        await Sleep(100);
+        storageService.Verify(s =>
+            s.SetStringAsync("Config:TestKey", "TestValue", It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
@@ -321,7 +323,8 @@ public class StorageConfigurationTests
         provider.Set("TestKey", null);
 
         // Assert - Wait a bit for async operation
-        await Task.Delay(100);
+
+        await Sleep(100);
         storageService.Verify(s => 
             s.SetStringAsync("Config:TestKey", null, It.IsAny<CancellationToken>()), 
             Times.Once);

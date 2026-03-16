@@ -146,7 +146,7 @@ A projekt bemutatja:
 [Gwergilius-Github]: https://github.com/Gwergilius/
 [Gwergilius-LinkedIn]: https://www.linkedin.com/in/gwergilius/
 
-[version-badge]: https://img.shields.io/github/v/release/Gwergilius/Enclave-Terminal-Breach?sort=semver&label=Version
+[version-badge]: https://img.shields.io/github/v/tag/Gwergilius/Enclave-Terminal-Breach?filter=raven-v*&sort=semver&label=Version
 [releases]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases
 [License-MIT-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 [.NET-badge]: https://img.shields.io/badge/.NET-10.0-512BD4

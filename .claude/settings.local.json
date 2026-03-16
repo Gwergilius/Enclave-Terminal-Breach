@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --roll-forward Major \"C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\gitversion.msbuild\\\\6.6.0\\\\tools\\\\net10.0\\\\gitversion.dll\" \"Q:\\\\src\\\\dotnet\\\\Common\" -output json)",
+      "Bash(dotnet --roll-forward Major \"C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\gitversion.msbuild\\\\6.6.0\\\\tools\\\\net10.0\\\\gitversion.dll\" \"Q:/\" -output json)",
+      "Bash(git -C \"Q:/\" rev-parse --git-dir)",
+      "Bash(git -C \"Q:/\" config --list --show-origin)",
+      "Bash(dotnet --roll-forward Major \"C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\gitversion.msbuild\\\\6.6.0\\\\tools\\\\net10.0\\\\gitversion.dll\" \"Q:\\\\\" -output json)",
+      "Bash(git -C \"Q:/\" config --global --list)",
+      "Bash(cmd.exe /c \"dotnet --roll-forward Major \"\"C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\gitversion.msbuild\\\\6.6.0\\\\tools\\\\net10.0\\\\gitversion.dll\"\" \"\"Q:\\\\src\\\\dotnet\\\\Common\"\" -output json 2>&1\")",
+      "Bash(cmd.exe /c \"dotnet --roll-forward Major \"\"C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\gitversion.msbuild\\\\6.6.0\\\\tools\\\\net10.0\\\\gitversion.dll\"\" \"\"Q:\\\\\"\" -output json 2>&1\")",
+      "Bash(git -C \"Q:/\" config --global safe.directory)",
+      "Bash(git -C \"Q:/\" config safe.directory)",
+      "Bash(powershell -Command \"Set-Location ''Q:\\\\src\\\\dotnet\\\\Common''; git rev-parse --git-dir; git rev-parse --show-toplevel\")",
+      "Bash(powershell -Command \"git -C ''Q:\\\\src\\\\dotnet\\\\Common'' rev-parse --show-toplevel\")",
+      "Bash(dotnet list \"Q:\\\\src\\\\dotnet\\\\tests\\\\Common.Test.Core\\\\Common.Test.Core.csproj\" package --include-transitive)",
+      "Bash(xargs head -25)",
+      "Bash(powershell -Command \"Add-Type -Path ''C:\\\\Users\\\\GergelyToth2\\\\.nuget\\\\packages\\\\xunit.v3.extensibility.core\\\\3.2.2\\\\lib\\\\net8.0\\\\xunit.v3.extensibility.core.dll''; [System.AppDomain]::CurrentDomain.GetAssemblies\\(\\) | Where-Object { $_.GetName\\(\\).Name -match ''xunit'' } | ForEach-Object { $_.GetTypes\\(\\) | Where-Object { $_.Name -match ''TraitAttribute|ITraitAttribute|ITraitDiscoverer'' } | ForEach-Object { $_.FullName } }\")",
+      "Bash(powershell -Command \":*)",
+      "Bash(dotnet build Enclave.Echelon.slnx)"
+    ]
+  }
+}

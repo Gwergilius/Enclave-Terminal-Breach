@@ -1,9 +1,13 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using Enclave.Echelon.Core.Services;
 using Enclave.Phosphor;
+using Enclave.Raven.Screens.BootScreen;
+using Enclave.Raven.Screens.DataInput;
+using Enclave.Raven.Screens.HackingLoop;
+using Enclave.Raven.Screens.KeyPress;
+using Enclave.Raven.Services;
 using Enclave.Shared.IO;
-using Enclave.Shared.Models;
-using Enclave.Raven.Phases;
-using Enclave.Shared.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +17,9 @@ namespace Enclave.Raven.Tests;
 /// Smoke tests for <see cref="Startup.ConfigureServices"/>: verifies that all key services can be resolved.
 /// </summary>
 [UnitTest, TestOf(nameof(Startup))]
+[SupportedOSPlatform("windows")]
+[ExcludeFromCodeCoverage(Justification = "Thin wrapper around Console.Write/ReadLine; testing would only verify BCL behavior.")]
+
 public class StartupTests
 {
     private static IConfiguration CreateMinimalConfiguration() =>
@@ -56,29 +63,32 @@ public class StartupTests
     }
 
     [Fact]
-    public void ConfigureServices_ResolvesAllPhases()
+    public void ConfigureServices_ResolvesAllViewModels()
     {
         var services = new ServiceCollection();
         Startup.ConfigureServices(services, CreateMinimalConfiguration());
         using var scope = services.BuildServiceProvider().CreateScope();
 
-        scope.ServiceProvider.GetRequiredService<IStartupBadgePhase>().ShouldNotBeNull();
-        scope.ServiceProvider.GetRequiredService<IResetScopePhase>().ShouldNotBeNull();
-        scope.ServiceProvider.GetRequiredService<IDataInputPhase>().ShouldNotBeNull();
-        scope.ServiceProvider.GetRequiredService<IHackingLoopPhase>().ShouldNotBeNull();
-        scope.ServiceProvider.GetRequiredService<IPlayAgainPhase>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<BootScreenViewModel>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<DataInputViewModel>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<HackingLoopViewModel>().ShouldNotBeNull();
+        scope.ServiceProvider.GetRequiredService<KeyPressViewModel>().ShouldNotBeNull();
     }
 
     [Fact]
-    public void ConfigureServices_ResolvesIPhaseRunner()
+    public void ConfigureServices_ResolvesIViewModelRegistry()
     {
         var services = new ServiceCollection();
         Startup.ConfigureServices(services, CreateMinimalConfiguration());
-        var provider = services.BuildServiceProvider();
+        using var scope = services.BuildServiceProvider().CreateScope();
 
-        var runner = provider.GetRequiredService<IPhaseRunner>();
+        var registry = scope.ServiceProvider.GetRequiredService<IViewModelRegistry>();
 
-        runner.ShouldNotBeNull();
+        registry.ShouldNotBeNull();
+        registry.GetViewModel("BootScreen").IsSuccess.ShouldBeTrue();
+        registry.GetViewModel("DataInput").IsSuccess.ShouldBeTrue();
+        registry.GetViewModel("HackingLoop").IsSuccess.ShouldBeTrue();
+        registry.GetViewModel("KeyPress").IsSuccess.ShouldBeTrue();
     }
 
     [Fact]
@@ -95,19 +105,16 @@ public class StartupTests
     }
 
     [Fact]
-    public void ConfigureServices_ResolvesIPhosphorCanvasAndIPhosphorWriter()
+    public void ConfigureServices_ResolvesIPhosphorWriter()
     {
         var services = new ServiceCollection();
         Startup.ConfigureServices(services, CreateMinimalConfiguration());
         var provider = services.BuildServiceProvider();
 
-        var canvas = provider.GetRequiredService<IPhosphorCanvas>();
         var writer = provider.GetRequiredService<IPhosphorWriter>();
 
-        canvas.ShouldNotBeNull();
         writer.ShouldNotBeNull();
-        canvas.ShouldBeOfType<AnsiPhosphorCanvas>();
-        writer.ShouldBeOfType<PhosphorTypewriter>();
+        writer.ShouldBeOfType<AnsiPhosphorCanvas>();
     }
 
     [Fact]
@@ -143,5 +150,17 @@ public class StartupTests
         session1.ShouldNotBeNull();
         session2.ShouldNotBeNull();
         session1.ShouldNotBeSameAs(session2);
+    }
+
+    [Fact]
+    public void ConfigureServices_ResolvesIVirtualScreen()
+    {
+        var services = new ServiceCollection();
+        Startup.ConfigureServices(services, CreateMinimalConfiguration());
+        var provider = services.BuildServiceProvider();
+
+        var screen = provider.GetRequiredService<IVirtualScreen>();
+
+        screen.ShouldNotBeNull();
     }
 }

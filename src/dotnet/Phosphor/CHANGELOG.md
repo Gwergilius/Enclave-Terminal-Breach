@@ -9,6 +9,33 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-03-16
+
+### Added
+- **IComponent** – Interface for renderable components (Bounds, Render contract).
+- **ICompositor** – Compositor abstraction for layer-based rendering (used by RAVEN screens).
+
+### Changed
+- **Compositor** – Implements ICompositor; existing behavior unchanged.
+- **PhosphorTypewriter** – Updated for compositor integration where used.
+
+## [2.0.0] - 2026-03-03
+
+### Added
+- **IVirtualScreen** – Interface for a layered virtual screen buffer: `AddLayer(Rectangle, zOrder)`, `RemoveLayer(Layer)`, `Invalidate(Rectangle)`, `HasDirtyRegions`, `FlushDirtyRegions()`, `GetLayersInRegion(Rectangle)`.
+- **VirtualScreen** – Thread-safe default implementation of `IVirtualScreen`; layers in a lock-guarded list, dirty regions via `DirtyRegionTracker`.
+- **Layer** – Virtual character buffer for a screen region: absolute `Bounds`, `ZOrder`, `IsVisible`; `GetCell`/`SetCell` (validates control characters via `Debug.Assert`), `Clear()` (fills with `VirtualCell.Empty`), `MoveTo(Point)` (repositions without clearing buffer).
+- **DirtyRegionTracker** – Internal thread-safe dirty-region accumulator: `Invalidate(Rectangle)`, `Flush()`, `HasRegions`.
+- **IPhosphorCursor** / **AnsiPhosphorCursor** – 0-based cursor positioning via ANSI CUP escape (`ESC[row+1;col+1H`).
+- **Compositor** – Internal three-phase render engine: Recompose (Z-ordered compositing with `VirtualCell.IsEmpty` transparency), Diff (changed cells only), Emit (consecutive same-style runs with cursor-position deduplication to skip redundant `MoveTo` calls).
+- **PhosphorRenderLoop** – Event-driven render loop: reads keys via `IPhosphorInputLoop.ReadKey(CancellationToken)`, dispatches to handlers, flushes dirty regions via Compositor after each key.
+- **LayerWriter** – Streaming text writer onto a `Layer`: `Write(string)` handles `\n` as CRLF, clips at bounds, validates control characters; `SetCell(relCol, relRow, VirtualCell)`, `MoveTo(int, int)`, `Style` property.
+- **PhosphorInputLoop.ReadKey(CancellationToken)** – Cancellable single-key read: pre-read cancel check, blocking console read, post-read cancel check, null-stream guard (`InvalidOperationException`).
+
+### Changed
+- **CharStyle** – Moved to `Enclave.Common.Drawing`. **Breaking:** callers must update `using Enclave.Phosphor` → `using Enclave.Common.Drawing`.
+- **IPhosphorCanvas** / **AnsiPhosphorCanvas** – Marked `[Obsolete]`; retained for backward compatibility. Prefer `IVirtualScreen`-based API for new development.
+
 ## [1.1.0] - 2026-02-24
 
 ### Added
@@ -33,6 +60,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **PhosphorInputLoop** – Console.ReadKey-based implementation.
 - **Test doubles** (Enclave.Phosphor.Tests): TestPhosphorWriter, TestPhosphorInputLoop.
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.1.0...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v2.1.0...HEAD
+[2.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v2.0.0...phosphor-v2.1.0
+[2.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.1.0...phosphor-v2.0.0
 [1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.0.0...phosphor-v1.1.0
 [1.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/phosphor-v1.0.0

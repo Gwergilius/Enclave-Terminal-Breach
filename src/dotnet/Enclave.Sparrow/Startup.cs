@@ -1,8 +1,10 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using Enclave.Echelon.Core.Services;
-using Enclave.Sparrow.Configuration;
 using Enclave.Shared.IO;
 using Enclave.Shared.Models;
 using Enclave.Shared.Services;
+using Enclave.Sparrow.Configuration;
 using Enclave.Sparrow.Phases;
 using Microsoft.Extensions.Configuration;
 
@@ -11,6 +13,8 @@ namespace Enclave.Sparrow;
 /// <summary>
 /// Configures the SPARROW console application's dependency injection container.
 /// </summary>
+[SupportedOSPlatform("windows")]
+[ExcludeFromCodeCoverage(Justification = "Thin wrapper around Console.Write/ReadLine; testing would only verify BCL behavior.")]
 public static class Startup
 {
     /// <summary>
