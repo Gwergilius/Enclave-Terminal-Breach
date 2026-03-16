@@ -20,6 +20,11 @@ public sealed class RavenOptions : ISolverConfiguration
     SolverLevel ISolverConfiguration.Level => SolverLevel.FromInt(RavenIntelligence.Normalize(Intelligence));
 
     /// <summary>
+    /// Color theme. Supported values: green (default), amber, white, blue.
+    /// </summary>
+    public string Theme { get; set; } = "green";
+
+    /// <summary>
     /// Optional path to a word list file. When set, candidates are loaded from file instead of manual input.
     /// </summary>
     public string? WordListPath { get; set; }

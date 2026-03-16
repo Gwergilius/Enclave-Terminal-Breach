@@ -1,6 +1,6 @@
 using Enclave.Echelon.Core.Models;
 
-namespace Enclave.Raven.Phases;
+namespace Enclave.Raven.Screens;
 
 /// <summary>
 /// Formats the candidate list as multi-column, alphabetical (RAVEN-Requirements: columns derived from word length).
@@ -20,7 +20,7 @@ internal static class CandidateListFormatter
         for (var i = 0; i < sorted.Count; i++)
         {
             if (i > 0 && i % columns == 0)
-                sb.AppendLine();
+                sb.Append('\n');
             else if (i > 0)
                 sb.Append(' ', colWidth - sorted[i - 1].Word.Length);
             sb.Append(sorted[i].Word);

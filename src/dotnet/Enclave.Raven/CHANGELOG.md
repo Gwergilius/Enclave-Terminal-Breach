@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ### Added
 - **Input layer** – FixedRegionReadLine (key-by-key input in fixed screen region), IReadLineKeyFilter, IReadLineValidator, DataInputKeyFilter, MatchCountKeyFilter, MatchCountValidator, ReadLineParams, IReadLineInputView.
 - **Keyboard layer** – IKeyboardService, KeyboardService (priority-based KeyPressed subscribers), KeyPressedEventArgs, ExitService; ConsoleKeyboardHandler implements low-level reader.
+- **Screens** – BootScreen, DataInput, HackingLoop, KeyPress, Help (ViewModels and IComponent-based rendering); IScreenViewModel, ViewModelRegistry (replaces PhaseRegistry); CandidateListFormatter moved from Phases to Screens.
+
+### Removed
+- **Phases** – PhaseRegistry, IPhaseRegistry, and all phase types (StartupBadge, DataInput, HackingLoop, PlayAgain, ResetScope); replaced by Screens and ViewModelRegistry.
 
 ## [1.4.1] - 2026-03-03
 

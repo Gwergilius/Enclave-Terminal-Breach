@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **PHOSPHOR – IComponent and ICompositor** – Component-based rendering contract and compositor interface; PhosphorTypewriter and Compositor updated. Common.Test.Core TestBase for unit test fixtures.
 - **Enclave.Shared – IConsoleReader and ConsoleIO** – IConsoleReader extended with KeyAvailable, ReadLine, ReadKey for console and keyboard handlers; TestConsoleIO updated.
 - **RAVEN – Input and Keyboard layer** – FixedRegionReadLine, key filters (DataInput, MatchCount), validators; KeyboardService with KeyPressed, ExitService; ConsoleKeyboardHandler wiring.
+- **RAVEN – Screens and ViewModelRegistry** – Phases replaced by Screen ViewModels and Components (BootScreen, DataInput, HackingLoop, KeyPress, Help); ViewModelRegistry for screen resolution; CandidateListFormatter moved to Screens.
 
 ### Changed
 - **GitVersion.MsBuild 6.6.0 – per-component automatic versioning** – Hardcoded `<Version>` removed from all production `.csproj` files; binary version is now derived automatically from git tags at build time. Each component has its own `GitVersion.yml` with a unique `tag-prefix` (`raven-v`, `sparrow-v`, `phosphor-v`, `core-v`, `common-v`, `shared-v`), enabling fully independent versioning. `Directory.Build.targets` overrides the `RunGitVersion` MSBuild target to resolve the `Q:\` subst drive mapping via `git rev-parse --show-toplevel` (LibGit2Sharp cannot traverse subst drives directly).
