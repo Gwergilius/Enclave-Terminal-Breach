@@ -33,6 +33,12 @@
 - Service classes in `Services/` folder
 - Test classes in the corresponding `Tests/` folder
 
+## Thread synchronization (lock)
+
+- Use **`System.Threading.Lock`** (.NET 9+) for mutual exclusion: `private readonly Lock _lock = new();` then `lock (_lock) { ... }`.
+- Do not use `object` or `Monitor` for new code when targeting .NET 9 or later.
+- Do not use `await` inside a `lock`; locks are thread-bound and code after `await` may run on another thread.
+
 ---
 alwaysApply: true
 ---

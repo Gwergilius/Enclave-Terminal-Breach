@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **Enclave.Shared – IConsoleReader and ConsoleIO** – IConsoleReader extended with KeyAvailable, ReadLine, ReadKey for console and keyboard handlers; TestConsoleIO updated.
 - **RAVEN – Input and Keyboard layer** – FixedRegionReadLine, key filters (DataInput, MatchCount), validators; KeyboardService with KeyPressed, ExitService; ConsoleKeyboardHandler wiring.
 - **RAVEN – Screens and ViewModelRegistry** – Phases replaced by Screen ViewModels and Components (BootScreen, DataInput, HackingLoop, KeyPress, Help); ViewModelRegistry for screen resolution; CandidateListFormatter moved to Screens.
+- **Tooling** – Claude and Cursor rule config (.claude/settings, .cursor/rules code-standards).
 
 ### Changed
 - **SPARROW** – Align Startup and Program with shared and test infrastructure; no RAVEN dependency.
