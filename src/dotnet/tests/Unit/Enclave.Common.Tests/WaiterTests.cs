@@ -1,4 +1,4 @@
-﻿using Enclave.Common.Extensions;
+using Enclave.Common.Extensions;
 using Enclave.Common.Helpers;
 
 namespace Enclave.Common.Tests;

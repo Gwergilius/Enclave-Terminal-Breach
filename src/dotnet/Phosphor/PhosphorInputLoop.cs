@@ -1,4 +1,5 @@
-﻿using Enclave.Shared.IO;
+using System.Diagnostics.CodeAnalysis;
+using Enclave.Shared.IO;
 
 namespace Enclave.Phosphor;
 
