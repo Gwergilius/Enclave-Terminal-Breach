@@ -43,6 +43,9 @@ internal sealed class TestableConsoleIO : IConsoleIO
     public void WriteLine(string? value = null) => _written.Add(value ?? string.Empty);
 
     /// <inheritdoc />
+    public bool KeyAvailable => _keyQueue.Count > 0;
+
+    /// <inheritdoc />
     public string? ReadLine() => null;
 
     /// <inheritdoc />

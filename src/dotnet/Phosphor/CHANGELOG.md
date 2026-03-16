@@ -9,6 +9,14 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **IComponent** – Interface for renderable components (Bounds, Render contract).
+- **ICompositor** – Compositor abstraction for layer-based rendering (used by RAVEN screens).
+
+### Changed
+- **Compositor** – Implements ICompositor; existing behavior unchanged.
+- **PhosphorTypewriter** – Updated for compositor integration where used.
+
 ## [2.0.0] - 2026-03-03
 
 ### Added

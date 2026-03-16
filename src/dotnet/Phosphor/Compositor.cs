@@ -11,7 +11,7 @@ namespace Enclave.Phosphor;
 ///   <item><term>Emit</term><description>Changed cells grouped into same-style runs per row and written via <see cref="IPhosphorWriter"/>.</description></item>
 /// </list>
 /// </remarks>
-public sealed class Compositor
+public sealed class Compositor : ICompositor
 {
     private readonly IVirtualScreen _screen;
     private readonly IPhosphorWriter _writer;

@@ -1,3 +1,6 @@
+using Enclave.Common.Extensions;
+using Enclave.Common.Test.Core;
+
 namespace Enclave.Phosphor.Tests;
 
 /// <summary>
@@ -5,7 +8,7 @@ namespace Enclave.Phosphor.Tests;
 /// and dirty-region flushing behaviour.
 /// </summary>
 [UnitTest, TestOf(nameof(PhosphorRenderLoop))]
-public sealed class PhosphorRenderLoopTests
+public sealed class PhosphorRenderLoopTests: TestBase
 {
     // --- Test doubles -------------------------------------------------------
 
@@ -20,6 +23,7 @@ public sealed class PhosphorRenderLoopTests
     /// </summary>
     private sealed class ActionReader(Action<ConsoleKeyInfo> onKey) : IPhosphorReader
     {
+        public bool KeyAvailable => false;
         public string?       ReadLine() => null;
         public ConsoleKeyInfo? ReadKey() => null;
         public bool OnKeyPressed(ConsoleKeyInfo key) { onKey(key); return false; }
@@ -67,8 +71,8 @@ public sealed class PhosphorRenderLoopTests
         cts.Cancel();
 
         // The while condition is false from the start — Run() returns without ever reading a key.
-        await Task.Run(() => sut.Run(cts.Token))
-                  .WaitAsync(TimeSpan.FromSeconds(2));
+        var task = RunTask(() => sut.Run(cts.Token));
+        await WaitTask(task, 2.Seconds());
     }
 
     // --- Key dispatch -------------------------------------------------------
@@ -86,7 +90,7 @@ public sealed class PhosphorRenderLoopTests
         var task    = StartLoop(sut, cts);
         var injected = AnyKey();
         input.InjectKey(injected);
-        await task.WaitAsync(TimeSpan.FromSeconds(2));
+        await WaitTask(task, 2.Seconds());
 
         received.ShouldBe(injected);
     }
@@ -110,7 +114,7 @@ public sealed class PhosphorRenderLoopTests
 
         var task = StartLoop(sut, cts);
         input.InjectKey(AnyKey());
-        await task.WaitAsync(TimeSpan.FromSeconds(2));
+        await WaitTask(task, 2.Seconds());
 
         writer.Recorded.ShouldNotBeEmpty();
     }
@@ -125,7 +129,7 @@ public sealed class PhosphorRenderLoopTests
 
         var task = StartLoop(sut, cts);
         input.InjectKey(AnyKey());
-        await task.WaitAsync(TimeSpan.FromSeconds(2));
+        await WaitTask(task, 2.Seconds());
 
         writer.Recorded.ShouldBeEmpty();
     }
@@ -148,7 +152,7 @@ public sealed class PhosphorRenderLoopTests
 
         var task = StartLoop(sut, cts);
         input.InjectKey(AnyKey());
-        await task.WaitAsync(TimeSpan.FromSeconds(2));
+        await WaitTask(task, 2.Seconds());
 
         var allWritten = string.Concat(writer.Recorded.Select(r => r.Text));
         allWritten.ShouldContain("A");
