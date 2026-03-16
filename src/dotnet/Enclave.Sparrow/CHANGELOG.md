@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+- **Startup and Program** – Align with shared and test infrastructure changes. No functional change.
+
 ## [1.2.3] - 2026-03-03
 
 ### Changed

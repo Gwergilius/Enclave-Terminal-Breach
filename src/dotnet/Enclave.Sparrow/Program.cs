@@ -1,11 +1,13 @@
-using System.Diagnostics.CodeAnalysis;
-using Enclave.Sparrow.Configuration;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using Enclave.Shared.Services;
+using Enclave.Sparrow.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace Enclave.Sparrow;
 
 [ExcludeFromCodeCoverage(Justification = "Straightforward composition root; test by review.")]
+[SupportedOSPlatform("windows")]
 internal static class Program
 {
     private static int Main(string[] args)

@@ -1,7 +1,9 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
 using Enclave.Echelon.Core.Services;
 using Enclave.Shared.IO;
-using Enclave.Sparrow.Phases;
 using Enclave.Shared.Services;
+using Enclave.Sparrow.Phases;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,7 @@ namespace Enclave.Sparrow.Tests;
 /// Smoke tests for <see cref="Startup.ConfigureServices"/>: verifies that all key services can be resolved.
 /// </summary>
 [UnitTest, TestOf(nameof(Startup))]
+[SupportedOSPlatform("windows")]
 public class StartupTests
 {
     private static IConfiguration CreateMinimalConfiguration() =>
