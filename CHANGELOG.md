@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ### Changed
 - **SPARROW** – Align Startup and Program with shared and test infrastructure; no RAVEN dependency.
 - **Enclave.Common.Tests** – StorageConfigurationTests updated for TestBase.
+- **Planned version bumps (feature/raven → main):** Phosphor 2.1.0 (minor), Shared 1.1.0 (minor), Sparrow 1.2.4 (patch), Raven 1.5.0 (minor, refactored UI).
 
 - **GitVersion.MsBuild 6.6.0 – per-component automatic versioning** – Hardcoded `<Version>` removed from all production `.csproj` files; binary version is now derived automatically from git tags at build time. Each component has its own `GitVersion.yml` with a unique `tag-prefix` (`raven-v`, `sparrow-v`, `phosphor-v`, `core-v`, `common-v`, `shared-v`), enabling fully independent versioning. `Directory.Build.targets` overrides the `RunGitVersion` MSBuild target to resolve the `Q:\` subst drive mapping via `git rev-parse --show-toplevel` (LibGit2Sharp cannot traverse subst drives directly).
 - **xunit.v3 migration** – All test projects upgraded from xunit v2 + `xunit.categories` to `xunit.v3 3.2.2`. `Common.Test.Core` trait attributes (`AcceptanceTestAttribute`, `PerformanceTestAttribute`, `UiTestAttribute`, `UnitTestAttribute`, `TestOfAttribute`) rewritten using `Xunit.v3.ITraitAttribute`; the `ITraitDiscoverer` pattern (removed in xunit.v3) eliminated. The `xunit.categories` NuGet dependency removed from all test projects.

@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-03-16
+
 ### Added
 - **IComponent** – Interface for renderable components (Bounds, Render contract).
 - **ICompositor** – Compositor abstraction for layer-based rendering (used by RAVEN screens).
@@ -58,7 +60,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 - **PhosphorInputLoop** – Console.ReadKey-based implementation.
 - **Test doubles** (Enclave.Phosphor.Tests): TestPhosphorWriter, TestPhosphorInputLoop.
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v2.0.0...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v2.1.0...HEAD
+[2.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v2.0.0...phosphor-v2.1.0
 [2.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.1.0...phosphor-v2.0.0
 [1.1.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/phosphor-v1.0.0...phosphor-v1.1.0
 [1.0.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/releases/tag/phosphor-v1.0.0

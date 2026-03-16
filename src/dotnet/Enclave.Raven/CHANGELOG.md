@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-03-16
+
 ### Added
 - **Input layer** – FixedRegionReadLine (key-by-key input in fixed screen region), IReadLineKeyFilter, IReadLineValidator, DataInputKeyFilter, MatchCountKeyFilter, MatchCountValidator, ReadLineParams, IReadLineInputView.
 - **Keyboard layer** – IKeyboardService, KeyboardService (priority-based KeyPressed subscribers), KeyPressedEventArgs, ExitService; ConsoleKeyboardHandler implements low-level reader.
@@ -74,7 +76,8 @@ Refactor for **Enclave.Shared 1.0.0** compatibility and internal cleanup. No new
 
 ---
 
-[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.1...HEAD
+[Unreleased]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.5.0...HEAD
+[1.5.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.1...raven-v1.5.0
 [1.4.1]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.4.0...raven-v1.4.1
 [1.4.0]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.3...raven-v1.4.0
 [1.3.3]: https://github.com/Gwergilius/Enclave-Terminal-Breach/compare/raven-v1.3.2...raven-v1.3.3
