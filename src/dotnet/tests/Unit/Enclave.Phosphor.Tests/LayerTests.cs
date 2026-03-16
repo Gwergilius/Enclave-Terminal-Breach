@@ -15,7 +15,8 @@ public sealed class LayerTests
         // Verify the assert fires before the buffer is written (cell stays Empty).
         var layer = new Layer(new Rectangle(0, 0, 5, 5), zOrder: 0);
 
-        Should.Throw<Exception>(() => layer.SetCell(0, 0, new VirtualCell('\t')));
+        // Use \f (form feed): consistently treated as control char on all platforms (e.g. Linux CI).
+        Should.Throw<Exception>(() => layer.SetCell(0, 0, new VirtualCell('\f')));
 
         layer.GetCell(0, 0).ShouldBe(VirtualCell.Empty); // buffer not modified
     }
