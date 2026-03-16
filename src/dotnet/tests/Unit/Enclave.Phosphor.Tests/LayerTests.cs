@@ -6,25 +6,22 @@ namespace Enclave.Phosphor.Tests;
 [UnitTest, TestOf(nameof(Layer))]
 public sealed class LayerTests
 {
-    // --- SetCell: Debug.Assert guard ----------------------------------------
+    // --- SetCell: Guard rejects control characters ---------------------------
 
     [Fact]
-    public void SetCell_ControlCharacter_TriggersDebugAssert()
+    public void SetCell_ControlCharacter_Throws()
     {
-        // In this runtime the DefaultTraceListener throws on Assert failure.
-        // Verify the assert fires before the buffer is written (cell stays Empty).
         var layer = new Layer(new Rectangle(0, 0, 5, 5), zOrder: 0);
 
-        // Use \f (form feed): consistently treated as control char on all platforms (e.g. Linux CI).
-        Should.Throw<Exception>(() => layer.SetCell(0, 0, new VirtualCell('\f')));
+        Should.Throw<ArgumentException>(() => layer.SetCell(0, 0, new VirtualCell('\f')));
 
         layer.GetCell(0, 0).ShouldBe(VirtualCell.Empty); // buffer not modified
     }
 
     [Fact]
-    public void SetCell_EmptyCell_DoesNotTriggerDebugAssert()
+    public void SetCell_EmptyCell_DoesNotThrow()
     {
-        // '\0' is technically a control character, but VirtualCell.Empty is explicitly allowed.
+        // '\0' is C0 control, but VirtualCell.Empty is explicitly allowed by Guard.
         var layer = new Layer(new Rectangle(0, 0, 5, 5), zOrder: 0);
 
         Should.NotThrow(() => layer.SetCell(0, 0, VirtualCell.Empty));

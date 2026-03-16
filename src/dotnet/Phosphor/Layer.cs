@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Enclave.Phosphor;
@@ -36,10 +35,7 @@ public sealed class Layer(Rectangle bounds, int zOrder)
     /// </summary>
     public void SetCell(int col, int row, VirtualCell cell)
     {
-        // Reject C0 control chars (code < space); platform-independent vs char.IsControl.
-        Debug.Assert((cell.Character >= ' ') || cell.IsEmpty,
-            $"Control character U+{(int)cell.Character:X4} must not be stored in a VirtualCell. " +
-            "Use LayerWriter for streaming writes.");
+        Guard.RequirePrintableForCell(cell);
         _buffer[row - Bounds.Top, col - Bounds.Left] = cell;
     }
 

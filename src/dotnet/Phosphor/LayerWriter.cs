@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Enclave.Phosphor;
 
 /// <summary>
@@ -40,7 +38,7 @@ public sealed class LayerWriter(Layer layer)
     /// <summary>
     /// Writes <paramref name="text"/> into the layer at the current cursor position.
     /// <c>\n</c> moves to column 0 of the next row. Only printable characters and <c>\n</c>
-    /// are supported; other control characters are rejected by a <see cref="Debug.Assert"/>.
+    /// are supported; other control characters throw <see cref="ArgumentException"/>.
     /// </summary>
     public void Write(string text)
     {
@@ -53,10 +51,7 @@ public sealed class LayerWriter(Layer layer)
                 continue;
             }
 
-            // Reject C0 control chars (code < space); platform-independent vs char.IsControl.
-            Debug.Assert(ch >= ' ',
-                $"Control character U+{(int)ch:X4} in LayerWriter.Write — " +
-                "only printable characters and '\\n' are supported.");
+            Guard.RequirePrintableChar(ch);
 
             if (_row >= Height) return;
 
