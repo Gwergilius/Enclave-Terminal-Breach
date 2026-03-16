@@ -31,6 +31,9 @@ internal sealed class TestConsoleIO : IConsoleIO
     /// <inheritdoc />
     public Encoding OutputEncoding { get; set; } = Encoding.UTF8;
 
+    /// <inheritdoc />
+    public bool KeyAvailable => false;
+
     public string? ReadLine()
     {
         return _readLineResponses.Count > 0 ? _readLineResponses.Dequeue() : null;

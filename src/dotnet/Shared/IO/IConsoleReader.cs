@@ -6,6 +6,9 @@ namespace Enclave.Shared.IO;
 /// </summary>
 public interface IConsoleReader
 {
+    /// <summary>True when a key press is available; <see cref="ReadKey"/> will not block.</summary>
+    bool KeyAvailable { get; }
+
     /// <summary>Reads one line from input. Returns null if no more input (e.g. EOF, Ctrl+C).</summary>
     string? ReadLine();
 

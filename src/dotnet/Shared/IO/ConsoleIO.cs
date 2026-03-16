@@ -40,6 +40,9 @@ public sealed class ConsoleIO : IConsoleIO
     public void WriteLine(string? value = null) => Console.WriteLine(value);
 
     /// <inheritdoc />
+    public bool KeyAvailable => Console.KeyAvailable;
+
+    /// <inheritdoc />
     public string? ReadLine()
     {
         ShowCursor();

@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **IConsoleReader** – KeyAvailable, ReadLine, ReadKey for shared read behavior (console and keyboard handler implementations).
+
+### Changed
+- **ConsoleIO** – Implements IConsoleReader members where applicable.
+- **TestConsoleIO** – Updated for IConsoleReader contract in tests.
+
 ## [1.0.0] - 2026-02-24
 
 ### Compatibility (breaking)
