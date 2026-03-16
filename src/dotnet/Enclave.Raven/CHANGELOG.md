@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+- **Input layer** – FixedRegionReadLine (key-by-key input in fixed screen region), IReadLineKeyFilter, IReadLineValidator, DataInputKeyFilter, MatchCountKeyFilter, MatchCountValidator, ReadLineParams, IReadLineInputView.
+- **Keyboard layer** – IKeyboardService, KeyboardService (priority-based KeyPressed subscribers), KeyPressedEventArgs, ExitService; ConsoleKeyboardHandler implements low-level reader.
+
 ## [1.4.1] - 2026-03-03
 
 ### Changed
