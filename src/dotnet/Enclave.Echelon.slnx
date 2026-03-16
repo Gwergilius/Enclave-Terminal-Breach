@@ -18,5 +18,6 @@
   <Project Path="Shared\Enclave.Shared.csproj" />
   <Project Path="Enclave.Sparrow/Enclave.Sparrow.csproj" />
   <Project Path="Enclave.Raven/Enclave.Raven.csproj" />
+  <Project Path="Enclave.Ghost/Enclave.Ghost.csproj" />
   <Project Path="Phosphor/Enclave.Phosphor.csproj" />
 </Solution>

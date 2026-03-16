@@ -1,0 +1,94 @@
+@inject GhostAppState AppState
+
+<div class="ghost-screen">
+    <div class="ghost-title">:: GHOST BREACH ASSISTANT :: DATA INPUT ::</div>
+
+    @if (_candidateCount > 0)
+    {
+        <div>@_candidateCountLine</div>
+        @if (_candidateListText != null)
+        {
+            <pre class="ghost-candidates">@_candidateListText</pre>
+        }
+    }
+
+    @foreach (var err in _errors)
+    {
+        <div class="ghost-error-text">@err</div>
+    }
+
+    <div class="ghost-input-row">
+        <span class="ghost-prompt">
+            @(_candidateCount == 0
+                ? "Enter password candidates:"
+                : "Enter more (or leave empty to finish):")
+        </span>
+        <input class="ghost-input"
+               @ref="_inputRef"
+               @bind="_inputLine"
+               @bind:event="oninput"
+               @onkeydown="OnKeyDown"
+               autofocus />
+        <button class="ghost-btn" @onclick="SubmitLine">ENTER</button>
+    </div>
+
+    @if (_candidateCount > 0)
+    {
+        <div class="ghost-section">
+            <button class="ghost-btn ghost-btn-primary" @onclick="StartHacking">[ START HACKING ]</button>
+        </div>
+    }
+</div>
+
+@code {
+    private string          _inputLine        = "";
+    private List<string>    _errors           = [];
+    private int             _candidateCount;
+    private string          _candidateCountLine = "";
+    private string?         _candidateListText;
+    private ElementReference _inputRef;
+
+    protected override void OnInitialized() => UpdateCandidateState();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await _inputRef.FocusAsync(); } catch { }
+        }
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+            SubmitLine();
+    }
+
+    private void SubmitLine()
+    {
+        if (string.IsNullOrWhiteSpace(_inputLine))
+        {
+            if (_candidateCount > 0)
+                StartHacking();
+            return;
+        }
+
+        _errors    = DataInputLogic.ApplyLineCollectErrors(_inputLine, AppState.Session).ToList();
+        _inputLine = "";
+        UpdateCandidateState();
+    }
+
+    private void UpdateCandidateState()
+    {
+        var (count, list) = DataInputLogic.GetCandidateState(AppState.Session);
+        _candidateCount    = AppState.Session.Count;
+        _candidateCountLine = count;
+        _candidateListText  = list;
+    }
+
+    private void StartHacking()
+    {
+        if (_candidateCount > 0)
+            AppState.NavigateTo(GhostScreen.HackingLoop);
+    }
+}

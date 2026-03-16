@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Product>GHOST</Product>
+    <RootNamespace>Enclave.Ghost</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Enclave.Common.csproj" />
+    <ProjectReference Include="..\Core\Enclave.Echelon.Core.csproj" />
+    <ProjectReference Include="..\Shared\Enclave.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

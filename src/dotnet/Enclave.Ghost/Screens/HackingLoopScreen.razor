@@ -1,0 +1,122 @@
+@inject GhostAppState AppState
+@inject ISolverFactory SolverFactory
+
+<div class="ghost-screen">
+    <div class="ghost-title">:: GHOST BREACH ASSISTANT :: HACKING LOOP ::</div>
+
+    <pre class="ghost-log">@string.Join("\n", _log)</pre>
+
+    @if (!_gameOver)
+    {
+        <div class="ghost-input-row">
+            <span class="ghost-prompt">@_prompt</span>
+            <input class="ghost-input"
+                   @ref="_inputRef"
+                   @bind="_matchInput"
+                   @bind:event="oninput"
+                   @onkeydown="OnKeyDown" />
+            <button class="ghost-btn" @onclick="SubmitMatchCount">ENTER</button>
+        </div>
+    }
+    else
+    {
+        <div class="ghost-section">
+            <button class="ghost-btn ghost-btn-primary" @onclick="PlayAgain">[ PLAY AGAIN ]</button>
+        </div>
+    }
+</div>
+
+@code {
+    private readonly List<string>  _log    = [];
+    private Password?              _currentGuess;
+    private IReadOnlyList<int>     _possibleMatchCounts = [];
+    private string                 _matchInput = "";
+    private string                 _prompt     = "";
+    private bool                   _gameOver;
+    private IPasswordSolver?       _solver;
+    private ElementReference       _inputRef;
+
+    protected override void OnInitialized()
+    {
+        _solver = SolverFactory.GetSolver();
+        var session    = AppState.Session;
+        var wordLength = session.WordLength ?? 0;
+
+        if (wordLength <= 0 || session.Count == 0)
+        {
+            _log.Add("No candidates entered. Please go back and enter words first.");
+            _gameOver = true;
+            return;
+        }
+
+        _log.Add($"{session.Count} candidate(s):");
+        _log.Add(CandidateListFormatter.Format(session, wordLength));
+        AdvanceToNextGuess();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_gameOver)
+        {
+            try { await _inputRef.FocusAsync(); } catch { }
+        }
+    }
+
+    private void AdvanceToNextGuess()
+    {
+        var session = AppState.Session;
+        _currentGuess = _solver!.GetBestGuess(session);
+
+        if (_currentGuess == null)
+        {
+            _log.Add("No candidates left. Exiting.");
+            _gameOver = true;
+            return;
+        }
+
+        _possibleMatchCounts = HackingLoopLogic.GetPossibleMatchCounts(_currentGuess, session);
+        _log.Add("");
+        _log.Add($"Suggested guess:  {_currentGuess.Word}");
+        _prompt = HackingLoopLogic.FormatMatchCountPrompt(session.WordLength!.Value, _possibleMatchCounts);
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+            SubmitMatchCount();
+    }
+
+    private void SubmitMatchCount()
+    {
+        var session    = AppState.Session;
+        var wordLength = session.WordLength!.Value;
+
+        if (!HackingLoopLogic.TryParseMatchCount(_matchInput, wordLength, _possibleMatchCounts, out var matchCount))
+        {
+            _log.Add($"  Invalid. Enter one of: {string.Join(", ", _possibleMatchCounts)}, or leave empty for full match ({wordLength}).");
+            _matchInput = "";
+            return;
+        }
+
+        _matchInput = "";
+
+        if (matchCount == wordLength)
+        {
+            _log.Add("");
+            _log.Add("ACCESS GRANTED. Terminal cracked.");
+            _gameOver = true;
+            return;
+        }
+
+        var narrowed = _solver!.NarrowCandidates(session, _currentGuess!, matchCount);
+        HackingLoopLogic.ApplyNarrowedCandidates(session, narrowed);
+
+        _log.Add($"{session.Count} candidate(s):");
+        if (session.Count > 0)
+            _log.Add(CandidateListFormatter.Format(session, wordLength));
+
+        AdvanceToNextGuess();
+    }
+
+    private void PlayAgain() => AppState.NavigateTo(GhostScreen.DataInput);
+}

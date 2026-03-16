@@ -1,0 +1,29 @@
+@page "/"
+@rendermode InteractiveServer
+@inject GhostAppState AppState
+@implements IDisposable
+
+@if (AppState.CurrentScreen == GhostScreen.Boot)
+{
+    <BootScreen />
+}
+else if (AppState.CurrentScreen == GhostScreen.DataInput)
+{
+    <DataInputScreen />
+}
+else if (AppState.CurrentScreen == GhostScreen.HackingLoop)
+{
+    <HackingLoopScreen />
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.StateChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.StateChanged -= StateHasChanged;
+    }
+}

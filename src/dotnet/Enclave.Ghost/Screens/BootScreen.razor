@@ -1,0 +1,30 @@
+@inject GhostAppState AppState
+
+<div class="ghost-screen">
+    <pre class="ghost-boot-art">
+  _____ _    _  ____   _____ _______
+ / ____| |  | |/ __ \ / ____|__   __|
+| |  __| |__| | |  | | (___    | |
+| | |_ |  __  | |  | |\___ \   | |
+| |__| | |  | | |__| |____) |  | |
+ \_____|_|  |_|\____/|_____/   |_|
+    </pre>
+
+    <div class="ghost-boot-info">ENCLAVE SIGINT DIVISION — BREACH ASSISTANCE TERMINAL</div>
+    <div class="ghost-boot-info">WEB PLATFORM v@_version</div>
+
+    <button class="ghost-btn ghost-btn-primary" @onclick="Begin">[ PRESS ANY KEY TO BEGIN ]</button>
+</div>
+
+@code {
+    private string _version = "1.0";
+
+    protected override void OnInitialized()
+    {
+        var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        if (ver != null)
+            _version = $"{ver.Major}.{ver.Minor}";
+    }
+
+    private void Begin() => AppState.NavigateTo(GhostScreen.DataInput);
+}
