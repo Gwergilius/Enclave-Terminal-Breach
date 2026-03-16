@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+- **StorageConfigurationTests** – Use Common.Test.Core TestBase for test fixture.
+
 ## [2.0.0] - 2026-03-03
 
 ### Added
